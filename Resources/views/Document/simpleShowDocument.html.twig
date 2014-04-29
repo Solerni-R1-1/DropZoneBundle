@@ -1,0 +1,12 @@
+ {% if document.url is not null %}
+    <span class="slrn-bold">{{ 'Document %count%'|trans({'%count%': loop.index}, 'icap_dropzone') }} : </span>
+    <a class="pink_link" target="_blank" href="{{ document.url }}">
+        {{ document.url }}
+    </a>
+    
+{% else %} 
+    <span class="slrn-bold">{{ 'Document %count%'|trans({'%count%': loop.index}, 'icap_dropzone') }} : </span>
+    <a class="pink_link" target="_blank" href="{{ path('icap_dropzone_open_resource', {'resourceId': dropzone.id, 'documentId': document.id}) }}">
+        {{ document.resourceNode.name }}
+    </a>
+{% endif %}
