@@ -9,18 +9,21 @@
             <form id="correct-form" method="POST" action="{% if edit == false %}#{% elseif admin == true %}{{ path('icap_dropzone_drops_detail_correction_comment', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id}) }}{% else %}{{ path('icap_dropzone_correct_comment', {'resourceId': dropzone.id}) }}{% endif %}" class="form-horizontal">
 
                 {% if edit %}
-                    <h3>{{ 'Warning'|trans({}, 'icap_dropzone') }}</h3>
+                <h4>{{ 'attribute_rating'|trans({}, 'solerni') }} : <span class="slrn-correct-final-note londrina-solid">{{totalGrade|number_format(1)}}/20<span></h4>
+{#                    <h3>{{ 'Warning'|trans({}, 'icap_dropzone') }}</h3>
                     <p>{{ 'You are about to make your correction. This action is final. The rating is %grade%/20'|trans({'%grade%': (totalGrade|number_format(2)) }, 'icap_dropzone') }}</p>
                     <p>{{ 'Are you sure you have done?'|trans({}, 'icap_dropzone') }}</p>
+#}
                 {% endif %}
 
                 {% if dropzone.allowCommentInCorrection %}
                     {{ form_errors(form) }}
 
                     {% if edit == true %}
-                        <p>{{ 'Would you like to comment?'|trans({}, 'icap_dropzone') }}</p>
+                        <p>{{ 'add_comment'|trans({}, 'solerni') }}.</p>
+{#                        <p>{{ 'Would you like to comment?'|trans({}, 'icap_dropzone') }}</p>#}
                     {% else %}
-                        <h3>{{ 'Comment'|trans({}, 'icap_dropzone') }}</h3>
+                        <h3>{{ 'Comment'|trans({}, 'icap_dropzone') }}.</h3>
                     {% endif %}
                     {% if edit %}
                         <div class="form-group">
@@ -36,7 +39,29 @@
 
                 {{ form_rest(form) }}
 
+                      
+                      
                 {% if edit == true %}
+                <div class="slrn-grey-block slrn-no-copies">
+                      <p>Attention, vous êtes sur le point de rendre votre correction. Cette action est définitive. Etes-vous sûr d'avoir terminé ?<br />
+                     En cas de doute vous pouvez annuler votre notation et recommencer l'évaluation.</p>
+                 </div>
+                    <div class="pull-right">
+                        {% if admin == true %}
+                            <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default back-button btn-gris slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                        {% else %}
+                            <a href="{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': nbPages}) }}" class="btn btn-default back-button btn-gris slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                        {% endif %}
+                        <button type= "submit" class="btn btn-primary">{{ 'ok_done'|trans({}, 'solerni') }}</button>
+                    </div>
+                {% else %}
+                    <div class="pull-right">
+                        <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default btn-gris slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                        <a href="#" class="btn btn-default disabled">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
+                    </div>
+                {% endif %}
+
+                {#{% if edit == true %}
                     <div class="btn-group pull-right">
                         {% if admin == true %}
                             <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default back-button">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
@@ -57,7 +82,7 @@
                         <a href="#" class="btn btn-default disabled">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
 
                     </div>
-                {% endif %}
+                {% endif %}#}
             </form>
         </div>
 

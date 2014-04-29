@@ -8,11 +8,13 @@
     </h4>
 
     <p>
+        La note que vous allez attribuer à ce dossier dépend de votre évaluation pour chacun des critères ci-après. Selon vous, l'ensemble des documents que vous avez examinés répondent-ils aux critères suivants ?
+		{#
         {% if state is defined and state =='preview' %}
             {{ 'Note assigned depends on the following criteria'|trans({}, 'icap_dropzone') }}
         {% else %}
             {{ 'Note that you will assign depends on the following criteria'|trans({}, 'icap_dropzone') }}
-        {% endif %}
+        {% endif %}#}
     </p>
 
     <div class="container">
