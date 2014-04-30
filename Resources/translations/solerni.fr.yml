@@ -1,0 +1,61 @@
+
+# A
+addDocument: 'Ajouter un document'
+addDocument__PC: 'Fichier depuis mon ordinateur'
+add_comment: 'Merci d''ajouter un commentaire'
+attribute_rating: 'Vous allez attribuer la note de'
+
+# B
+buttonStart: 'Ok, commencer à constituer mon dossier de preuves'
+
+# C
+checkboxStart: 'Je souhaite “soumettre mes preuves de compétences” et “je m''engage à évaluer 3 autres retours de preuve”'
+continue_corrections: 'OK, continuer les corrections'
+continue: 'Continuer'
+correcting_copy: 'Correction du dossier - étape 3/5'
+
+# D
+date_limite: 'Date limite pour déposer vos preuves : le'
+document_list_to_correct: 'Documents à évaluer'
+
+# E
+evaluation_by_peers: 'Evaluez vos pairs - étape 2/5'
+endOK: 'Bravo !'
+endNOK: 'Désolé !'
+endNotOver: 'C''est presque terminé !'
+
+# F
+faq : 'FAQ'
+file: 'Fichier de mon ordinateur'
+forumTitle: 'Forum'
+forumContent: 'Discuter, échanger, poser des questions sur le sujet, à tous moments avec vos pairs'
+forumButton: 'Discuter'
+
+#O
+ok_done: 'OK, j''ai terminé'
+
+# R
+resource: 'Ressource de l''espace de travail'
+
+# S
+start_corrections: 'OK, commencer les corrections'
+step1: 'étape 1/5'
+step2: 'étape 2/5'
+step3: 'étape 3/5'
+step4: 'étape 4/5'
+step5: 'étape 5/5'
+
+
+# T
+text: 'Zone de texte libre'
+
+# U
+url: 'Lien web'
+
+
+# W
+welcome: 'Bienvenue dans votre espace de travail'
+welcome_constit1: 'Constituez votre dossier de preuves'
+
+# Y
+yourFiles: 'Votre dossier de preuves : '
