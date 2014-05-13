@@ -23,6 +23,7 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\NotValidCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Claroline\CoreBundle\Entity\User;
+use Claroline\CoreBundle\Library\Resource\ResourceCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -480,6 +481,7 @@ class DropController extends DropzoneBaseController
                             'page' => $page
                         )
                     )
+
                 );
             }
         }
@@ -524,7 +526,8 @@ class DropController extends DropzoneBaseController
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
-            'drop' => $drop
+            'drop' => $drop,
+            'isAllowedToEdit' => true,
         );
     }
 
@@ -538,25 +541,31 @@ class DropController extends DropzoneBaseController
      * @ParamConverter("drop", class="IcapDropzoneBundle:Drop", options={"id" = "dropId"})
      * @Template()
      */
-    public function dropDetailAction($dropzone,$drop)
+    public function dropDetailAction(Dropzone $dropzone, Drop $drop)
     {
         // check  if the User is allowed to open the dropZone.
         $this->isAllowToOpen($dropzone);
         // getting the userId to check if the current drop owner match with the loggued user.
         $userId = $this->get('security.context')->getToken()->getUser()->getId();
+        $collection = new ResourceCollection(array($dropzone->getResourceNode()));
+        $isAllowedToEdit =  $this->get('security.context')->isGranted('EDIT', $collection);
+
 
         // getting the data
-        $drop = $this->getDoctrine()
+        $dropSecure = $this->getDoctrine()
             ->getRepository('IcapDropzoneBundle:Drop')
             ->getDropAndValidEndedCorrectionsAndDocumentsByUser($dropzone,$drop->getId(),$userId);
 
         // if there is no result ( user is not the owner, or the drop has not ended Corrections , show 404)
-        if(count($drop) == 0)
-        {
-            throw new NotFoundHttpException(); 
+        if (count($dropSecure) == 0) {
+            if ($drop->getUser()->getId() != $userId) {
+                throw new AccessDeniedException();
+            } else {
+                throw new NotFoundHttpException();
+            }
         }else
         {
-            $drop = $drop[0];
+            $drop = $dropSecure[0];
         }
         /*
         $corrections = $drop->getCorrections();
@@ -568,7 +577,8 @@ class DropController extends DropzoneBaseController
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
-            'drop' => $drop
+            'drop' => $drop,
+            'isAllowedToEdit' => $isAllowedToEdit,
         );
     }
 
