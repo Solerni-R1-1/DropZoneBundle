@@ -1,30 +1,59 @@
 {% extends "IcapDropzoneBundle:Document:documentFormDefault.html.twig" %}
 
 {% block document_body %}
-{#     <div class="row">
-        {{ form_row(form.document, {'label_col_size': ' ', 'input_col_size': 'col-md-8', 'attr': {'placeholder': (documentType~'_placeholder')|trans({}, 'icap_dropzone')}, 'label_attr': {'class': 'sr-only'},'id': 'icap_dropzone_document_file_form_text'}) }}
-        <div class="col-md-4 ">
-            <div class="form-group ">
-                <button type="submit" class="btn btn-primary">
-                    {{ 'Add'|trans({}, 'icap_dropzone') }}
-                </button>
-            </div>
-        </div>
-    </div> #}
-
     <div class="row">
-            <div class='col-md-8'>
-                <div class='input-group'>
-                    {{ form_widget(form.document,{'label_col_size': ' ', 'attr': {'placeholder': (documentType~'_placeholder')|trans({}, 'icap_dropzone')}, 'label_attr': {'class': 'sr-only'},'id':'icap_dropzone_document_file_form_text' }) }}
-                    <span class='input-group-btn'>
-                        <button type="submit" class="btn btn-primary">
-                            {{ 'Add'|trans({}, 'icap_dropzone') }}
-                        </button>
-                    </span> 
+        <div class="col-md-12">
+            <div class='col-md-8 row'>
+                <div class=''>
+                    {{ form_widget(form.document,{'label_col_size': ' ', 'attr': {'placeholder': (documentType~'_placeholder')|trans({}, 'icap_dropzone')}, 'label_attr': {'class': 'sr-only'},'id':'icap_dropzone_document_file_form_text', 'data-type': documentType }) }}
                 </div>
                 {{ form_rest(form.document) }}
             </div>
-        </div>
+            {# bouton ajouter #}
+            <div class="col-md-2 hidden js-hidden-btn-{{ documentType }}">
+                <button type="submit" class="btn btn-primary slrn-input-submit">
+                    {{ 'Add'|trans({}, 'icap_dropzone') }}
+                </button>
+            </div>
 
+            {# bouton annuler #}
+            <div class="col-md-2 row hidden js-hidden-btn-{{ documentType }}">
+                <a href="{{ path('icap_dropzone_drop', {'resourceId': dropzone.id}) }}" class="btn btn-default cancel-inline">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
+            </div>
+        </div>
+    </div>
+    <script>
+    jQuery(document).ready( function() {
+        var lineButtons = jQuery('.js-hidden-btn-text');
+        var cancelElement = jQuery('.js-hidden-btn-text .cancel-inline');
+        var submitElement = jQuery('.js-hidden-btn-text .slrn-input-submit');
+        var tinyState = false;
+        
+        checkAndUpdate = function() {
+            
+            if ( tinyState != tinymce.claroline.checkBeforeUnload() ) {
+                tinyState = tinymce.claroline.checkBeforeUnload();
+                if ( tinyState ) {
+                    lineButtons.removeClass('hidden');
+                } else {
+                    lineButtons.addClass('hidden');
+                }
+            }
+        }
+        
+        var keepRunning = setInterval( function() { checkAndUpdate() }, 300 );
+        
+        cancelElement.on('click', function() {
+            tinymce.get('icap_dropzone_document_file_form_text').setContent(''); 
+        });
+        
+        submitElement.on('click', function() {
+            clearInterval( keepRunning );
+            lineButtons.removeClass( 'hidden' );
+        });
+        
+        
+    });
+    </script>
 {% endblock %}
 

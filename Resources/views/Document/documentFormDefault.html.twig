@@ -1,39 +1,110 @@
 {% form_theme form "IcapDropzoneBundle::form_theme_bootstrap3.html.twig" %}
 
-<form class="form-inline" method="POST" action="{{ path('icap_dropzone_document', {'resourceId': dropzone.id, 'documentType': documentType, 'dropId': drop.id}) }}" {{ form_enctype(form) }}>
+<form class="form-inline slrn-input-row" method="POST" action="{{ path('icap_dropzone_document', {'resourceId': dropzone.id, 'documentType': documentType, 'dropId': drop.id}) }}" {{ form_enctype(form) }}>
 
     {% block document_header %}
         <div class="row">
             <div class="col-md-12">
-                <h4>{{ documentType|trans({}, 'icap_dropzone') }}</h4>
-                {#<span class="text-muted">Default template</span>#}
+                {# Input resource type title #}
+                <span class="slrn-input-row__title">{{ documentType|trans({}, 'solerni') }}</span>
             </div>
         </div>
     {% endblock %}
 
     {% block document_body %}
         <div class="row">
-            <div class='col-md-8'>
-                <div class='input-group'>
-                    {{ form_widget(form.document,{'label_col_size': ' ', 'attr': {'placeholder': (documentType~'_placeholder')|trans({}, 'icap_dropzone')}, 'label_attr': {'class': 'sr-only'},'id':'icap_dropzone_document_file_form_'~documentType }) }}
-                    <span class='input-group-btn'>
-                        <button type="submit" class="btn btn-primary">
-                            {{ 'Add'|trans({}, 'icap_dropzone') }}
-                        </button>
-                    </span> 
+            <div class="col-md-12">
+                <div class="col-md-8 row">
+                    {% if documentType == 'url' %}
+                        <input type="url" id="icap_dropzone_document_url_form_document"
+                             name="icap_dropzone_document_file_form[document]" required="required" 
+                             placeholder="Copiez ou tapez le lien" class="form-control fakeone">
+                        <script>
+                            jQuery(document).ready( function() {
+                                var lineButtons = jQuery('.js-hidden-btn-url');
+                                var cancelElement = jQuery('.js-hidden-btn-url .cancel-inline');
+                                var targetElement = jQuery('#icap_dropzone_document_url_form_document');
+                                 
+                                function toggleButtons() {
+                                    if ( targetElement.val().length > 0 ) {
+                                        lineButtons.removeClass('hidden');;
+                                    } else {
+                                        lineButtons.addClass('hidden');
+                                    }
+                                }
+                                
+                                targetElement.on ( 'change keyup input paste', function() {
+                                    toggleButtons();
+                                });
+                              
+                                cancelElement.on('click', function() {
+                                    targetElement.val('');
+                                    toggleButtons();
+                                });
+                            });
+                        </script>
+
+                    {% elseif documentType == 'file' %}
+
+                        <div class="fileUpload btn btn-primary btn-gris">
+                                <span>{{ 'import_file'|trans({}, 'solerni') }}</span>
+                                <input id="icap_dropzone_document_file_form_document" name="icap_dropzone_document_file_form[document]"
+                                    type="file" data-type="file" class="upload"/>
+                        </div>
+                        <input id="fakeone" placeholder="" disabled="disabled" class="form-control fakeone"/>
+                  
+                        <script>
+                          jQuery(document).ready( function() {
+                              var targetElement = jQuery('#icap_dropzone_document_file_form_document');
+                              var lineButtons = jQuery('.js-hidden-btn-file');
+                              var cancelElement = jQuery('.js-hidden-btn-file .cancel-inline');
+                              var fakeElement = jQuery("#fakeone");
+                              
+                              function toggleButtons() {
+                                  if ( targetElement.val().length > 0 ) {
+                                      lineButtons.removeClass('hidden');;
+                                  } else {
+                                      lineButtons.addClass('hidden');
+                                  }
+                              }
+                              
+                              targetElement.change( function() {
+                                  arr = targetElement.val().split("\\");
+                                  fakeElement.val( arr[arr.length-1] );
+                                  toggleButtons();
+                                  
+                              });
+                              
+                              cancelElement.on('click', function() {
+                                  targetElement.val('');
+                                  fakeElement.val('');
+                                  toggleButtons();
+                              });
+                              
+                              
+                          });
+                        </script>
+
+                    {% endif %}
                 </div>
+                
+                {# bouton ajouter #}
+                <div class="col-md-2 hidden js-hidden-btn-{{ documentType }}">
+                    <button type="submit" class="btn btn-primary slrn-input-submit">
+                        {{ 'Add'|trans({}, 'icap_dropzone') }}
+                    </button>
+                </div>
+                
+                {# bouton annuler #}
+                <div class="col-md-2 row hidden js-hidden-btn-{{ documentType }}">
+                    <a href="{{ path('icap_dropzone_drop', {'resourceId': dropzone.id}) }}" class="btn btn-default cancel-inline">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
+                </div>
+                
                 {{ form_rest(form.document) }}
+                
             </div>
         </div>
-
-        <script type='text/javascript'>
-        $('document').ready(function()
-        {
-           /*$('input[type=file]').bootstrapFileInput();
-           $('.file-inputs').bootstrapFileInput();
-           */
-        })
-        </script>
     {% endblock %}
-    {{ form_errors(form) }}
-{{ form_end(form) }}
+    {{ form_errors(form) }}  
+    {{ form_row(form._token)}}
+</form>

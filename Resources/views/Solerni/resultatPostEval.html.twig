@@ -5,12 +5,8 @@
         {% if drop.calculatedGrade >= dropzone.minimumScoreToPass %}
         
 	        <h2>{{ 'endOK'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-	        <hr/>
 	        <p>
-	            <strong>Vous avez reussi cette évaluation</strong> en obtenant une note de 
-	            {% if dropzone.displayNotationToLearners %}
-	              <span class='slrn-correct-final-note londrina-solid'>{% include 'IcapDropzoneBundle:Drop:dropsTotalGrade.html.twig' %}</span>
-	            {% endif %}
+                Vous avez réussi votre évaluation en obtenant une note de {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}/20. Le Mooc "Le digital, vivons-le ensemble", est heureux de vous décerner le badge de compétences :
 	        </p>
 	        <hr/>
 			<div class='redlink'>
@@ -42,18 +38,9 @@
 	     {% endif %}
         
     {% else %}
-    
-        
-        
-            <h2>{{ 'endNotOver'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-            <hr/>
-            <div class='redlink'>
-				<p>Encore un peu de patience, votre dossier est toujours en cours d'évaluation.</p>
-				<p>Vous découvrirez très bientôt si vous avez réussi votre évaluation et obtenu votre badge de compétence.</p>
-				<p></p>
-				<p><strong>A très bientôt</strong></p>
-			</div>
-
+        <h2>{{ 'endNotOver'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+        <hr/>
+        <p>{{ 'wait_for_results'|trans({}, 'solerni')|raw }}
     {% endif %}
 </div>
 </div>

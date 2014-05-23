@@ -1,4 +1,11 @@
-<div class='drop__annoncement__badge'>
-    Badge de compétence en cours d'évalution<br/>
-    <span class='bold'>&laquo; {{ dropzone.resourceNode.name }} &raquo;</span>
-</div>
+{% for badge in badges %}
+    {% if 'owned' == badge.type %}
+        {% set badge     = badge.badge.badge %}
+    {% else %}
+        {% set badge = badge.badge %}
+    {% endif %}
+    <div class='drop__annoncement__badge'>
+        <img src="{{ asset(badge.webPath) }}" alt="{{ badge.name }}" class="drop__annoncement__badge__img" />
+        <span class='drop__annoncement__title bold'>Badge &laquo; {{ badge.name }} &raquo;</span>
+    </div>
+{% endfor %}

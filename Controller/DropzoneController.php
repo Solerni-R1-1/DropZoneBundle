@@ -373,10 +373,20 @@ class DropzoneController extends DropzoneBaseController
 
         // get progression of the evaluation ( current state, all states available and needed infos to the view).
         $dropzoneProgress = $dropzoneManager->getDrozponeProgress($dropzone,$drop,$nbCorrections);
-
+        
+        /* Redirection to drop zone if drop is open but not finished */
+        if ( $drop && $dropzoneProgress['currentState'] < 2 ) {
+            return $this->redirect( $this->get('router')->generate( 'icap_dropzone_drop', array( 'resourceId' => $dropzone->getId() ) ) );
+        }
+        
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->container->get('orange.badge.controller');
+        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+            
         $PeerReviewEndCase = $dropzoneManager->isPeerReviewEndedOrManualStateFinished($dropzone,$nbCorrections);
         return array(
-            'workspace' => $dropzone->getResourceNode()->getWorkspace(),
+            'workspace' => $workspace,
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
             'drop' => $drop,
@@ -385,6 +395,7 @@ class DropzoneController extends DropzoneBaseController
             'hasUnfinishedCorrection' => $hasUnfinishedCorrection,
             'dropzoneProgress' => $dropzoneProgress,
             'PeerReviewEndCase' =>$PeerReviewEndCase,
+            'badges' => $badgeList['badgePager']
         );
     }
 

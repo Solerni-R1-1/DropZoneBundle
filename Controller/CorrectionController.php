@@ -431,11 +431,25 @@ class CorrectionController extends DropzoneBaseController
         $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone,$user);
 
         $view = 'IcapDropzoneBundle:Correction:correctCriteria.html.twig';
+        
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->container->get('orange.badge.controller');
+        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        
+        /* Find NbCorrection */
+        $nbCorrections = $em
+            ->getRepository('IcapDropzoneBundle:Correction')
+            ->countFinished($dropzone, $user);
+        $hasCopyToCorrect = $em
+            ->getRepository('IcapDropzoneBundle:Drop')
+            ->hasCopyToCorrect($dropzone, $user);
+        $hasUnfinishedCorrection = $em->getRepository('IcapDropzoneBundle:Correction')->getNotFinished($dropzone, $user) != null;
 
         return $this->render(
             $view,
             array(
-                'workspace' => $dropzone->getResourceNode()->getWorkspace(),
+                'workspace' => $workspace,
                 '_resource' => $dropzone,
                 'dropzone' => $dropzone,
                 'correction' => $correction,
@@ -444,6 +458,8 @@ class CorrectionController extends DropzoneBaseController
                 'admin' => false,
                 'edit' => true,
                 'dropzoneProgress' => $dropzoneProgress,
+                'badges' => $badgeList['badgePager'],
+                'nbCorrections' => $nbCorrections
             )
         );
     }
@@ -528,11 +544,26 @@ class CorrectionController extends DropzoneBaseController
 
         $dropzoneManager = $this->get('icap.manager.dropzone_manager');
         $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone,$user);
+        
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->container->get('orange.badge.controller');
+        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        
+        /* Find NbCorrection */
+        $em = $this->getDoctrine()->getManager();
+        $nbCorrections = $em
+            ->getRepository('IcapDropzoneBundle:Correction')
+            ->countFinished($dropzone, $user);
+        $hasCopyToCorrect = $em
+            ->getRepository('IcapDropzoneBundle:Drop')
+            ->hasCopyToCorrect($dropzone, $user);
+        $hasUnfinishedCorrection = $em->getRepository('IcapDropzoneBundle:Correction')->getNotFinished($dropzone, $user) != null;
 
         return $this->render(
             $view,
             array(
-                'workspace' => $dropzone->getResourceNode()->getWorkspace(),
+                'workspace' => $workspace,
                 '_resource' => $dropzone,
                 'dropzone' => $dropzone,
                 'correction' => $correction,
@@ -542,6 +573,8 @@ class CorrectionController extends DropzoneBaseController
                 'edit' => true,
                 'totalGrade' => $totalGrade,
                 'dropzoneProgress' => $dropzoneProgress,
+                'nbCorrections' => $nbCorrections,
+                'badges' => $badgeList['badgePager']
             )
         );
     }

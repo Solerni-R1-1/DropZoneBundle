@@ -1,6 +1,12 @@
 <div class='collapse__div'>
-    <div class='collapse__div__title'>Rappel des instructions</div>
-    <div class='collapse__div__instruction slrn-grey-block'>{{ dropzone.instruction|raw }}</div>
+    <div class='collapse__div__title'>{{ 'instruction_reminder' | trans({}, 'solerni') }}</div>
+    <div class='collapse__div__instruction slrn-grey-block'>
+        {% if dropzone.correctionInstruction is defined and dropzone.correctionInstruction is not empty and dropzoneProgress.currentState > 2 %}
+            {{ dropzone.correctionInstruction|raw }}
+        {% else %}
+            {{ dropzone.instruction|raw }}
+        {% endif %}
+    </div>
 </div>
 <script>
     $( document ).ready(function() {
