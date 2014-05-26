@@ -14,132 +14,78 @@
         {# FIRST : MOOC  WIDGET #}
         {% render controller(
             'ClarolineCoreBundle:Solerni:getWorkspacePresentationWidget',
-            {'workspaceId': workspace.getId(), 'renderProgression': false  }
+            { 'workspaceId': workspace.getId(), 'renderProgression': false }
         ) %}
-        <div class='col-xs-12 col-md-12 slrn-widget'>
-	        <div class='row slrn-back bg-color-grey-2'>
-	            <a href="{{ app.session.get('solerni_apprendre_url') }}" class='slrn-back__link'><i class="icon-chevron-left no_underline"></i>{{ 'returnMOOC' | trans({}, 'solerni') }}</a>
-	        
-	        </div>
-        </div>
+     
+        {# include parcours twig #}
+         {% set currentFile = 1 %}
+        {% include 'IcapDropzoneBundle:Solerni:parcours.html.twig' %}
         
 </div>
-{# 
-<style>
-.dropzone-form-control-reduced
-{
-    width: 80%;
-}
-.dropzone-form-clean
-{
-    clear:both;
-}
-
-.dropzone_button_textarea
-{
-    float: left;
-    display: block;
-}
-</style>
-#}
 <div class='col-xs-9 col-md-9'>
     <div class="container-fluid">
-{#        <h3>
-            {{ 'Make my copy'|trans({}, 'icap_dropzone') }}
-        </h3>#}
-
-        {{ macros.flashBox() }}
-        
-        <div class="slrn-dropzone-bloc">
+        <div class="slrn-container-dropzone__header">
+            <!--{{ macros.flashBox() }}-->
+            {# Retour à la liste des badges #}
+            <a title="{{ 'page_my_badges'|trans({}, 'platform') }}" href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="black_link">
+                <i class="icon-chevron-left no_underline"></i>Retour à la liste des badges
+            </a>
             {# header badge name  #}
-            {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
+            <div class="slrn-dropzone-bloc">
+                {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
+            </div>
         </div>
-
-        <h2>{{ 'welcome_constit1'|trans({}, 'solerni') }}- {{ 'step1'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>      
-            
-            <hr/>
-            <div class="row">
+        <h2>{{ 'welcome_constit1'|trans({}, 'solerni') }}<span class="FAQ"><a href="{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}" class="FAQ">FAQ</a></span></h2>      
+        <hr/>
+        <div class="row">
             <div class='col-xs-12 col-md-12'>
-	            <div class='col-xs-8 col-md-8'>
-	            
-		            <div class='date__end'>{{ 'date_limite'|trans({}, 'solerni') }} {{  dropzone.endAllowDrop|date('d/m/Y') }}</div>
-		            
+                <div class='col-xs-8 col-md-8'>
+                    <div class='date__end'>{{ 'date_limite'|trans({}, 'solerni') }} {{  dropzone.endAllowDrop|date('d/m/Y') }}</div>
+
                     {% if dropzone.instruction != null %}
                         {% include 'IcapDropzoneBundle:Solerni:instructionCollapse.html.twig' %}
+                    {% endif %}   
+                </div> {# end 8 #}
+                <div class='col-xs-4 col-md-4'>
+                   {# widget forum #}
+                   {% include 'IcapDropzoneBundle:Solerni:forumComponent.html.twig' %}
+                </div>
+            </div>  {# end 12 #} 
+        </div>  
+            <div class="row">
+            <div class='col-xs-12 col-md-12'>
+                {# Add documents #}
+                <div class="slrn-document-dropper">
+                    {% if allowedTypes|length <= 0 %}
+                        <span class="text-danger">{{ 'No document type allowed'|trans({}, 'icap_dropzone') }}</span>
+                    {% elseif allowedTypes|length == 1 %}
+                        <a class="btn btn-primary launch-inline disabled-during-add btn-gris {% if allowedTypes.0 == 'resource' %}launch-resource-picker{% endif %}" href="{{ path('icap_dropzone_document', {'resourceId': dropzone.id, 'documentType': allowedTypes.0, 'dropId': drop.id}) }}">{{ 'Add a document'|trans({}, 'icap_dropzone') }}</a>
+                    {% else %}
+                        {% for allowedType in allowedTypes %}
+                            {% render controller(
+                                'IcapDropzoneBundle:Document:document',
+                                { 'resourceId': dropzone.id, 'documentType': allowedType, 'dropId': drop.id, 'inlineRendering': true }
+                            ) %}
+                        {% endfor %}
                     {% endif %}
-		            
-		            {#<div class="btn-group">
-					    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					      {{ 'addDocument'|trans({}, 'solerni') }}
-					      <span class="caret"></span>
-					    </button>
-					    <ul class="dropdown-menu">
-					      <li><a href="#">{{ 'addDocument_PC'|trans({}, 'solerni') }}</a></li>
-					      <li><a href="#">Dropdown link</a></li>
-					    </ul>
-					  </div> #}      
-		     </div> {# end 8 #}
-		     <div class='col-xs-4 col-md-4'>
-                {% include 'IcapDropzoneBundle:Solerni:forumComponent.html.twig' %}
-		     </div>
-
-		   </div>  {# end 12 #} 
-		   </div>  
-		     
-		   <div class="row">
-           <div class='col-xs-12 col-md-12'>   
-		       <hr/> 
-		       {# {% if dropzone.instruction != null %}
-		            {%  include 'IcapDropzoneBundle:Dropzone:recallInstruction.html.twig' %}
-		            <br/>
-		        {% endif %}  #}
-		        
-		        <h3>{{ 'yourFiles'|trans({},'solerni') }}</h3>
-		
-		        {% if allowedTypes|length <= 0 %}
-		            <span class="text-danger">{{ 'No document type allowed'|trans({}, 'icap_dropzone') }}</span>
-		        {% elseif allowedTypes|length == 1 %}
-		            <a class="btn btn-primary launch-inline disabled-during-add btn-gris {% if allowedTypes.0 == 'resource' %}launch-resource-picker{% endif %}" href="{{ path('icap_dropzone_document', {'resourceId': dropzone.id, 'documentType': allowedTypes.0, 'dropId': drop.id}) }}">{{ 'Add a document'|trans({}, 'icap_dropzone') }}</a>
-		        {% else %}
-		            <div class="dropdown dropdown-fixed">
-		                <a data-toggle="dropdown" class="btn btn-primary disabled-during-add btn-gris" href="#">
-		                  <span class="caret"></span>
-		                  {{ 'Add a document'|trans({}, 'icap_dropzone') }}
-		                </a>
-		                <ul id="menu1" class="dropdown-menu dropdown-gris-menu" role="menu" aria-labelledby="drop4">
-		                    {% for allowedType in allowedTypes %}
-		                        <li role="presentation">
-		                          <a role="menuitem" tabindex="-1" class="launch-inline disabled-during-add {% if allowedType == 'resource' %}launch-resource-picker{% endif %}" href="{{ path('icap_dropzone_document', {'resourceId': dropzone.id, 'documentType': allowedType, 'dropId': drop.id}) }}">
-		                              {{ allowedType|trans({}, 'solerni') }}
-		                          </a>
-		                        </li>
-		                    {% endfor %}
-		                </ul>
-		            </div>
-		        {% endif %}
-		
-		
-		        {% for document in drop.documents %}
-		            <hr/>
-		            <div class="row line-2-7">
-		                <div class="col-md-11">
-		                    {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}
-		                </div>
-		
-		                <div class="col-md-1">
-		                    <a href="{{ path('icap_dropzone_delete_document', {'resourceId': dropzone.id, 'dropId': drop.id, 'documentId': document.id}) }}" 
-		                      class="btn-garbage launch-modal">
-		                      <span class="glyphicon icon-trash"></span> {{ 'Delete'|trans({}, 'icap_dropzone') }}
-		                    </a>
-		                </div>
-		            </div>
-		        {% endfor %}
-		
-		        <div class="show-during-add" style="display: none;">
-		            <hr/>
-		            <div class="container-inline"></div>
-		        </div>
-	
+                </div>
+                {# Documents already added #}
+                <a id ="js-documents" name="documents"></a>
+                <div class="slrn-grey-block slrn-grey-block--with-title">
+                    <h3 class="slrn-grey-block-title">{{ 'yourFiles'|trans({},'solerni') }}</h3>
+                    {% if drop.documents|length <= 0 %}
+                        {% set buttonDisabled = ' hide' %}
+                        <p>{{ 'no_files' | trans({}, 'solerni') }}
+                    {% else %}
+                        {% set buttonDisabled = '' %}
+                        {% for document in drop.documents %}
+                            <div class="slrn-drop-list__item row col-md-12">
+                                {% set showGarbage = true %}
+                                {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>    
 	        </div> {# end 12 #}
 	      </div>
 	        
@@ -147,8 +93,6 @@
         
         <div class="row">
         <div class='col-xs-12 col-md-12'>
-	        <hr/>
-	
 	        <form class="form-horizontal" method="POST" action="{{ path('icap_dropzone_drop', {'resourceId': dropzone.id}) }}">
 	            <div class="{% if form.vars.errors|length > 0 %}has-error{% endif %}">
 	                {{ form_errors(form) }}
@@ -157,7 +101,7 @@
 	                <div class="col-md-12">
 	
 	                    <!-- Button trigger modal -->
-	                    <a data-toggle="modal" href="#saveModal" class="btn btn-primary pull-right disabled-during-add">{{ 'Save and finished'|trans({}, 'icap_dropzone') }}</a>
+	                    <a data-toggle="modal" href="#saveModal" class="btn btn-primary disabled-during-add{{buttonDisabled}}">{{ 'save and finished'|trans({}, 'solerni') }}</a>
 	
 	                    <!-- Modal -->
 	                    <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -313,6 +257,15 @@
     <script src="{{ asset('bundles/icapdropzone/js/popup.js') }}"></script>
     <script>
         $(document).ready(function () {
+             var hash = window.location.hash;
+            if ( hash ) {
+                var documentAnchor = $('#js-documents').offset().top - 130; // substrac fixed header height
+                 $('body,html').scrollTop(documentAnchor);
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
             var resourceNodeId = null;
 
             var callBack = function(nodes){
@@ -359,7 +312,7 @@
                 $('.disabled-during-add').attr('disabled', 'disabled');
 
                 var launchResourcePicker = $(this).hasClass('launch-resource-picker');
-                console.log(launchResourcePicker);
+                //console.log(launchResourcePicker);
 
                 $.get($(this).attr('href'))
                     .always(function () {

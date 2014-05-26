@@ -218,7 +218,7 @@ class DocumentController extends DropzoneBaseController
      * @ParamConverter("drop", class="IcapDropzoneBundle:Drop", options={"id" = "dropId"})
      * @Template()
      */
-    public function documentAction($dropzone, $documentType, $drop)
+    public function documentAction( $dropzone, $documentType, $drop, $inlineRendering = false )
     {
         $this->isAllowToOpen($dropzone);
 
@@ -254,13 +254,13 @@ class DocumentController extends DropzoneBaseController
                         array(
                             'resourceId' => $dropzone->getId()
                         )
-                    )
+                    ) . '#documents'
                 );
             }
         }
 
         $view = 'IcapDropzoneBundle:Document:document.html.twig';
-        if ($this->getRequest()->isXMLHttpRequest()) {
+        if ( $this->getRequest()->isXMLHttpRequest() || $inlineRendering ) {
             $view = 'IcapDropzoneBundle:Document:documentInline.html.twig';
         }
 
@@ -320,7 +320,7 @@ class DocumentController extends DropzoneBaseController
                         array(
                             'resourceId' => $dropzone->getId()
                         )
-                    )
+                    )  . '#documents'
                 );
             }
         }

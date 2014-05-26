@@ -3,72 +3,62 @@
 {% form_theme form 'IcapDropzoneBundle::form_theme_correct_criteria.html.twig' %}
 
 {% block dropzone_correct_content %}
-    <h4>
-        {{ 'Evaluation criteria'|trans({}, 'icap_dropzone') }}
-    </h4>
+    <h4 class="slrn-input-row__title">{{ 'Evaluation criteria'|trans({}, 'icap_dropzone') }}</h4>
 
-    <p>
-        La note que vous allez attribuer à ce dossier dépend de votre évaluation pour chacun des critères ci-après. Selon vous, l'ensemble des documents que vous avez examinés répondent-ils aux critères suivants ?
-		{#
-        {% if state is defined and state =='preview' %}
-            {{ 'Note assigned depends on the following criteria'|trans({}, 'icap_dropzone') }}
-        {% else %}
-            {{ 'Note that you will assign depends on the following criteria'|trans({}, 'icap_dropzone') }}
-        {% endif %}#}
-    </p>
+    <p>{{ 'correction_intro'|trans({}, 'solerni') }}</p>
 
     <div class="container">
         {% if dropzone.hasCriteria() %}
             <div class="slrn-criteres">
                 <form id="correct-form" method="POST" action="{% if edit == false %}#{% elseif admin == true %}{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id, 'page': pager.currentPage}) }}{% else %}{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': pager.currentPage}) }}{% endif %}" class="form-horizontal">
                     <hr/>
-                    {% for criterion in pager.currentPageResults %}
-                        {% set criterionNumber = (((pager.currentPage-1) * pager.maxPerPage) + loop.index) %}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h4>{{ criterionNumber }}<exp>{% if criterionNumber == 1 %}er{% else %}ème{% endif %}</exp> critère</h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="slrn-form-label">
-                                    {{ form_label(form[criterion.id], label|default(null), { 'label_attr' : { 'style': '' } }) }}
+                    <div class="slrn-criteres__list">
+                        {% for criterion in pager.currentPageResults %}
+                            {% set criterionNumber = (((pager.currentPage-1) * pager.maxPerPage) + loop.index) %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>{{ criterionNumber }}<exp>{% if criterionNumber == 1 %}er{% else %}ème{% endif %}</exp> critère</h4>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="row col-md-8">
-                                <div class="row slrn-form-radio col-md-12">
-                                    <div class="col-md-3">
-                                        {{ 'Not at all'|trans({}, 'icap_dropzone' ) }}
-                                    </div>
-                                    <div class="col-md-6">
-                                    {{ form_widget( form[criterion.id] ) }}
-                                    </div>
-                                    <div class="col-md-3">
-                                        {{ 'Entirely'|trans({}, 'icap_dropzone' ) }}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="slrn-form-label">
+                                        {{ form_label(form[criterion.id], label|default(null), { 'label_attr' : { 'style': '' } }) }}
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 pull-tight slrn-form-note">
-                                Note : 
-                                    {% set criterionGrade = 0 %}
-                                    {%  for value in form[criterion.id].vars.value %}
-                                        {% if value == true %}
-                                            {% set criterionGrade = loop.index-1 %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <span class="criterion-grade" data-criterion="icap_dropzone_correct_criteria_page_form[{{ criterion.id }}]">{{ criterionGrade }}</span>/{{ dropzone.totalCriteriaColumn-1 }}
+                            <div class="row">
+                                <div class="row col-md-10">
+                                    <div class="row col-md-12">
+                                        <div class="slrn-criteria-cell">
+                                            {{ 'Not at all'|trans({}, 'icap_dropzone' ) }}
+                                        </div>
+                                        <div class="slrn-criteria-cell slrn-radio-cell--radios">
+                                            {{ form_widget( form[criterion.id] ) }}
+                                        </div>
+                                        <div class="slrn-criteria-cell">
+                                            {{ 'Entirely'|trans({}, 'icap_dropzone' ) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 pull-tight slrn-form-note">
+                                    Note : 
+                                        {% set criterionGrade = 0 %}
+                                        {%  for value in form[criterion.id].vars.value %}
+                                            {% if value == true %}
+                                                {% set criterionGrade = loop.index-1 %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <span class="criterion-grade" data-criterion="icap_dropzone_correct_criteria_page_form[{{ criterion.id }}]">{{ criterionGrade }}</span>/{{ dropzone.totalCriteriaColumn-1 }}
+                                </div>
                             </div>
-                        </div>
-
-                        <hr/>
-                    {% endfor %}
-                    {{ form_rest(form) }}
-
+                            <hr />
+                        {% endfor %}
+                        {{ form_rest(form) }}
+                    </div>
 
                     {% if edit == true %}
-                        <div class="slrn-correct-buttons pull-right">
+                        <div class="slrn-correct-buttons">
                             {% if admin == true %}
                                 {% if pager.currentPage == 1 %}
                                     <a href="{{ path('icap_dropzone_drops_detail', {'resourceId': dropzone.id, 'dropId': correction.drop.id}) }}" class="btn btn-default slrn-dropzone-cancel btn-gris">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
@@ -81,7 +71,7 @@
                                     <a href="{{ path('icap_dropzone_open', {'resourceId': dropzone.id}) }}" class="btn btn-default slrn-dropzone-cancel btn-gris">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
                                 {% else %}
                                     {% set previousPage = pager.currentPage-1 %}
-                                    <a href="{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': previousPage}) }}" class="btn btn-default back-button">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                                    <a href="{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': previousPage}) }}" class="btn btn-default back-button">{{ 'continue'|trans({}, 'solerni') }}</a>
                                 {% endif %}
                             {% endif %}
 
@@ -110,10 +100,9 @@
             </div>
 
             <div class="row">
-                <strong>
+                {# <strong>
                     {{ pager.currentPage }} / {% if edit == false and not dropzone.allowCommentInCorrection %}{{ pager.nbPages}}{% else %}{{ pager.nbPages+1 }}{% endif %}
-                </strong>
-
+                </strong> #}
             {#<div class="row">
                 <form id="correct-form" method="POST" action="{% if edit == false %}#{% elseif admin == true %}{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': pager.currentPage}) }}{% else %}{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': pager.currentPage}) }}{% endif %}" class="form-horizontal">
                     <hr/>
@@ -252,4 +241,25 @@
             calculateTotalGrade();
         });
     </script>
+    {# Starts of function to hide radios and replace it with styled elements #}
+    {#<script>
+        $(document).on('ready', function () {
+            var radioContainers = jQuery('.slrn-radio-cell--radios');
+            var pseudoRadioContainer = '<span class="slrn-pseudo-buttons"></span>';
+            var pseudoRadioElement = '<div class="radio-inline radio"><span class="radio-inline--pseudo"></span></span>';
+              
+            radioContainers.each( function() {
+                radioButtons = jQuery(this).find( '.radio' );
+                var pseudoRadioContainerObject = jQuery(this).prepend( pseudoRadioContainer );
+                
+                
+                radioButtons.hide().each( function() {
+                    pseudoRadioContainerObject.append( pseudoRadioElement );
+                    
+                });
+              
+            });
+              
+        });
+    </script>#}
 {% endblock %}

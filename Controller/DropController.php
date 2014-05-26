@@ -140,6 +140,11 @@ class DropController extends DropzoneBaseController
 
         $dropzoneManager = $this->get('icap.manager.dropzone_manager');
         $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone,$user);
+        
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->container->get('orange.badge.controller');
+        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
 
         return array(
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
@@ -154,6 +159,7 @@ class DropController extends DropzoneBaseController
             'allowedTypes' => $allowedTypes,
             'resourceTypes' => $resourceTypes,
             'dropzoneProgress' => $dropzoneProgress,
+            'badges' => $badgeList['badgePager']
         );
     }
 
