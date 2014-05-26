@@ -20,23 +20,18 @@
         
 	        <h2>{{ 'endNOK'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
 	        <hr/>
+            <p class="slrn-sub-title">Désolé !</p>
 	        <p>
-	            Vous avez obtenu une note de 
-	            {% if dropzone.displayNotationToLearners %}
-	                    <span class='slrn-correct-final-note londrina-solid'>{% include 'IcapDropzoneBundle:Drop:dropsTotalGrade.html.twig' %}</span>
-	                {% endif %}
-	            insuffisante pour obtenir votre badge de compétence
+	            Vous avez obtenu une note de {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}/20, insuffisante pour obtenir votre badge de compétence
 		    </p>
-		    <hr/>
-			<div class='redlink'>
-				<h4>Recommencer ou obtenir un autre badge</h4>
-				<p>Votre espace de travail est désormais clôturé mais vous pouvez tenter  une nouvelle évaluation ou tenter d'obternir un autre badge.</p>
-				<p>Rendez vous dans la liste des <a href='#'>badges de compétence</a> proposés par le MOOC "le digital, vivons-le ensemble" et sélectionnez à nouvaeu le badge qui vous manque.</p>
-				<p></p>
-				<p>Si certains concepts vous ont échappé, n'hésitez pas à échanger et à demander de l'aide auprès de vos pairs dans <a href='#'>les forums de discussions</a>.</p>
-			</div>
+            <p class="slrn-sub-title">Et maintenant ?</p>
+            <p>Votre espace de travail est désormais clôturé mais vous pouvez tenter  une nouvelle évaluation ou tenter d'obternir un autre badge.</p>
+            <p>Si certains concepts vous ont échappé, n'hésitez pas à échanger et à demander de l'aide auprès de vos pairs sur les forums de discussions.</p>
 	     {% endif %}
-        
+        <div class="slrn-correct-buttons">
+            <a href="{{ app.session.get('solerni_apprendre_url') }}" class="btn btn-default btn-gris slrn-dropzone-cancel">{{ 'return_mooc'|trans({}, 'solerni') }}</a>
+            <a href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="btn btn-primary btn-default ">{{ 'get_new_badges'|trans({}, 'solerni') }}</a>
+        </div>
     {% else %}
         <h2>{{ 'endNotOver'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
         <hr/>

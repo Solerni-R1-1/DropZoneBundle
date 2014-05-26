@@ -27,7 +27,7 @@ drop_confirmed: 'Votre dossier de preuves a été soumis à évaluation le dropd
 # E
 evaluation_by_peers: 'Début de l''évaluation'
 endOK: 'Evaluation terminée'
-endNOK: 'Désolé !'
+endNOK: 'Evaluation terminée'
 endNotOver: 'Evaluation en cours'
 
 # F
@@ -38,6 +38,9 @@ forumContent: 'Discuter, échanger, poser des questions sur le sujet, à tous mo
 forumButton: 'Discuter'
 finish_correction: 'Attention, vous êtes sur le point de rendre votre correction. Cette action est définitive. Etes-vous sûr d''avoir terminé ?<br />En cas de doute vous pouvez annuler votre notation et recommencer l''évaluation.'
 follow_correction_text: 'Souhaitez-vous continuer à corriger le dossier suivant ? <br>Pour information, vous avez jusqu''au endReviewDate pour corriger vos dossiers'
+
+#G
+get_new_badges: 'Obtenir de nouveaux badges'
 
 # I
 info_start: 'Pour débuter cette évaluation, vous devez en accepter au préalable les conditions en cochant la case ci-dessous'
@@ -59,6 +62,7 @@ resource: 'Importer un fichier depuis ma bibliothèque'
 Resource selected: 'Importation en cours...'
 review_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startEvalDate</span>, date d''ouverture des évaluations par les pairs pour le badge en cours'
 report_copy: 'Signaler la copie'
+return_mooc: 'Retour au Mooc'
 
 # S
 start_corrections: 'OK, corriger le 1er dossier'

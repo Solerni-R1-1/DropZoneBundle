@@ -472,3 +472,9 @@ h3 {
 .slrn-criteres__list hr:last-of-type {
     display: none;
 }
+
+.slrn-sub-title {
+    font-weight: bold;
+    font-size: 1.3em;
+    color: #000;
+}
