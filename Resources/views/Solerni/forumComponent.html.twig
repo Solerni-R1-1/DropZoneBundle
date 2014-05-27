@@ -1,5 +1,5 @@
 <div class='dropForum'>
     <div class='dropForum__title'>{{ 'forumTitle'|trans({}, 'solerni') }}</div>
     <div class='dropForum__content'>{{ 'forumContent'|trans({}, 'solerni') }}</div>
-    <div class='dropForum__button'><a class="btn btn-primary btn-gris" href="{{ app.session.get('solerni_discuter_url') }}">{{ 'forumButton'|trans({}, 'solerni') }}</a></div>
+    <div class='dropForum__button'><a class="btn btn-primary btn-gris" href="{{ path( 'solerni_static_page', { 'name': 'static_forum' } ) }}">{{ 'forumButton'|trans({}, 'solerni') }}</a></div>
 </div>
