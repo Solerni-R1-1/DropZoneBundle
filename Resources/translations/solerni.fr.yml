@@ -2,7 +2,7 @@
 # A
 addDocument: 'Ajouter un document'
 addDocument__PC: 'Fichier depuis mon ordinateur'
-add_comment: '<span class="slrn-bold">Veuillez ajouter un commentaire</span> (obligatoire)'
+add_comment: 'Vous pouvez ajouter un commentaire'
 attribute_rating: 'Vous allez attribuer la note de'
 
 # B
@@ -16,6 +16,7 @@ correcting_copy: 'Correction du dossier'
 continue_correction_numbered: 'Vous devez encore <span class="slrn-bold">évaluer expectedCorrections accordDossier avant d''obtenir votre évaluation finale</span>'
 correction_intro: 'La note que vous allez attribuer à ce dossier dépend de votre évaluation pour chacun des critères ci-après. Selon vous, l''ensemble des documents que vous avez examinés répondent-ils aux critères suivants ?'
 correction_done_text: 'La correction du dossier n°currentFile a bien été enregistrée.'
+correction_reminder: 'Critères d''évaluation'
     
 # D
 date_limite: 'Date limite pour déposer vos preuves :'
@@ -44,8 +45,9 @@ get_new_badges: 'Obtenir de nouveaux badges'
 
 # I
 info_start: 'Pour débuter cette évaluation, vous devez en accepter au préalable les conditions en cochant la case ci-dessous'
-instruction_reminder: 'Instructions et critères d''évaluation'
+instruction_reminder: 'Instructions pour le dépôt de preuve'
 import_file: 'Importer'
+import_progress: 'Importation...'
 
 #L
 limit_date_eval: 'Date limite pour corriger les dossiers :'
@@ -59,18 +61,17 @@ ok_done: 'OK, j''ai terminé'
 
 # R
 resource: 'Importer un fichier depuis ma bibliothèque'
-Resource selected: 'Importation en cours...'
 review_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startEvalDate</span>, date d''ouverture des évaluations par les pairs pour le badge en cours'
 report_copy: 'Signaler la copie'
 return_mooc: 'Retour au Mooc'
 
 # S
 start_corrections: 'OK, corriger le 1er dossier'
-save and finished: 'OK, j''ai fini mon devoir et souhaite être évalué(e)'
+save and finished: 'OK, j''ai fini mon dossier de preuves et souhaite être évalué(e)'
 start_correction_numbered: 'Vous devez à votre tour <span class="slrn-bold">évaluer expectedCorrections dossiers afin d''obtenir votre évaluation finale</span>'
 
 # T
-text: 'Rédiger un essai'
+text: 'Rédiger un texte'
 
 # U
 url: 'Insérer un lien internet'

@@ -1,17 +1,23 @@
-<div class='collapse__div'>
-    <div class='collapse__div__title'>{{ 'instruction_reminder' | trans({}, 'solerni') }}</div>
-    <div class='collapse__div__instruction slrn-grey-block'>
-        {% if dropzone.correctionInstruction is defined and dropzone.correctionInstruction is not empty and dropzoneProgress.currentState > 2 %}
-            {{ dropzone.correctionInstruction|raw }}
-        {% else %}
-            {{ dropzone.instruction|raw }}
-        {% endif %}
+{% if dropzone.correctionInstruction is defined and dropzone.correctionInstruction is not empty and dropzoneProgress.currentState >= 2 %}
+    {% set dropText = dropzone.correctionInstruction %}
+    {% set dropTitle = 'correction_reminder' | trans({}, 'solerni') %}
+{% else %}
+    {% set dropText = dropzone.instruction %}
+    {% set dropTitle = 'instruction_reminder' | trans({}, 'solerni') %}
+{% endif %}
+
+{% if dropText is not empty %}
+    <div class='collapse__div'>
+        <div class='collapse__div__title'>{{ dropTitle }}</div>
+        <div class='collapse__div__instruction slrn-grey-block'>
+            {{ dropText|raw }}
+        </div>
     </div>
-</div>
-<script>
-    $( document ).ready(function() {
-      $(".collapse__div").collapse({
-        query: '.collapse__div__title'
-      });
-    });
-</script>
+    <script>
+        $( document ).ready(function() {
+          $(".collapse__div").collapse({
+            query: '.collapse__div__title'
+          });
+        });
+    </script>
+{% endif %}

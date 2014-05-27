@@ -395,7 +395,9 @@ class DropzoneController extends DropzoneBaseController
             'hasUnfinishedCorrection' => $hasUnfinishedCorrection,
             'dropzoneProgress' => $dropzoneProgress,
             'PeerReviewEndCase' =>$PeerReviewEndCase,
-            'badges' => $badgeList['badgePager']
+            'badges' => $badgeList['badgePager'],
+            'nbTotalBadges'     => $badgeList['nbTotalBadges'],
+            'nbAcquiredBadges'  => $badgeList['nbAcquiredBadges']
         );
     }
 

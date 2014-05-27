@@ -5,16 +5,59 @@
         {% if drop.calculatedGrade >= dropzone.minimumScoreToPass %}
         
 	        <h2>{{ 'endOK'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-	        <p>
-                Vous avez réussi votre évaluation en obtenant une note de {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}/20. Le Mooc "Le digital, vivons-le ensemble", est heureux de vous décerner le badge de compétences :
+	        <hr />
+            <p><span class="slrn-sub-title">Bravo !</span><br />
+                Vous avez réussi votre évaluation en obtenant une note de {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}/20. Le Mooc &laquo; Le digital, vivons-le ensemble &raquo;, est heureux de vous décerner le badge de compétences :
 	        </p>
-	        <hr/>
+            {% set totalBadgesToGo = nbTotalBadges - nbAcquiredBadges %}
+            {% if totalBadgesToGo > 1 %}
+                {% set plural = 's' %}
+            {% else %}
+                {% set plural = '' %}
+            {% endif %}
+            {% for workspaceBadge in badges %}
+                {% set badgeType = workspaceBadge.type %}
+
+                {% if 'owned' == badgeType %}
+                        {% set badge     = workspaceBadge.badge.badge %}
+                        {% set userBadge = workspaceBadge.badge %}
+                        {% set buttonLink = path( 'claro_workspace_tool_view_my_badge', {'workspaceId': workspace.id, 'slug': badge.slug } ) %}
+                {% else %}
+                        {% set badge     = workspaceBadge.badge %}
+                        {% if workspaceBadge.associatedResourceUrl is defined %}
+                            {% set buttonLink =  workspaceBadge.associatedResourceUrl %}
+                        {% endif %}
+                {% endif %}
+                 <div class="slrn-my_badges-list__item">
+                    <img src="{{ asset(badge.webPath) }}" alt="{{ badge.name }}" class="slrn-my_badges-list__item__image" />
+                    <section class="slrn-my_badges-list__body">
+                        <h6 class="slrn-my_badges-list__item__title">Badge &laquo; {{ badge.name }} &raquo;</h6>
+                        <span class=" slrn-my_badges-list__body__status"><span class="slrn-bold">Obtenu le :</span> {{ userBadge.issuedAt|date('date_format'|trans({}, 'platform')) }}</span>
+                        <article class="slrn-my_badges-list__content">{{ badge.criteria | raw }}</article>
+                        <footer class="slrn-my_badges-list__footer">
+                            <span class="slrn-gratuit-icon">prix gratuit</span>
+                            {% if buttonLink %}
+                                <a class="btn btn-primary pull-right" href="{{ buttonLink }}">
+                                    {% if 'owned' == badgeType %} 
+                                        {{'my_badge_details'|trans({}, 'platform')}}
+                                    {% endif %}
+                                    {% if 'inprogress' == badgeType %} 
+                                       {{'go_to_evaluation'|trans({}, 'platform')}}
+                                    {% endif %}
+                                    {% if 'available' == badgeType %} 
+                                        {{'get_this_badge'|trans({}, 'platform')}}
+                                    {% endif %}
+                                </a>
+                            {% endif %}    
+                        </footer>
+                    </section>
+                </div>
+            {% endfor %}
 			<div class='redlink'>
-				<h4>Consulter vos badges</h4>
-				<p>Votre espace de travail est désormais clôturé mais vous pouvez retrouver l'intégralité de <a href='#'>vos badges</a> obtenus dans votre tableau de bord</p>
-				
-				<h4>Vous souhaitez obtenir de nouveaux badges ?</h4>
-				<p>Rendez vous dans la liste des <a href='#'>badges de compétence</a> proposés par le MOOC "le digital, vivons-le ensemble" et sélectionnez à nouvaeu le badge qui vous manque.</p>
+				<span class="slrn-sub-title">Et après ?</span>
+				<p>Votre espace de travail est désormais clôturé mais vous pouvez retrouver l'intégralité de <a href='{{ path('claro_profile_view_badges') }}'>vos badges</a> obtenus dans votre tableau de bord</p>
+				<span class="slrn-sub-title">Vous souhaitez obtenir de nouveaux badges ?</span>
+				<p>Il vous reste encore {{ totalBadgesToGo }} badge{{ plural }} de compétence{{ plural }} à décrocher pour attester de la totale compréhension de votre cursus &laquo; Le digital, vivons-le ensemble &raquo;.</p>
 		    </div>
         {% else %}
         

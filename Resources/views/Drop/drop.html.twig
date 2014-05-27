@@ -24,17 +24,8 @@
 </div>
 <div class='col-xs-9 col-md-9'>
     <div class="container-fluid">
-        <div class="slrn-container-dropzone__header">
-            <!--{{ macros.flashBox() }}-->
-            {# Retour à la liste des badges #}
-            <a title="{{ 'page_my_badges'|trans({}, 'platform') }}" href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="black_link">
-                <i class="icon-chevron-left no_underline"></i>Retour à la liste des badges
-            </a>
-            {# header badge name  #}
-            <div class="slrn-dropzone-bloc">
-                {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
-            </div>
-        </div>
+        {# Header with link and associated badge #}
+        {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
         <h2>{{ 'welcome_constit1'|trans({}, 'solerni') }}<span class="FAQ"><a href="{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}" class="FAQ">FAQ</a></span></h2>      
         <hr/>
         <div class="row">

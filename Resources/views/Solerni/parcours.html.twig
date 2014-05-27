@@ -28,8 +28,17 @@
         {% if currentFile is not defined %}
             {% set currentFile = 0 %}
         {% endif %}
+
         {% set currentStep = dropzoneProgress.currentState + currentFile %}
-        {% if nbSteps == currentStep %}{% set currentStep = currentStep + 1 %}{%endif%}
+
+        {# Add one to last step #}
+        {% if nbSteps == currentStep %}
+            {% set currentStep = currentStep + 1 %}
+        {% endif %}
+
+        {% if nbCorrections is not defined %}
+            {% set nbCorrections = 0 %}
+        {% endif %}
 
         {#drop current {{ dropzoneProgress.currentState }}
         addition {{ currentFile }}

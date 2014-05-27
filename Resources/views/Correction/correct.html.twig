@@ -28,9 +28,9 @@
         ) %}
 
         {# include parcours twig #}
-        {# on this template, we are correcting so adjust current step #}
+        {# on this template, special case for first correction #}
         {% if nbCorrections == 0 %}
-            {% set currentFile = nbCorrections + 1 %}
+            {% set currentFile = 2 %}
         {% else %}
             {% set currentFile = 1 %}
         {% endif %}
@@ -120,26 +120,16 @@
             </div>
         {% else %}
             {# NO ADMIN #}
-            <div class="slrn-container-dropzone__header">
-                <!--{{ macros.flashBox() }}-->
-                {# Retour à la liste des badges #}
-                <a title="{{ 'page_my_badges'|trans({}, 'platform') }}" href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="black_link">
-                    <i class="icon-chevron-left no_underline"></i>Retour à la liste des badges
-                </a>
-                {# header badge name  #}
-                <div class="slrn-dropzone-bloc">
-                    {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
-                </div>
-            </div>
-
+            {# Header with link and associated badge #}
+            {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
             <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
 
             <hr />
             <div class="row slrn-dropzone-bloc">
                 <div class="col-md-8">
                     <div class='date__end'>{{ 'date_limite_corrections'|trans({}, 'solerni') }} {{ dropzone.endReview|date("d/m/Y") }}</div>
-                    {% if dropzone.instruction != null %}
-                        {% include 'IcapDropzoneBundle:Solerni:instructionCollapse.html.twig' %}
+                    {# display instructions collapse #}
+                    {% include 'IcapDropzoneBundle:Solerni:instructionCollapse.html.twig' %}
             {#
             <div class="row">
                 <div class="col-md-12">
@@ -147,7 +137,6 @@
                         <h2>{{ 'Correction of your copy'|trans({}, 'icap_dropzone') }}</h2>
                     {%  else %}
                          <h2>{{ 'Correction'|trans({}, 'icap_dropzone') }}</h2> #}
-                    {% endif %}
                 </div>
                 <div class="col-md-4">
                     {% include 'IcapDropzoneBundle:Solerni:forumComponent.html.twig' %}

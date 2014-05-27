@@ -18,7 +18,7 @@
                     {% if documentType == 'url' %}
                         <input type="url" id="icap_dropzone_document_url_form_document"
                              name="icap_dropzone_document_file_form[document]" required="required" 
-                             placeholder="Copiez ou tapez le lien" class="form-control fakeone">
+                             placeholder="Copiez ou tapez le lien" class="form-control slrn-input-style">
                         <script>
                             jQuery(document).ready( function() {
                                 var lineButtons = jQuery('.js-hidden-btn-url');
@@ -46,12 +46,12 @@
 
                     {% elseif documentType == 'file' %}
 
-                        <div class="fileUpload btn btn-primary btn-gris">
+                        <div class="fileUpload fileUpload--file btn btn-primary btn-gris">
                                 <span>{{ 'import_file'|trans({}, 'solerni') }}</span>
                                 <input id="icap_dropzone_document_file_form_document" name="icap_dropzone_document_file_form[document]"
                                     type="file" data-type="file" class="upload"/>
                         </div>
-                        <input id="fakeone" placeholder="" disabled="disabled" class="form-control fakeone"/>
+                        <input id="fakeone" placeholder="" disabled="disabled" class="form-control slrn-input-style fakeone"/>
                   
                         <script>
                           jQuery(document).ready( function() {
@@ -70,9 +70,12 @@
                               
                               targetElement.change( function() {
                                   arr = targetElement.val().split("\\");
-                                  fakeElement.val( arr[arr.length-1] );
-                                  toggleButtons();
+                                  fakeElement.val( arr[arr.length-1] ).addClass('fakeone--uploading');
+                                  jQuery('.fileUpload--file span').html('{{ 'import_progress'|trans({}, 'solerni') }}');
+                                  jQuery('.fileUpload--file').addClass('fileUpload--uploading');
                                   
+                                  //toggleButtons();
+                                  targetElement.parents('form').submit();
                               });
                               
                               cancelElement.on('click', function() {

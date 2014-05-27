@@ -19,13 +19,13 @@
                     {{ form_errors(form) }}
 
                     {% if edit == true %}
-                        <p>{{ 'add_comment'|trans({}, 'solerni')|raw }}</p>
+                        <p class="slrn-bold">{{ 'add_comment'|trans({}, 'solerni')|raw }}</p>
                     {% else %}
                         <h3>{{ 'Comment'|trans({}, 'icap_dropzone') }}.</h3>
                     {% endif %}
                     {% if edit %}
                         <div class="form-group">
-                    {{ form_row(form.comment, {'label_col_size': ' ', 'input_col_size': 'col-md-12', 'label_attr': {'style': 'display:none;'}, 'required':true}) }}
+                    {{ form_row(form.comment, {'label_col_size': ' ', 'input_col_size': 'col-md-12', 'label_attr': {'style': 'display:none;'}, 'required': false}) }}
                     </div>
                 {% else %}
                     <div class="well">
@@ -106,10 +106,15 @@
         });
     </script>
     <script>
-        jQuery(document).ready( function() {
+        jQuery(document).ready( function() {         
             var submitElement = jQuery('.js-submit-button');
             var tinyState = false;
-
+            
+            if ( ! jQuery('#icap_dropzone_correct_comment_form_comment').attr('required') ) {
+                submitElement.removeClass('disabled');
+                return;
+            }
+            
             checkAndUpdate = function() {
 
                 if ( tinyState != tinymce.claroline.checkBeforeUnload() ) {

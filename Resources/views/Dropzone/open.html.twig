@@ -20,11 +20,11 @@
 
      
         {# include parcours twig #}
-        {% if dropzoneProgress.currentState <= 2 %}
-            {% set currentFile = 1 %}
-        {% elseif dropzoneProgress.currentState == 3 %}
+        {% if dropzoneProgress.currentState == 3 and nbCorrections == 0 %}
             {% set currentFile = 0 %}
-        {% else %}
+        {% elseif dropzoneProgress.currentState == 4 %}
+               {% set currentFile = 2 %}
+         {% else %}
             {% set currentFile = 1 %}
         {% endif %}
         {% include 'IcapDropzoneBundle:Solerni:parcours.html.twig' %}
@@ -32,18 +32,9 @@
 </div>
 <div class='col-xs-9 col-md-9'>
     <div class="container container-dropzone slrn-container-dropzone">
-        <div class="slrn-container-dropzone__header">
-            <!--{{ macros.flashBox() }}-->
-            {# Retour à la liste des badges #}
-            <a title="{{ 'page_my_badges'|trans({}, 'platform') }}" href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="black_link">
-                <i class="icon-chevron-left no_underline"></i>Retour à la liste des badges
-            </a>
-            
-            {# header badge name #}
-            <div class="slrn-dropzone-bloc">
-                {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
-            </div>
-        </div>
+        {# Header with link and associated badge #}
+        {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
+        
         {# Cas : case préalablement cochée. We shouldn't be there as the controller redirects us #}
         {% if drop is not null and drop.finished == false %} 
             {<script>

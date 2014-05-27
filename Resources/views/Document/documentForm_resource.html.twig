@@ -18,9 +18,12 @@
     <div class="row dropzone_ressrouceSelected" style="display:none">
         <div class="col-md-12">
             <div class='col-md-8 row'>
-                <div class="fakeone slrn-resource-importation">
-                    {{ 'Resource selected'|trans({}, 'solerni') }}
-                     <span class="selected-resource slrn-bold">-</span>
+                <div class="fileUpload fileUpload--uploading btn btn-primary btn-gris">
+                    <span>{{ 'import_progress'|trans({}, 'solerni') }}</span>
+                </div>
+                {#<input id="fakeone_resource" placeholder="{{ 'Resource selected'|trans({}, 'solerni') }}" disabled="disabled" class="form-control md-col-8 fakeone"/>#}
+                <div class="slrn-input-style fakeone fakeone--uploading slrn-resource-importation">
+                     <span class="selected-resource">-</span>
                 </div>
             </div>
         </div>
@@ -34,7 +37,7 @@
                     <span>{{ 'import_file'|trans({}, 'solerni') }}</span>
                     {#<input id="icap_dropzone_document_file_form_resource" name="icap_dropzone_document_file_form[resource]" type="file" class="upload"/>#}
                 </div>
-                <input id="fakeone_resource" placeholder="" disabled="disabled" class="form-control md-col-8 fakeone"/>
+                <input id="fakeone_resource" placeholder="" disabled="disabled" class="form-control md-col-8 fakeone slrn-input-style"/>
             </div>
             <span class='hidden col-md-1'>
                 <a href='#' id='addRessourceButton' class='btn btn-primary'>{{ 'Add'|trans({}, 'icap_dropzone') }}</a>
