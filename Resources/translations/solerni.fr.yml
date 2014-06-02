@@ -64,6 +64,7 @@ resource: 'Importer un fichier depuis ma bibliothèque'
 review_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startEvalDate</span>, date d''ouverture des évaluations par les pairs pour le badge en cours'
 report_copy: 'Signaler la copie'
 return_mooc: 'Retour au Mooc'
+review_is_over: 'Cette évaluation est terminée.'
 
 # S
 start_corrections: 'OK, corriger le 1er dossier'

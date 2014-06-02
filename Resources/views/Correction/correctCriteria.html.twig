@@ -33,7 +33,7 @@
                                         <div class="slrn-criteria-cell">
                                             {{ 'Not at all'|trans({}, 'icap_dropzone' ) }}
                                         </div>
-                                        <div class="slrn-criteria-cell slrn-radio-cell--radios">
+                                        <div class="column-container-div slrn-criteria-cell slrn-radio-cell--radios">
                                             {{ form_widget( form[criterion.id] ) }}
                                         </div>
                                         <div class="slrn-criteria-cell">
@@ -41,15 +41,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 pull-tight slrn-form-note">
+                                {% set criterionGrade = 0 %}
+                                {%  for value in form[criterion.id].vars.value %}
+                                    {% if value == true %}
+                                        {% set criterionGrade = loop.index-1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                <div class="col-md-2 pull-tight slrn-form-note{% if criterionGrade == 0 %} hide{% endif %}">
                                     Note : 
-                                        {% set criterionGrade = 0 %}
-                                        {%  for value in form[criterion.id].vars.value %}
-                                            {% if value == true %}
-                                                {% set criterionGrade = loop.index-1 %}
-                                            {% endif %}
-                                        {% endfor %}
-                                        <span class="criterion-grade" data-criterion="icap_dropzone_correct_criteria_page_form[{{ criterion.id }}]">{{ criterionGrade }}</span>/{{ dropzone.totalCriteriaColumn-1 }}
+                                    <span class="criterion-grade" data-criterion="icap_dropzone_correct_criteria_page_form[{{ criterion.id }}]">{{ criterionGrade }}</span>/{{ dropzone.totalCriteriaColumn-1 }}
                                 </div>
                             </div>
                             <hr />
@@ -216,27 +216,36 @@
     <script src="{{ asset('bundles/icapdropzone/js/popup.js') }}"></script>
     <script>
         $(document).on('ready', function () {
+
+            var calculateTotalGrade = function () {
+                var totalGrade = 20;
+                $('.correctionGrade').html(totalGrade);
+            };
+            
+            var updateNoteValue = function( radioElement ) {
+                var name = radioElement.attr('name');
+                var value = radioElement.val();
+                var targetNote = '.criterion-grade[data-criterion="'+name+'"]';
+                $(targetNote).html(value);
+                $(targetNote).parent().removeClass('hide');
+            }
+            
             $('#icap_dropzone_correct_criteria_page_form_goBack').val(0);
             $('.back-button').on('click', function(event) {
                 event.preventDefault();
                 $('#icap_dropzone_correct_criteria_page_form_goBack').val(1);
                 $('#correct-form button[type="submit"]').trigger('click');
+            });          
+
+            $('.column-container-div input[type="radio"]')
+            .each( function() {
+                if ( $(this).is( ':checked') ) {
+                    updateNoteValue( $(this) );
+                }
+            })
+            .on('click', function () {
+               updateNoteValue( $(this) );
             });
-
-            $('.column-container-div input[type="radio"]').on('click', function () {
-                var name = $(this).attr('name');
-                var value = $(this).val();
-
-                var test = '.criterion-grade[data-criterion="'+name+'"]';
-                console.log(test);
-                $(test).html(value);
-            });
-
-            var calculateTotalGrade = function () {
-                var totalGrade = 20;
-
-                $('.correctionGrade').html(totalGrade);
-            };
 
             calculateTotalGrade();
         });

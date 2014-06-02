@@ -20,9 +20,7 @@
 
      
         {# include parcours twig #}
-        {% if dropzoneProgress.currentState == 3 and nbCorrections == 0 %}
-            {% set currentFile = 0 %}
-        {% elseif dropzoneProgress.currentState == 4 %}
+        {% if dropzoneProgress.currentState > 2 and dropzoneProgress.currentState < 2 + dropzone.expectedTotalCorrection %}
                {% set currentFile = 2 %}
          {% else %}
             {% set currentFile = 1 %}
@@ -87,6 +85,14 @@
                             <p>{{ 'no_copy_to_correct'|trans({}, 'solerni')|raw }}</p>
                         </div>
                     {% endif %}
+                    {# Correction is finished #}
+                    {% if dropzone.endReview < date() %}
+                        <div class="slrn-grey-block slrn-info-block">
+                            {% set buttonDisabled = true %}
+                            {% set startEvalDate = dropzone.startReview|date("d/m/Y") %}
+                            <p>{{ 'review_is_over'|trans({ 'startEvalDate': startEvalDate }, 'solerni')|raw }}</p>
+                        </div>
+                    {% endif %}
                      {#<div class="slrn-dropzone-bloc">
                         <a href="{{ path('icap_dropzone_correct', {'resourceId': dropzone.id}) }}" class="btn-dropzone btn btn-primary{% if buttonDisabled == true %} disabled{% endif %}">{{ buttonText }}</a>
                      </div>#}
@@ -133,7 +139,7 @@
                 {{ 'checkboxStart'|trans({}, 'solerni') }}
 		    </label>
 		    
-		    <div class='row slrn-button-page'>
+		    <div class='slrn-button-page'>
 		      <a href="{{ path('icap_dropzone_drop', {'resourceId': dropzone.id}) }}" class="btn btn-primary disabled drop__buttonStart">{{ 'buttonStart'|trans({}, 'solerni') }}</a>
 		    </div>
         <script>

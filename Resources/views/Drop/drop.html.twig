@@ -16,7 +16,7 @@
             'ClarolineCoreBundle:Solerni:getWorkspacePresentationWidget',
             { 'workspaceId': workspace.getId(), 'renderProgression': false }
         ) %}
-     
+
         {# include parcours twig #}
          {% set currentFile = 1 %}
         {% include 'IcapDropzoneBundle:Solerni:parcours.html.twig' %}
@@ -316,9 +316,9 @@
                             Claroline.ResourceManager.picker('open');
 
                             $('#modal-picker').on('hidden.bs.modal', function () {
-                                console.log('hidden modal');
+                                //console.log('hidden modal');
                                 if (resourceNodeId == null) {
-                                    console.log('hidden modal => cancel');
+                                    //console.log('hidden modal => cancel');
                                     $('.cancel-inline').trigger('click');
                                 }
                             });
@@ -337,9 +337,9 @@
                 e.preventDefault();
                 Claroline.ResourceManager.picker('open');
                 $('#modal-picker').unbind('hidden.bs.modal').on('hidden.bs.modal', function () {
-                    console.log('hidden modal');
+                    //console.log('hidden modal');
                     if (resourceNodeId == null) {
-                        console.log('hidden modal => cancel');
+                        //console.log('hidden modal => cancel');
                         //$('.cancel-inline').trigger('click');
                     }
                 });

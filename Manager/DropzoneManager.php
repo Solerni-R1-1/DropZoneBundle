@@ -203,13 +203,13 @@ class DropzoneManager
                     }
                 }
 
-                if ($drop->countFinishedCorrections() >= $expectedCorrections) {
+                if ($nbCorrection >= $expectedCorrections) {
                     $currentState++;
                     if($allow_user_to_not_have_expected_corrections){
                         $currentState++;
                     }
                 }
-
+                
             }
         } else {
             // case of normal correction.

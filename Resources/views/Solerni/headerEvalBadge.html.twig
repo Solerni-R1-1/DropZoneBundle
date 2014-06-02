@@ -5,7 +5,7 @@
         <a title="{{ 'page_my_badges'|trans({}, 'platform') }}" href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="black_link">
             <i class="icon-chevron-left no_underline"></i>Retour à la liste des badges
         </a>
-    {% if drop is null or drop.finished == false or expectedCorrections > 0 %}
+    {% if expectedCorrections is not defined or expectedCorrections > 0 %}
         {% for badge in badges %}
             {% if 'owned' == badge.type %}
                 {% set badge     = badge.badge.badge %}
