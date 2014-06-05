@@ -33,15 +33,7 @@
                                <span class="slrn-gratuit-icon">prix gratuit</span>
                                {% if buttonLink %}
                                    <a class="btn btn-primary pull-right" href="{{ buttonLink }}">
-                                       {% if 'owned' == badgeType %} 
-                                           {{'my_badge_details'|trans({}, 'platform')}}
-                                       {% endif %}
-                                       {% if 'inprogress' == badgeType %} 
-                                          {{'go_to_evaluation'|trans({}, 'platform')}}
-                                       {% endif %}
-                                       {% if 'available' == badgeType %} 
-                                           {{'get_this_badge'|trans({}, 'platform')}}
-                                       {% endif %}
+                                       {{'my_badge_details'|trans({}, 'platform')}}
                                    </a>
                                {% endif %}    
                            </footer>

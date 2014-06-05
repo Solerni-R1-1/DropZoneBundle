@@ -9,9 +9,10 @@ attribute_rating: 'Vous allez attribuer la note de'
 buttonStart: 'Ok, commencer à déposer mon dossier de preuves'
 
 # C
-checkboxStart: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer 3 autres retours de preuve »'
+checkboxStart: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autres retours de preuve »'
 continue_corrections: 'OK, corriger le nextFileème dossier'
 continue: 'Continuer'
+continue_evaluation: 'Continuer l''évaluation'
 correcting_copy: 'Correction du dossier'
 continue_correction_numbered: 'Vous devez encore <span class="slrn-bold">évaluer expectedCorrections accordDossier avant d''obtenir votre évaluation finale</span>'
 correction_intro: 'La note que vous allez attribuer à ce dossier dépend de votre évaluation pour chacun des critères ci-après. Selon vous, l''ensemble des documents que vous avez examinés répondent-ils aux critères suivants ?'
@@ -30,6 +31,7 @@ evaluation_by_peers: 'Début de l''évaluation'
 endOK: 'Evaluation terminée'
 endNOK: 'Evaluation terminée'
 endNotOver: 'Evaluation en cours'
+end_date: 'Date de fin'
 
 # F
 faq : 'FAQ'
@@ -70,6 +72,7 @@ review_is_over: 'Cette évaluation est terminée.'
 start_corrections: 'OK, corriger le 1er dossier'
 save and finished: 'OK, j''ai fini mon dossier de preuves et souhaite être évalué(e)'
 start_correction_numbered: 'Vous devez à votre tour <span class="slrn-bold">évaluer expectedCorrections dossiers afin d''obtenir votre évaluation finale</span>'
+start_date: 'Date de début'
 
 # T
 text: 'Rédiger un texte'
