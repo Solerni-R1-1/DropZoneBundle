@@ -25,6 +25,7 @@ date_limite_corrections: 'Date limite pour corriger les dossiers :'
 document_list_to_correct: 'Documents à évaluer'
 delete_document: 'Supprimer le document'
 drop_confirmed: 'Votre dossier de preuves a été soumis à évaluation le dropdate'
+drop_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startDropDate</span>, date d''ouverture du dépôt de preuves pour le badge en cours'
 
 # E
 evaluation_by_peers: 'Début de l''évaluation'
@@ -32,6 +33,7 @@ endOK: 'Evaluation terminée'
 endNOK: 'Evaluation terminée'
 endNotOver: 'Evaluation en cours'
 end_date: 'Date de fin'
+drop_finished: 'La phase de dépôt des preuves s''est achevée le <span class="slrn-bold">endDropDate</span>. Vous ne pouvez plus participer à cette évaluation.'
 
 # F
 faq : 'FAQ'
@@ -66,7 +68,7 @@ resource: 'Importer un fichier depuis ma bibliothèque'
 review_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startEvalDate</span>, date d''ouverture des évaluations par les pairs pour le badge en cours'
 report_copy: 'Signaler la copie'
 return_mooc: 'Retour au Mooc'
-review_is_over: 'Cette évaluation est terminée.'
+review_is_over: 'Désolé, la date limite pour corriger les dossiers est achevée depuis le <span class="slrn-bold">endEvalDate</span>. Vous ne pouvez plus participer à cette évaluation.'
 
 # S
 start_corrections: 'OK, corriger le 1er dossier'
