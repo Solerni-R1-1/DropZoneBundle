@@ -64,9 +64,16 @@
             <a href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="btn btn-primary btn-default ">{{ 'get_new_badges'|trans({}, 'solerni') }}</a>
         </div>
     {% else %}
-        <h2>{{ 'endNotOver'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-        <hr/>
-        <p>{{ 'wait_for_results'|trans({}, 'solerni')|raw }}
+        {% if dropzone.endReview < date() %}
+            <div class="slrn-grey-block slrn-info-block">
+                {% set endEvalDate = dropzone.endReview|date("d/m/Y") %}
+                <p>{{ 'review_is_over'|trans({ 'endEvalDate': endEvalDate }, 'solerni')|raw }}</p>
+            </div>
+        {% else %}
+            <h2>{{ 'endNotOver'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+            <hr/>
+            <p>{{ 'wait_for_results'|trans({}, 'solerni')|raw }}
+        {% endif %}
     {% endif %}
 </div>
 </div>
