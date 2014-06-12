@@ -28,12 +28,8 @@
         ) %}
 
         {# include parcours twig #}
-        {# on this template, special case for first correction #}
-        {% if nbCorrections == 0 %}
-            {% set currentFile = 2 %}
-        {% else %}
-            {% set currentFile = 1 %}
-        {% endif %}
+
+        {% set currentFile = 2 %}
         {% include 'IcapDropzoneBundle:Solerni:parcours.html.twig' %}
    </div>
     <div class="col-xs-9 col-md-9 slrn-dropzone-correc">

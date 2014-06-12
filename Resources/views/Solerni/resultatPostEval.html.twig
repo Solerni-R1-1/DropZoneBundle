@@ -7,7 +7,7 @@
 	        <h2>{{ 'endOK'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
 	        <hr />
             <p><span class="slrn-sub-title">Bravo !</span><br />
-                Vous avez réussi votre évaluation en obtenant une note de {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}/20. Le Mooc &laquo; Le digital, vivons-le ensemble &raquo;, est heureux de vous décerner le badge de compétences :
+                Vous avez réussi votre évaluation en obtenant une note de {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}/20.
 	        </p>
             {% set totalBadgesToGo = nbTotalBadges - nbAcquiredBadges %}
             {% if totalBadgesToGo > 1 %}
@@ -19,39 +19,27 @@
                 {% set badgeType = workspaceBadge.type %}
 
                 {% if 'owned' == badgeType %}
-                        {% set badge     = workspaceBadge.badge.badge %}
-                        {% set userBadge = workspaceBadge.badge %}
-                        {% set buttonLink = path( 'claro_workspace_tool_view_my_badge', {'workspaceId': workspace.id, 'slug': badge.slug } ) %}
-                {% else %}
-                        {% set badge     = workspaceBadge.badge %}
-                        {% if workspaceBadge.associatedResourceUrl is defined %}
-                            {% set buttonLink =  workspaceBadge.associatedResourceUrl %}
-                        {% endif %}
+                    {% set badge     = workspaceBadge.badge.badge %}
+                    {% set userBadge = workspaceBadge.badge %}
+                    {% set buttonLink = path( 'claro_workspace_tool_view_my_badge', {'workspaceId': workspace.id, 'slug': badge.slug } ) %}
+                    <p>Le Mooc &laquo; Le digital, vivons-le ensemble &raquo;, est heureux de vous décerner le badge de compétences :</p>
+                    <div class="slrn-my_badges-list__item">
+                       <img src="{{ asset(badge.webPath) }}" alt="{{ badge.name }}" class="slrn-my_badges-list__item__image" />
+                       <section class="slrn-my_badges-list__body">
+                           <h6 class="slrn-my_badges-list__item__title">Badge &laquo; {{ badge.name }} &raquo;</h6>
+                           <span class=" slrn-my_badges-list__body__status"><span class="slrn-bold">Obtenu le :</span> {{ userBadge.issuedAt|date('date_format'|trans({}, 'platform')) }}</span>
+                           <article class="slrn-my_badges-list__content">{{ badge.criteria | raw }}</article>
+                           <footer class="slrn-my_badges-list__footer">
+                               <span class="slrn-gratuit-icon">prix gratuit</span>
+                               {% if buttonLink %}
+                                   <a class="btn btn-primary pull-right" href="{{ buttonLink }}">
+                                       {{'my_badge_details'|trans({}, 'platform')}}
+                                   </a>
+                               {% endif %}    
+                           </footer>
+                       </section>
+                   </div>
                 {% endif %}
-                 <div class="slrn-my_badges-list__item">
-                    <img src="{{ asset(badge.webPath) }}" alt="{{ badge.name }}" class="slrn-my_badges-list__item__image" />
-                    <section class="slrn-my_badges-list__body">
-                        <h6 class="slrn-my_badges-list__item__title">Badge &laquo; {{ badge.name }} &raquo;</h6>
-                        <span class=" slrn-my_badges-list__body__status"><span class="slrn-bold">Obtenu le :</span> {{ userBadge.issuedAt|date('date_format'|trans({}, 'platform')) }}</span>
-                        <article class="slrn-my_badges-list__content">{{ badge.criteria | raw }}</article>
-                        <footer class="slrn-my_badges-list__footer">
-                            <span class="slrn-gratuit-icon">prix gratuit</span>
-                            {% if buttonLink %}
-                                <a class="btn btn-primary pull-right" href="{{ buttonLink }}">
-                                    {% if 'owned' == badgeType %} 
-                                        {{'my_badge_details'|trans({}, 'platform')}}
-                                    {% endif %}
-                                    {% if 'inprogress' == badgeType %} 
-                                       {{'go_to_evaluation'|trans({}, 'platform')}}
-                                    {% endif %}
-                                    {% if 'available' == badgeType %} 
-                                        {{'get_this_badge'|trans({}, 'platform')}}
-                                    {% endif %}
-                                </a>
-                            {% endif %}    
-                        </footer>
-                    </section>
-                </div>
             {% endfor %}
 			<div class='redlink'>
 				<span class="slrn-sub-title">Et après ?</span>
@@ -78,7 +66,14 @@
     {% else %}
         <h2>{{ 'endNotOver'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
         <hr/>
-        <p>{{ 'wait_for_results'|trans({}, 'solerni')|raw }}
+        {% if dropzone.endReview < date() %}
+            <div class="slrn-grey-block slrn-info-block">
+                {% set endEvalDate = dropzone.endReview|date("d/m/Y") %}
+                <p>{{ 'review_is_over'|trans({ 'endEvalDate': endEvalDate }, 'solerni')|raw }}</p>
+            </div>
+        {% else %}
+            <p>{{ 'wait_for_results'|trans({}, 'solerni')|raw }}
+        {% endif %}
     {% endif %}
 </div>
 </div>

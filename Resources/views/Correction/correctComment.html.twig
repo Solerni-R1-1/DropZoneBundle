@@ -47,13 +47,13 @@
                         {% if admin == true %}
                             <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default back-button btn-gris slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
                         {% else %}
-                            <a href="{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': nbPages}) }}" class="btn btn-default back-button btn-gris slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                            <a href="{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': nbPages}) }}" class="btn btn-default back-button btn-gris slrn-dropzone-cancel">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
                         {% endif %}
                         <button type= "submit" class="btn btn-primary {% if buttonDisabled is defined %}disabled{% endif %} js-submit-button">{{ 'ok_done'|trans({}, 'solerni') }}</button>
                     </div>
                 {% else %}
                     <div class="slrn-correct-buttons">
-                        <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default btn-gris slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                        <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default btn-gris slrn-dropzone-cancel">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
                         <a href="#" class="btn btn-default ">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
                     </div>
                 {% endif %}

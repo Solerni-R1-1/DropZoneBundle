@@ -16,7 +16,7 @@
             'ClarolineCoreBundle:Solerni:getWorkspacePresentationWidget',
             { 'workspaceId': workspace.getId(), 'renderProgression': false }
         ) %}
-     
+
         {# include parcours twig #}
          {% set currentFile = 1 %}
         {% include 'IcapDropzoneBundle:Solerni:parcours.html.twig' %}
@@ -45,38 +45,54 @@
         </div>  
             <div class="row">
             <div class='col-xs-12 col-md-12'>
-                {# Add documents #}
-                <div class="slrn-document-dropper">
-                    {% if allowedTypes|length <= 0 %}
-                        <span class="text-danger">{{ 'No document type allowed'|trans({}, 'icap_dropzone') }}</span>
-                    {% elseif allowedTypes|length == 1 %}
-                        <a class="btn btn-primary launch-inline disabled-during-add btn-gris {% if allowedTypes.0 == 'resource' %}launch-resource-picker{% endif %}" href="{{ path('icap_dropzone_document', {'resourceId': dropzone.id, 'documentType': allowedTypes.0, 'dropId': drop.id}) }}">{{ 'Add a document'|trans({}, 'icap_dropzone') }}</a>
-                    {% else %}
-                        {% for allowedType in allowedTypes %}
-                            {% render controller(
-                                'IcapDropzoneBundle:Document:document',
-                                { 'resourceId': dropzone.id, 'documentType': allowedType, 'dropId': drop.id, 'inlineRendering': true }
-                            ) %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-                {# Documents already added #}
-                <a id ="js-documents" name="documents"></a>
-                <div class="slrn-grey-block slrn-grey-block--with-title">
-                    <h3 class="slrn-grey-block-title">{{ 'yourFiles'|trans({},'solerni') }}</h3>
-                    {% if drop.documents|length <= 0 %}
-                        {% set buttonDisabled = ' hide' %}
-                        <p>{{ 'no_files' | trans({}, 'solerni') }}
-                    {% else %}
-                        {% set buttonDisabled = '' %}
-                        {% for document in drop.documents %}
-                            <div class="slrn-drop-list__item row col-md-12">
-                                {% set showGarbage = true %}
-                                {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>    
+                {% if dropzone.getStartAllowDrop > date() %}
+                    {% set buttonDisabled = ' hide' %}
+                    <div class="slrn-document-dropper">
+                        <div class="slrn-grey-block slrn-info-block">
+                            {% set startDropDate = dropzone.getStartAllowDrop|date("d/m/Y") %}
+                            <p>{{ 'drop_not_started'|trans({ 'startDropDate': startDropDate }, 'solerni')|raw }}</p>
+                        </div>
+                    </div>
+                {% elseif dropzone.getEndAllowDrop < date() %}
+                    {% set buttonDisabled = ' hide' %}
+                    <div class="slrn-document-dropper">
+                        <div class="slrn-grey-block slrn-info-block">
+                            {% set endDropDate = dropzone.getEndAllowDrop|date("d/m/Y") %}
+                            <p>{{ 'drop_finished'|trans({ 'endDropDate': endDropDate }, 'solerni')|raw }}</p>
+                        </div>
+                    </div>
+                {% else %}
+                    {# Add documents #}
+                    <div class="slrn-document-dropper">
+                        {% if allowedTypes|length <= 0 %}
+                            <span class="text-danger">{{ 'No document type allowed'|trans({}, 'icap_dropzone') }}</span>
+                        {% else %}
+                            {% for allowedType in allowedTypes %}
+                                {% render controller(
+                                    'IcapDropzoneBundle:Document:document',
+                                    { 'resourceId': dropzone.id, 'documentType': allowedType, 'dropId': drop.id, 'inlineRendering': true }
+                                ) %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {# Documents already added #}
+                    <a id ="js-documents" name="documents"></a>
+                    <div class="slrn-grey-block slrn-grey-block--with-title">
+                        <h3 class="slrn-grey-block-title">{{ 'yourFiles'|trans({},'solerni') }}</h3>
+                        {% if drop.documents|length <= 0 %}
+                            {% set buttonDisabled = ' hide' %}
+                            <p>{{ 'no_files' | trans({}, 'solerni') }}
+                        {% else %}
+                            {% set buttonDisabled = '' %}
+                            {% for document in drop.documents %}
+                                <div class="slrn-drop-list__item row col-md-12">
+                                    {% set showGarbage = true %}
+                                    {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endif %}
 	        </div> {# end 12 #}
 	      </div>
 	        
@@ -316,9 +332,9 @@
                             Claroline.ResourceManager.picker('open');
 
                             $('#modal-picker').on('hidden.bs.modal', function () {
-                                console.log('hidden modal');
+                                //console.log('hidden modal');
                                 if (resourceNodeId == null) {
-                                    console.log('hidden modal => cancel');
+                                    //console.log('hidden modal => cancel');
                                     $('.cancel-inline').trigger('click');
                                 }
                             });
@@ -337,9 +353,9 @@
                 e.preventDefault();
                 Claroline.ResourceManager.picker('open');
                 $('#modal-picker').unbind('hidden.bs.modal').on('hidden.bs.modal', function () {
-                    console.log('hidden modal');
+                    //console.log('hidden modal');
                     if (resourceNodeId == null) {
-                        console.log('hidden modal => cancel');
+                        //console.log('hidden modal => cancel');
                         //$('.cancel-inline').trigger('click');
                     }
                 });
