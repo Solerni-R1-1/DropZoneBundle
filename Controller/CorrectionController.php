@@ -431,11 +431,25 @@ class CorrectionController extends DropzoneBaseController
         $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone,$user);
 
         $view = 'IcapDropzoneBundle:Correction:correctCriteria.html.twig';
+        
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->container->get('orange.badge.controller');
+        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        
+        /* Find NbCorrection */
+        $nbCorrections = $em
+            ->getRepository('IcapDropzoneBundle:Correction')
+            ->countFinished($dropzone, $user);
+        $hasCopyToCorrect = $em
+            ->getRepository('IcapDropzoneBundle:Drop')
+            ->hasCopyToCorrect($dropzone, $user);
+        $hasUnfinishedCorrection = $em->getRepository('IcapDropzoneBundle:Correction')->getNotFinished($dropzone, $user) != null;
 
         return $this->render(
             $view,
             array(
-                'workspace' => $dropzone->getResourceNode()->getWorkspace(),
+                'workspace' => $workspace,
                 '_resource' => $dropzone,
                 'dropzone' => $dropzone,
                 'correction' => $correction,
@@ -444,6 +458,8 @@ class CorrectionController extends DropzoneBaseController
                 'admin' => false,
                 'edit' => true,
                 'dropzoneProgress' => $dropzoneProgress,
+                'badges' => $badgeList['badgePager'],
+                'nbCorrections' => $nbCorrections
             )
         );
     }
@@ -528,11 +544,26 @@ class CorrectionController extends DropzoneBaseController
 
         $dropzoneManager = $this->get('icap.manager.dropzone_manager');
         $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone,$user);
+        
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->container->get('orange.badge.controller');
+        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        
+        /* Find NbCorrection */
+        $em = $this->getDoctrine()->getManager();
+        $nbCorrections = $em
+            ->getRepository('IcapDropzoneBundle:Correction')
+            ->countFinished($dropzone, $user);
+        $hasCopyToCorrect = $em
+            ->getRepository('IcapDropzoneBundle:Drop')
+            ->hasCopyToCorrect($dropzone, $user);
+        $hasUnfinishedCorrection = $em->getRepository('IcapDropzoneBundle:Correction')->getNotFinished($dropzone, $user) != null;
 
         return $this->render(
             $view,
             array(
-                'workspace' => $dropzone->getResourceNode()->getWorkspace(),
+                'workspace' => $workspace,
                 '_resource' => $dropzone,
                 'dropzone' => $dropzone,
                 'correction' => $correction,
@@ -542,6 +573,8 @@ class CorrectionController extends DropzoneBaseController
                 'edit' => true,
                 'totalGrade' => $totalGrade,
                 'dropzoneProgress' => $dropzoneProgress,
+                'nbCorrections' => $nbCorrections,
+                'badges' => $badgeList['badgePager']
             )
         );
     }
@@ -661,8 +694,16 @@ class CorrectionController extends DropzoneBaseController
     public function dropsDetailCorrectionAction(Dropzone $dropzone, $state, $correctionId, $page, $user)
     {
         $this->isAllowToOpen($dropzone);
-        if($state != 'preview')
-        {
+        $correction = $this
+            ->getDoctrine()
+            ->getRepository('IcapDropzoneBundle:Correction')
+            ->getCorrectionAndDropAndUserAndDocuments($dropzone, $correctionId);
+        $userId = $this->get('security.context')->getToken()->getUser()->getId();
+        if ($state == 'preview') {
+            if ($correction->getDrop()->getUser()->getId() != $userId) {
+                throw new AccessDeniedException();
+            }
+        } else {
             $this->isAllowToEdit($dropzone);
         }
         //$this->checkUserGradeAvailable($dropzone);
@@ -682,10 +723,7 @@ class CorrectionController extends DropzoneBaseController
         }
 
         /** @var Correction $correction */
-        $correction = $this
-            ->getDoctrine()
-            ->getRepository('IcapDropzoneBundle:Correction')
-            ->getCorrectionAndDropAndUserAndDocuments($dropzone, $correctionId);
+
 
         $edit = $state == 'edit';
 
@@ -1041,6 +1079,51 @@ class CorrectionController extends DropzoneBaseController
         );
     }
 
+
+    /**
+     * @Route(
+     *      "/{resourceId}/drops/detail/correction/validation/confirmation/{correctionId}/{value}",
+     *      name="icap_dropzone_revalidateCorrection",
+     *      requirements ={"resourceId" ="\d+","withDropOnly"="^(withDropOnly|all|withoutDrops)$"},
+     *      defaults={"page" = 1, "withDropOnly" = "all", "value"="yes" }
+     * )
+     * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
+     * @ParamConverter("correction", class="IcapDropzoneBundle:Correction", options={"id" = "correctionId"})
+     * @Template()
+     */
+    public function RevalidateCorrectionValidationAction (Dropzone $dropzone,Correction $correction,$value)
+    {
+        // check if number of correction will be more than the expected.
+
+        // only valid corrections are count
+        if($dropzone->getExpectedTotalCorrection() <= $correction->getDrop()->countFinishedCorrections()) {
+
+            // Ask confirmation to have more correction than expected.
+            $view = 'IcapDropzoneBundle:Correction:Admin/revalidateCorrection.html.twig';
+            if($this->getRequest()->isXmlHttpRequest()){
+                $view = 'IcapDropzoneBundle:Correction:Admin/revalidateCorrectionModal.html.twig';
+            }
+            return $this->render($view, array(
+                '_resource' => $dropzone,
+                'dropzone' => $dropzone,
+                'drop' => $correction->getDrop(),
+                'correction' => $correction,
+            ));
+        } else {
+            return $this->redirect(
+                $this->generateUrl(
+                    'icap_dropzone_drops_detail_correction_validation',
+                    array(
+                        'resourceId' => $dropzone->getId(),
+                        'correctionId' => $correction->getDrop()->getId(),
+                        'value' => 'yes'
+                    )
+                )
+            );
+        }
+
+
+    }
     /**
      * @Route(
      *      "/{resourceId}/drops/detail/correction/validation/{value}/{correctionId}",

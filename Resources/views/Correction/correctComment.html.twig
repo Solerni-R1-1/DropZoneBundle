@@ -5,26 +5,27 @@
 {% block dropzone_correct_content %}
 
     <div class="container">
-        <div class="row">
+        <div class="slrn-criteres">
             <form id="correct-form" method="POST" action="{% if edit == false %}#{% elseif admin == true %}{{ path('icap_dropzone_drops_detail_correction_comment', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id}) }}{% else %}{{ path('icap_dropzone_correct_comment', {'resourceId': dropzone.id}) }}{% endif %}" class="form-horizontal">
 
                 {% if edit %}
-                    <h3>{{ 'Warning'|trans({}, 'icap_dropzone') }}</h3>
-                    <p>{{ 'You are about to make your correction. This action is final. The rating is %grade%/20'|trans({'%grade%': (totalGrade|number_format(2)) }, 'icap_dropzone') }}</p>
-                    <p>{{ 'Are you sure you have done?'|trans({}, 'icap_dropzone') }}</p>
+                    <div class="slrn-input-row">
+                        <h4>{{ 'attribute_rating'|trans({}, 'solerni') }} : <span class="slrn-correct-final-note londrina-solid">{{ totalGrade|round(1, 'common')|replace({'.': ','}) }}/20<span></h4>
+                    </div>
                 {% endif %}
 
                 {% if dropzone.allowCommentInCorrection %}
+                    {% set buttonDisabled = true %}
                     {{ form_errors(form) }}
 
                     {% if edit == true %}
-                        <p>{{ 'Would you like to comment?'|trans({}, 'icap_dropzone') }}</p>
+                        <p class="slrn-bold">{{ 'add_comment'|trans({}, 'solerni')|raw }}</p>
                     {% else %}
-                        <h3>{{ 'Comment'|trans({}, 'icap_dropzone') }}</h3>
+                        <h3>{{ 'Comment'|trans({}, 'icap_dropzone') }}.</h3>
                     {% endif %}
                     {% if edit %}
                         <div class="form-group">
-                    {{ form_row(form.comment, {'label_col_size': ' ', 'input_col_size': 'col-md-12', 'label_attr': {'style': 'display:none;'}, 'required':false}) }}
+                    {{ form_row(form.comment, {'label_col_size': ' ', 'input_col_size': 'col-md-12', 'label_attr': {'style': 'display:none;'}, 'required': false}) }}
                     </div>
                 {% else %}
                     <div class="well">
@@ -36,7 +37,28 @@
 
                 {{ form_rest(form) }}
 
+                      
+                      
                 {% if edit == true %}
+                <div class="slrn-grey-block slrn-info-block">
+                      <p>{{ 'finish_correction'|trans({}, 'solerni')|raw }}</p>
+                 </div>
+                    <div class="slrn-correct-buttons">
+                        {% if admin == true %}
+                            <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default back-button btn-gris slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                        {% else %}
+                            <a href="{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': nbPages}) }}" class="btn btn-default back-button btn-gris slrn-dropzone-cancel">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
+                        {% endif %}
+                        <button type= "submit" class="btn btn-primary {% if buttonDisabled is defined %}disabled{% endif %} js-submit-button">{{ 'ok_done'|trans({}, 'solerni') }}</button>
+                    </div>
+                {% else %}
+                    <div class="slrn-correct-buttons">
+                        <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default btn-gris slrn-dropzone-cancel">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
+                        <a href="#" class="btn btn-default ">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
+                    </div>
+                {% endif %}
+
+                {#{% if edit == true %}
                     <div class="btn-group pull-right">
                         {% if admin == true %}
                             <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default back-button">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
@@ -57,15 +79,15 @@
                         <a href="#" class="btn btn-default disabled">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
 
                     </div>
-                {% endif %}
+                {% endif %}#}
             </form>
         </div>
 
-        <div class="row">
+        {#<div class="row">
             <strong>
                 {{ nbPages+1 }} / {{ nbPages+1 }}
             </strong>
-        </div>
+        </div>#}
     </div>
 {% endblock %}
 
@@ -83,5 +105,35 @@
             });
         });
     </script>
+    <script>
+        jQuery(document).ready( function() {         
+            var submitElement = jQuery('.js-submit-button');
+            var tinyState = false;
+            
+            if ( ! jQuery('#icap_dropzone_correct_comment_form_comment').attr('required') ) {
+                submitElement.removeClass('disabled');
+                return;
+            }
+            
+            checkAndUpdate = function() {
 
+                if ( tinyState != tinymce.claroline.checkBeforeUnload() ) {
+                    tinyState = tinymce.claroline.checkBeforeUnload();
+                    if ( tinyState ) {
+                        submitElement.removeClass('disabled');
+                    } else {
+                        submitElement.addClass('disabled');
+                    }
+                }
+            }
+
+            var keepRunning = setInterval( function() { checkAndUpdate() }, 300 );
+
+            submitElement.on('click', function() {
+                clearInterval( keepRunning );
+            });
+
+
+        });
+    </script>
 {% endblock %}

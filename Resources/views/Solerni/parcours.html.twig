@@ -1,0 +1,67 @@
+        {# Define steps #}
+        {% set stepNames = [
+            'Création de mon espace d\'évaluation',
+            'Dépôt de mon dossier de preuves',
+            'Début de l\'évaluation'
+            ]
+        %}
+
+        {% set stepNames2 = [] %}
+        {% for step in 1..dropzone.expectedTotalCorrection %}
+            {% set correctionName = ['Correction du dossier <span class="no-wrap">n°' ~ step ~ '</span>'] %}
+            {% set stepNames2 = stepNames2|merge( correctionName ) %}
+        {% endfor %}
+        {% set stepNames = stepNames|merge( stepNames2 ) %}
+
+        {% set stepNames2 = [
+            'Evaluation en cours',
+            'Evaluation terminée'
+            ]
+        %}
+        {% set stepNames = stepNames|merge( stepNames2 ) %}
+
+        {# Which main step are we ? (could be : 'Evaluation not started', 'awaiting for drop', 'drop provided', 'waiting for correction', 'corrected copy') #}
+        {# there  is 5 steps + nombre de corrections à faire #}
+ 
+        {% set nbSteps = 5 + dropzone.expectedTotalCorrection %}
+
+        {% if currentFile is not defined %}
+            {% set currentFile = 0 %}
+        {% endif %}
+
+        {% set currentStep = dropzoneProgress.currentState + currentFile %}
+
+        {# Add one to last step #}
+        {% if nbSteps == currentStep %}
+            {% set currentStep = currentStep + 1 %}
+        {% endif %}
+
+        {% if nbCorrections is not defined %}
+            {% set nbCorrections = 0 %}
+        {% endif %}
+
+        {#drop current {{ dropzoneProgress.currentState }}
+        addition {{ currentFile }}
+        result {{ currentStep }}
+        corrects {{ nbCorrections }}
+        nbSteps {{nbSteps}}#}
+
+        <div class='col-xs-12 col-md-12 slrn-widget slrn-widget--dropzone'>
+	        <div class='row slrn-widget__title bg-color-primary slrn-widget_row'>
+	            Parcours d'obtention du badge
+            </div>
+            {% for name in stepNames %}
+                <div class='row bg-color-grey-1 slrn-widget--dropzone__item'>
+                    {% if currentStep > loop.index %}
+                        <span class="slrn-round slrn-checked">&#10003;</span>
+                        <span class="slrn-item-done">{{ name|raw }}</span>
+                    {% elseif currentStep == loop.index %}
+                       <span class="slrn-round slrn-number--active slrn-number">{{ loop.index }}</span>
+                       <span class="slrn-item-done">{{ name|raw }}</span>
+                    {% else %}
+                        <span class="slrn-round slrn-number">{{ loop.index }}</span>
+                        {{ name|raw }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>

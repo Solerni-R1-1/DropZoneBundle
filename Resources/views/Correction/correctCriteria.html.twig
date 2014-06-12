@@ -3,21 +3,107 @@
 {% form_theme form 'IcapDropzoneBundle::form_theme_correct_criteria.html.twig' %}
 
 {% block dropzone_correct_content %}
-    <h3>
-        {{ 'Evaluation criteria'|trans({}, 'icap_dropzone') }}
-    </h3>
+    <h4 class="slrn-input-row__title">{{ 'Evaluation criteria'|trans({}, 'icap_dropzone') }}</h4>
 
-    <p>
-        {% if state is defined and state =='preview' %}
-            {{ 'Note assigned depends on the following criteria'|trans({}, 'icap_dropzone') }}
-        {% else %}
-            {{ 'Note that you will assign depends on the following criteria'|trans({}, 'icap_dropzone') }}
-        {% endif %}
-    </p>
+    <p>{{ 'correction_intro'|trans({}, 'solerni') }}</p>
 
     <div class="container">
         {% if dropzone.hasCriteria() %}
+            <div class="slrn-criteres">
+                <form id="correct-form" method="POST" action="{% if edit == false %}#{% elseif admin == true %}{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id, 'page': pager.currentPage}) }}{% else %}{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': pager.currentPage}) }}{% endif %}" class="form-horizontal">
+                    <hr/>
+                    <div class="slrn-criteres__list">
+                        {% for criterion in pager.currentPageResults %}
+                            {% set criterionNumber = (((pager.currentPage-1) * pager.maxPerPage) + loop.index) %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>{{ criterionNumber }}<exp>{% if criterionNumber == 1 %}er{% else %}ème{% endif %}</exp> critère</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="slrn-form-label">
+                                        {{ form_label(form[criterion.id], label|default(null), { 'label_attr' : { 'style': '' } }) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="row col-md-10">
+                                    <div class="row col-md-12">
+                                        <div class="slrn-criteria-cell">
+                                            {{ 'Not at all'|trans({}, 'icap_dropzone' ) }}
+                                        </div>
+                                        <div class="column-container-div slrn-criteria-cell slrn-radio-cell--radios">
+                                            {{ form_widget( form[criterion.id] ) }}
+                                        </div>
+                                        <div class="slrn-criteria-cell">
+                                            {{ 'Entirely'|trans({}, 'icap_dropzone' ) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% set criterionGrade = 0 %}
+                                {%  for value in form[criterion.id].vars.value %}
+                                    {% if value == true %}
+                                        {% set criterionGrade = loop.index-1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                <div class="col-md-2 pull-tight slrn-form-note{% if criterionGrade == 0 %} hide{% endif %}">
+                                    Note : 
+                                    <span class="criterion-grade" data-criterion="icap_dropzone_correct_criteria_page_form[{{ criterion.id }}]">{{ criterionGrade }}</span>/{{ dropzone.totalCriteriaColumn-1 }}
+                                </div>
+                            </div>
+                            <hr />
+                        {% endfor %}
+                        {{ form_rest(form) }}
+                    </div>
+
+                    {% if edit == true %}
+                        <div class="slrn-correct-buttons">
+                            {% if admin == true %}
+                                {% if pager.currentPage == 1 %}
+                                    <a href="{{ path('icap_dropzone_drops_detail', {'resourceId': dropzone.id, 'dropId': correction.drop.id}) }}" class="btn btn-default slrn-dropzone-cancel btn-gris">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
+                                {% else %}
+                                    {% set previousPage = pager.currentPage-1 %}
+                                    <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id, 'page': previousPage}) }}" class="btn btn-default back-button">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                                {% endif %}
+                            {% else %}
+                                {% if pager.currentPage == 1 %}
+                                    <a href="{{ path('icap_dropzone_open', {'resourceId': dropzone.id}) }}" class="btn btn-default slrn-dropzone-cancel btn-gris">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
+                                {% else %}
+                                    {% set previousPage = pager.currentPage-1 %}
+                                    <a href="{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': previousPage}) }}" class="btn btn-default back-button">{{ 'continue'|trans({}, 'solerni') }}</a>
+                                {% endif %}
+                            {% endif %}
+
+                            <button type="submit" class="btn btn-primary">{{ 'continue'|trans({}, 'solerni') }}</button>
+                        </div>
+                    {% else %}
+                        <div class="pull-right">
+                            {% if pager.currentPage == 1 %}
+                                <a href="{{ path('icap_dropzone_drops_detail', {'resourceId': dropzone.id, 'dropId': correction.drop.id}) }}" class="btn btn-default slrn-dropzone-cancel btn-gris">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
+                            {% else %}
+                                {% set previousPage = pager.currentPage-1 %}
+                                <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id, 'page': previousPage}) }}" class="btn btn-default">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                            {% endif %}
+
+                            {% set nextPage = pager.currentPage+1 %}
+                            {% if pager.currentPage == pager.nbPages and not dropzone.allowCommentInCorrection %}
+                                {# nothing #}
+                            {% elseif pager.currentPage == pager.nbPages and dropzone.allowCommentInCorrection %}
+                                <a href="{{ path('icap_dropzone_drops_detail_correction_comment', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id}) }}" class="btn btn-default">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
+                            {% else %}
+                                <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id, 'page': nextPage}) }}" class="btn btn-default">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+
             <div class="row">
+                {# <strong>
+                    {{ pager.currentPage }} / {% if edit == false and not dropzone.allowCommentInCorrection %}{{ pager.nbPages}}{% else %}{{ pager.nbPages+1 }}{% endif %}
+                </strong> #}
+            {#<div class="row">
                 <form id="correct-form" method="POST" action="{% if edit == false %}#{% elseif admin == true %}{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': pager.currentPage}) }}{% else %}{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': pager.currentPage}) }}{% endif %}" class="form-horizontal">
                     <hr/>
                     {% for criterion in pager.currentPageResults %}
@@ -94,7 +180,7 @@
 
                             {% set nextPage = pager.currentPage+1 %}
                             {% if pager.currentPage == pager.nbPages and not dropzone.allowCommentInCorrection %}
-                                {# nothing #}
+                                #}{# nothing #}{#
                             {% elseif pager.currentPage == pager.nbPages and dropzone.allowCommentInCorrection %}
                                 <a href="{{ path('icap_dropzone_drops_detail_correction_comment', {'resourceId': dropzone.id, 'state' : state , 'correctionId': correction.id}) }}" class="btn btn-default">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
                             {% else %}
@@ -109,7 +195,7 @@
                 <strong>
                     {{ pager.currentPage }} / {% if edit == false and not dropzone.allowCommentInCorrection %}{{ pager.nbPages}}{% else %}{{ pager.nbPages+1 }}{% endif %}
                 </strong>
-            </div>
+            </div>#}
         {% else %}
             <div class="alert alert-warning">L'évaluation ne possède aucun critère pour corriger les copies. La correction est impossible.</div>
         {% endif %}
@@ -130,29 +216,59 @@
     <script src="{{ asset('bundles/icapdropzone/js/popup.js') }}"></script>
     <script>
         $(document).on('ready', function () {
+
+            var calculateTotalGrade = function () {
+                var totalGrade = 20;
+                $('.correctionGrade').html(totalGrade);
+            };
+            
+            var updateNoteValue = function( radioElement ) {
+                var name = radioElement.attr('name');
+                var value = radioElement.val();
+                var targetNote = '.criterion-grade[data-criterion="'+name+'"]';
+                $(targetNote).html(value);
+                $(targetNote).parent().removeClass('hide');
+            }
+            
             $('#icap_dropzone_correct_criteria_page_form_goBack').val(0);
             $('.back-button').on('click', function(event) {
                 event.preventDefault();
                 $('#icap_dropzone_correct_criteria_page_form_goBack').val(1);
                 $('#correct-form button[type="submit"]').trigger('click');
+            });          
+
+            $('.column-container-div input[type="radio"]')
+            .each( function() {
+                if ( $(this).is( ':checked') ) {
+                    updateNoteValue( $(this) );
+                }
+            })
+            .on('click', function () {
+               updateNoteValue( $(this) );
             });
-
-            $('.column-container-div input[type="radio"]').on('click', function () {
-                var name = $(this).attr('name');
-                var value = $(this).val();
-
-                var test = '.criterion-grade[data-criterion="'+name+'"]';
-                console.log(test);
-                $(test).html(value);
-            });
-
-            var calculateTotalGrade = function () {
-                var totalGrade = 20;
-
-                $('.correctionGrade').html(totalGrade);
-            };
 
             calculateTotalGrade();
         });
     </script>
+    {# Starts of function to hide radios and replace it with styled elements #}
+    {#<script>
+        $(document).on('ready', function () {
+            var radioContainers = jQuery('.slrn-radio-cell--radios');
+            var pseudoRadioContainer = '<span class="slrn-pseudo-buttons"></span>';
+            var pseudoRadioElement = '<div class="radio-inline radio"><span class="radio-inline--pseudo"></span></span>';
+              
+            radioContainers.each( function() {
+                radioButtons = jQuery(this).find( '.radio' );
+                var pseudoRadioContainerObject = jQuery(this).prepend( pseudoRadioContainer );
+                
+                
+                radioButtons.hide().each( function() {
+                    pseudoRadioContainerObject.append( pseudoRadioElement );
+                    
+                });
+              
+            });
+              
+        });
+    </script>#}
 {% endblock %}

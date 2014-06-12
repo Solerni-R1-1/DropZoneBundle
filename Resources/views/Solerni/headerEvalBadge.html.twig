@@ -1,0 +1,34 @@
+<!--{{ macros.flashBox() }}-->
+{% if badges.getNbResults > 0 %}
+    <div class="slrn-container-dropzone__header">
+        {# Retour à la liste des badges #}
+        <a title="{{ 'page_my_badges'|trans({}, 'platform') }}" href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="black_link">
+            <i class="icon-chevron-left no_underline"></i>Retour à la liste des badges
+        </a>
+    {% if expectedCorrections is not defined or expectedCorrections > 0 %}
+        {% for badge in badges %}
+            {% if 'owned' == badge.type %}
+                {% set badge     = badge.badge.badge %}
+            {% else %}
+                {% set badge = badge.badge %}
+            {% endif %}
+           <div class="slrn-dropzone-bloc">
+               <div class='drop__annoncement__badge'>
+                   <img src="{{ asset(badge.webPath) }}" alt="{{ badge.name }}" class="drop__annoncement__badge__img" />
+                   <span class='drop__annoncement__title bold'>Badge &laquo; {{ badge.name }} &raquo;</span>
+               </div>
+           </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+{% endif %}
+
+
+
+
+
+
+    
+               
+
+

@@ -1,9 +1,192 @@
 {% extends "IcapDropzoneBundle::layout.html.twig" %}
+
 {% block resourceBreadcrumb %}
     <li class="active"><span class="glyphicon icon-file"></span> {{ dropzone.resourceNode.name }}</li>
 {% endblock %}
-
+    
 {% block dropzone_content %}
+    {% if dropzone.peerReview %}
+        {% set expectedCorrections = dropzone.expectedTotalCorrection - nbCorrections %}
+        {% set buttonDisabled = false %}
+    {% endif %}
+     
+<section class="col-xs-12 col-md-12">
+ <div class="col-xs-3 col-md-3">
+        {# FIRST : MOOC  WIDGET #}
+        {% render controller(
+            'ClarolineCoreBundle:Solerni:getWorkspacePresentationWidget',
+            {'workspaceId': workspace.getId(), 'renderProgression': false }
+        ) %}
+
+     
+        {# include parcours twig #}
+        {% if dropzoneProgress.currentState > 2 and dropzoneProgress.currentState < 2 + dropzone.expectedTotalCorrection %}
+            {% set currentFile = 2 %}
+         {% elseif dropzone.expectedTotalCorrection <= nbCorrections and drop.countFinishedCorrections < dropzone.expectedTotalCorrection %}
+            {% set currentFile = 0 %}
+         {% else %}
+            {% set currentFile = 1 %}
+        {% endif %}
+        {% include 'IcapDropzoneBundle:Solerni:parcours.html.twig' %}
+        
+</div>
+<div class='col-xs-9 col-md-9'>
+    <div class="container container-dropzone slrn-container-dropzone">
+        {# Header with link and associated badge #}
+        {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
+        
+        {# Cas : case préalablement cochée. We shouldn't be there as the controller redirects us #}
+        {% if drop is not null and drop.finished == false %} 
+            {<script>
+			 /*<![CDATA[*/
+			    window.location.href = '{{ path('icap_dropzone_drop', {'resourceId': dropzone.id}) }}';
+			/*]]>*/
+			</script>
+            
+        {% elseif dropzone.endReview < date() and expectedCorrections > 0 %}
+            <div class="slrn-grey-block slrn-info-block">
+                {% set buttonDisabled = true %}
+                {% set endEvalDate = dropzone.endReview|date("d/m/Y") %}
+                <p>{{ 'review_is_over'|trans({ 'endEvalDate': endEvalDate }, 'solerni')|raw }}</p>
+            </div>
+        {# Cas : depot de preuves terminé #}
+        {% elseif drop is not null and drop.finished == true and expectedCorrections > 0 %} 
+           {# we never corrected anything yet. First timer #}
+           {% if nbCorrections == 0 %}
+                <h2>{{ 'evaluation_by_peers'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+                <hr/>
+                <div>
+                    <p class="date__end">{{ 'limit_date_eval'|trans({}, 'solerni') }} {{ dropzone.getEndReview()|date("d/m/Y") }}</p>
+                    <div class="slrn-grey-block slrn-grey-block--with-title">
+                        <h3 class="slrn-grey-block-title">{{ 'drop_confirmed'|trans({'dropdate': drop.getDropDate()|date("d/m/Y") }, 'solerni') }}</h3>
+                        {% for document in drop.documents %}
+                            <div class="slrn-drop-list__item slrn-drop-list__item--no-garbage row col-md-12">
+                                {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}
+                             </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="drop__instruction">
+                    {% if dropzone.expectedTotalCorrection == expectedCorrections %}
+                    {% set buttonText = 'start_corrections'|trans({}, 'solerni') %}
+                       <p>{{ 'start_correction_numbered'|trans({'expectedCorrections': expectedCorrections }, 'solerni')| raw  }}
+                    {% endif %}
+                    {# this case if probably never meet while we don't be here unless nbCorrections = 0 #}     
+                    {% if dropzone.expectedTotalCorrection > expectedCorrections %}
+                        {% set buttonText = 'continue_corrections'|trans({}, 'solerni') %}
+                        {% if expectedCorrections > 1 %}{% set accordDossier = 'dossiers' %}{% else %}{% set accordDossier = 'dossier' %}{% endif %}
+                        <p>{{ 'continue_correction_numbered'|trans({'expectedCorrections': expectedCorrections, 'accordDossier': accordDossier }, 'solerni')| raw  }}</p>
+                    {% endif %}
+                </div>
+                <div>
+                    {# Correction not started yet #}
+                    {% if dropzone.startReview > date() %}
+                        <div class="slrn-grey-block slrn-info-block">
+                            {% set buttonDisabled = true %}
+                            {% set startEvalDate = dropzone.startReview|date("d/m/Y") %}
+                            <p>{{ 'review_not_started'|trans({ 'startEvalDate': startEvalDate }, 'solerni')|raw }}</p>
+                        </div>
+                    {# Correction is finished #}
+                    {% elseif dropzone.endReview < date() %}
+                        <div class="slrn-grey-block slrn-info-block">
+                            {% set buttonDisabled = true %}
+                            {% set endEvalDate = dropzone.endReview|date("d/m/Y") %}
+                            <p>{{ 'review_is_over'|trans({ 'endEvalDate': endEvalDate }, 'solerni')|raw }}</p>
+                        </div>
+                    {# No copies available to correct #}
+                    {% elseif hasCopyToCorrect == false %}
+                        <div class="slrn-grey-block slrn-info-block">
+                            {% set buttonDisabled = true %}
+                            <p>{{ 'no_copy_to_correct'|trans({}, 'solerni')|raw }}</p>
+                        </div>
+                    {% endif %}
+
+                     {#<div class="slrn-dropzone-bloc">
+                        <a href="{{ path('icap_dropzone_correct', {'resourceId': dropzone.id}) }}" class="btn-dropzone btn btn-primary{% if buttonDisabled == true %} disabled{% endif %}">{{ buttonText }}</a>
+                     </div>#}
+                 </div>
+            {% else %}
+                {# We already corrected something. Go to next  #}
+                {% set buttonText = 'continue_corrections'|trans({ 'nextFile': nbCorrections + 1 }, 'solerni') %}
+                <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+                <hr />
+                <p class="drop__instruction">{{ 'correction_done_text'|trans({ 'currentFile': nbCorrections }, 'solerni') }}</p>
+                
+                {% if hasCopyToCorrect == false %}
+                    <div class="slrn-grey-block slrn-info-block">
+                        {% set buttonDisabled = true %}
+                        <p>{{ 'no_copy_to_correct'|trans({}, 'solerni')|raw }}</p>
+                    </div>
+                {% else %}
+                    {{ 'follow_correction_text'|trans({ 'endReviewDate': dropzone.getEndReview()|date("d/m/Y") }, 'solerni')|raw }}
+                {% endif %}
+            {% endif %}
+            {% if buttonDisabled != true %} 
+                <div class="slrn-button-page">
+                   <a href="{{ path('icap_dropzone_correct', {'resourceId': dropzone.id}) }}" class="btn-dropzone btn btn-primary">{{ buttonText }}</a>
+                </div>
+            {% endif %}
+        {% elseif drop is not null and drop.finished == true and expectedCorrections <= 0 %}
+
+           {% include 'IcapDropzoneBundle:Solerni:resultatPostEval.html.twig' %}
+       
+        {# Cas : on arrive pour la première fois #}
+        {% else %}
+	        <h2>{{ 'welcome'| trans({}, 'solerni') }}<span class='FAQ'><a href="{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}" class='FAQ'>FAQ</a></span></h2>
+	        <hr/>
+	        {% if dropzone.instruction is not null %}
+                <div class='drop__instruction'>
+                    {{ dropzone.instruction|raw }}
+                </div>
+	        {% endif %}
+            
+            {% if dropzone.getStartAllowDrop > date() %}
+                <div class="slrn-grey-block slrn-info-block">
+                    {% set startDropDate = dropzone.getStartAllowDrop|date("d/m/Y") %}
+                    <p>{{ 'drop_not_started'|trans({ 'startDropDate': startDropDate }, 'solerni')|raw }}</p>
+                </div>
+            {% elseif dropzone.getEndAllowDrop < date() %}
+                <div class="slrn-grey-block slrn-info-block">
+                    {% set endDropDate = dropzone.getEndAllowDrop|date("d/m/Y") %}
+                    <p>{{ 'drop_finished'|trans({ 'endDropDate': endDropDate }, 'solerni')|raw }}</p>
+                </div>
+            {% else %}
+                	        
+                <div class="slrn-grey-block slrn-info-block">
+                   <p>{{ 'info_start'| trans({}, 'solerni') }}</p>
+               </div>
+            
+                <label for='letsgo' >
+                    <input type='checkbox' value='go' name='letsgo' id='letsgo'/>
+                    {{ 'checkboxStart'|trans({ 'expectedCorrections': expectedCorrections }, 'solerni') }}
+                </label>
+
+                <div class='slrn-button-page'>
+                  <a href="{{ path('icap_dropzone_drop', {'resourceId': dropzone.id}) }}" class="btn btn-primary disabled drop__buttonStart">{{ 'buttonStart'|trans({}, 'solerni') }}</a>
+                </div>
+            <script>
+            $(document).on('ready', function() {
+                $('#letsgo').change(function(){
+                    if($(this).is(':checked')){
+                      $('.drop__buttonStart').removeClass("disabled");  
+                    } else {
+                      $('.drop__buttonStart').addClass("disabled");  
+                    }
+                });
+                
+                if ( $('#letsgo').is(':checked') ) {
+                    $('.drop__buttonStart').removeClass("disabled"); 
+                }
+
+                $(".collapse__div").collapse({
+                    query: '.collapse__div__title'
+                });
+            });
+            </script>
+        {% endif %}
+    {% endif %}
+{# 
+        <hr/>############<hr/>
     <div class="container container-dropzone">
         <h2>{{ dropzone.resourceNode.name|capitalize }} </h2>
 
@@ -38,7 +221,7 @@
                 {{ 'Evaluation finished'|trans({}, 'icap_dropzone') }}
             </p>
         {% endif %}
-        {% if dropzone.peerReview and  not PeerReviewEndCase %}
+        {% if (dropzone.peerReview) and (not (PeerReviewEndCase)) %}
             {% set expectedCorrections = dropzone.expectedTotalCorrection - nbCorrections %}
         {% else %}
             {% set expectedCorrections = 0 %}
@@ -251,8 +434,9 @@
                 {% endif %}
             </div>
         {% endif %}
-
+#}
     </div>
+</div></section>
 {% endblock %}
 
 {% block javascripts %}

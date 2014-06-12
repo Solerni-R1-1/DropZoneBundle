@@ -1,0 +1,33 @@
+{% if document.type == 'resource' %}
+    {% set typeName = 'Bibliothèque' %}
+{% elseif document.type == 'url' %}
+    {% set typeName = 'Lien internet' %}
+{% elseif document.type == 'file' %}
+    {% set typeName = 'Fichier' %}
+{% elseif document.type == 'text' %}
+    {% set typeName = 'Texte' %}
+{% else %}
+    {% set typeName = 'Document' %}
+{% endif %}
+
+{% if document.url is not null %}
+    <span class="slrn-bold col-md-3 row">{{ 'Document %count%'|trans({'%count%': loop.index}, 'icap_dropzone') }}</span>
+    <span class="slrn-bold col-md-3">{{ typeName }}</span>
+    <a class="pink_link col-md-5 slrn-drop-list__name" target="_blank" href="{{ document.url }}">
+        {{ document.url }}
+    </a>
+{% else %} 
+    <span class="slrn-bold col-md-3 row">{{ 'Document %count%'|trans({'%count%': loop.index}, 'icap_dropzone') }}</span>
+    <span class="slrn-bold col-md-3">{{ typeName }}</span>
+    <a class="pink_link col-md-5" target="_blank" href="{{ path('icap_dropzone_open_resource', {'resourceId': dropzone.id, 'documentId': document.id}) }}">
+        {% if document.resourceNode.name is defined %}
+            {{ document.resourceNode.name }}
+        {% endif %}
+    </a>
+{% endif %}
+{% if showGarbage is defined and drop is defined %}
+    <a title="{{ 'delete_document'|trans({}, 'solerni') }}" href="{{ path('icap_dropzone_delete_document', {'resourceId': dropzone.id, 'dropId': drop.id, 'documentId': document.id}) }}" 
+      class="btn-garbage launch-modal col-md-1">
+      <span class="glyphicon icon-trash slrn-icon-trash"></span> {{ 'Delete'|trans({}, 'icap_dropzone') }}
+    </a>
+{% endif %}

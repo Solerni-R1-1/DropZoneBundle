@@ -155,7 +155,8 @@ class DropzoneManager
 
         $states = array_merge($states, $begin_states);
         $expectedCorrections = $dropzone->getExpectedTotalCorrection();
-
+        $nbCorrection = intval($nbCorrection);
+        
         $currentState = 0;
         // set the states of the dropzone.
 
@@ -185,7 +186,7 @@ class DropzoneManager
             // if no drop, state is 0 as default.
             if (!empty($drop)) {
                 $currentState++;
-
+                
                 if ($drop->getFinished()) {
                     $currentState++;
                 }
@@ -203,13 +204,13 @@ class DropzoneManager
                     }
                 }
 
-                if ($drop->countFinishedCorrections() >= $expectedCorrections) {
+                if ($nbCorrection >= $expectedCorrections) {
                     $currentState++;
                     if($allow_user_to_not_have_expected_corrections){
                         $currentState++;
+                       
                     }
-                }
-
+                }            
             }
         } else {
             // case of normal correction.
@@ -228,7 +229,12 @@ class DropzoneManager
         }
 
         $percent = round(($currentState * 100) / (count($states) - 1));
-
+        
+        /* If the evaluation is closed, update currentState to match expected numeration on the left column*/
+        if( $allow_user_to_not_have_expected_corrections ){
+            $currentState = 2 + $expectedCorrections + 2;
+        }
+        
         return array('states' => $states, 'currentState' => $currentState, 'percent' => $percent, 'nbCorrection' => $nbCorrection);
     }
 

@@ -8,31 +8,43 @@
     {% elseif documentType == 'url' %}
          {% set id_input  = 'icap_dropzone_document_file_form_text' %}  
     {% elseif documentType == 'file' %}
-        {% set id_input  = 'icap_dropzone_document_file_form_file' %}  
+        {% set id_input  = 'icap_dropzone_document_file_form_file' %}
     {% endif %}
+
     <div class="row">
         {{ form_row(form.document,{'id': id_input}) }}
     </div>
+    {# Displayed shortly when a resource is selected (while ajax does its job) #}
     <div class="row dropzone_ressrouceSelected" style="display:none">
-        <div class="col-md-3">
-            <strong>{{ 'Resource selected'|trans({}, 'icap_dropzone') }}</strong>
-        </div>
-        <div class="col-md-6">
-            <span class="selected-resource">-</span>
-            <strong class="add-document-pending" style="display: none;"> {{ 'loading'|trans({}, 'icap_dropzone') }}</strong>
-        </div>
-    </div>
-    <div class="row dropzone_noRessourceSelected">
-        <div class="col-md-8">
-            <div class='input-group'>
-                <input id='addRessourceInput' type="text" class='form-control' placeholder="{{ 'Choose a resource'|trans({},'icap_dropzone')}}"></input>
-                <span class='input-group-btn'>
-                     <a href='#' id='addRessourceButton' class='btn btn-primary'>{{ 'Add'|trans({}, 'icap_dropzone') }}</a>
-                </span>
+        <div class="col-md-12">
+            <div class='col-md-8 row'>
+                <div class="fileUpload fileUpload--uploading btn btn-primary btn-gris">
+                    <span>{{ 'import_progress'|trans({}, 'solerni') }}</span>
+                </div>
+                {#<input id="fakeone_resource" placeholder="{{ 'Resource selected'|trans({}, 'solerni') }}" disabled="disabled" class="form-control md-col-8 fakeone"/>#}
+                <div class="slrn-input-style fakeone fakeone--uploading slrn-resource-importation">
+                     <span class="selected-resource">-</span>
+                </div>
             </div>
         </div>
     </div>
-    
+
+    {# Display first when no resource is selected #}
+     <div class="row dropzone_noRessourceSelected">
+         <div class="col-md-12">
+             <div class='col-md-8 row'>
+                <div class="fileUpload btn btn-primary btn-gris" id ="js-import-trigger__resource">
+                    <span>{{ 'import_file'|trans({}, 'solerni') }}</span>
+                    {#<input id="icap_dropzone_document_file_form_resource" name="icap_dropzone_document_file_form[resource]" type="file" class="upload"/>#}
+                </div>
+                <input id="fakeone_resource" placeholder="" disabled="disabled" class="form-control md-col-8 fakeone slrn-input-style"/>
+            </div>
+            <span class='hidden col-md-1'>
+                <a href='#' id='addRessourceButton' class='btn btn-primary'>{{ 'Add'|trans({}, 'icap_dropzone') }}</a>
+           </span>
+         </div>
+     </div>
+  
     <div class="row" style="display: none;">
         <div class="col-md-12">
             <div class="form-group pull-right">
@@ -46,7 +58,7 @@
     <script type="text/javascript">
         $(document).ready(function()
         {
-            $('#addRessourceInput').click(function()
+            $('#js-import-trigger__resource').click(function()
             {
                 $('#addRessourceButton').click();
             });

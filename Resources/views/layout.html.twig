@@ -8,6 +8,8 @@
       "@IcapDropzoneBundle/Resources/views/less/style.less"
     %}
         <link rel="stylesheet" href="{{ asset_url }}" screen="media" />
+        <link href="{{ asset('bundles/icapdropzone/css/slrn_dropzone.css') }}" type="text/css" rel="stylesheet"/>
+        
     {% endstylesheets %}
 {% endblock %}
 
@@ -18,4 +20,5 @@
 
 {% block javascripts %}
     {{ parent() }}
+        <script src="{{ asset('bundles/icapdropzone/js/jquery.collapse.js') }}"></script>
 {% endblock %}
