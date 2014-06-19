@@ -24,18 +24,23 @@
                     {% set buttonLink = path( 'claro_workspace_tool_view_my_badge', {'workspaceId': workspace.id, 'slug': badge.slug } ) %}
                     <p>Le Mooc &laquo; Le digital, vivons-le ensemble &raquo;, est heureux de vous décerner le badge de compétences :</p>
                     <div class="slrn-my_badges-list__item">
-                       <img src="{{ asset(badge.webPath) }}" alt="{{ badge.name }}" class="slrn-my_badges-list__item__image" />
-                       <section class="slrn-my_badges-list__body">
-                           <h6 class="slrn-my_badges-list__item__title">Badge &laquo; {{ badge.name }} &raquo;</h6>
-                           <span class=" slrn-my_badges-list__body__status"><span class="slrn-bold">Obtenu le :</span> {{ userBadge.issuedAt|date('date_format'|trans({}, 'platform')) }}</span>
-                           <article class="slrn-my_badges-list__content">{{ badge.criteria | raw }}</article>
-                           <footer class="slrn-my_badges-list__footer">
-                               <span class="slrn-gratuit-icon">prix gratuit</span>
-                               {% if buttonLink %}
-                                   <a class="btn btn-primary pull-right" href="{{ buttonLink }}">
-                                       {{'my_badge_details'|trans({}, 'platform')}}
-                                   </a>
-                               {% endif %}    
+                        <img src="{{ asset(badge.webPath) }}" alt="{{ badge.name }}" class="slrn-my_badges-list__item__image" />
+                        <section class="slrn-my_badges-list__body">
+                            <h6 class="slrn-my_badges-list__item__title">Badge &laquo; {{ badge.name }} &raquo;</h6>
+                            <span class=" slrn-my_badges-list__body__status"><span class="slrn-bold">Obtenu le :</span> {{ userBadge.issuedAt|date('date_format'|trans({}, 'platform')) }}</span>
+                            <article class="slrn-my_badges-list__content">{{ badge.criteria | raw }}</article>
+                            <footer class="slrn-my_badges-list__footer">
+                                <div class="">
+                                    <span class="slrn-gratuit-icon">prix gratuit</span>
+                                </div>
+                                <div class="slrn-button-page">
+                                    <a class="btn btn-primary pull-right" href="{{ buttonLink }}">
+                                        {{'my_badge_details'|trans({}, 'platform')}}
+                                    </a>
+                                    <a class="btn btn-gris pull-left slrn-dropzone-cancel" href="{{ path('icap_dropzone_drop_detail_by_user',{'resourceId': dropzone.id,'dropId':drop.id}) }}">
+                                        {{'see_corrections'|trans({}, 'solerni')}}
+                                    </a>
+                                </div>
                            </footer>
                        </section>
                    </div>
