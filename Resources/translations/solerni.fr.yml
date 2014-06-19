@@ -34,6 +34,10 @@ endNOK: 'Evaluation terminée'
 endNotOver: 'Evaluation en cours'
 end_date: 'Date de fin'
 drop_finished: 'La phase de dépôt des preuves s''est achevée le <span class="slrn-bold">endDropDate</span>. Vous ne pouvez plus participer à cette évaluation.'
+evalFailed: 'Evaluation échouée'
+evalSucceed: 'Evaluation réussie'
+evalOver: 'Evaluation fermée'
+evalNotStarted: 'Evaluation à venir'
 
 # F
 faq : 'FAQ'
@@ -75,6 +79,7 @@ start_corrections: 'OK, corriger le 1er dossier'
 save and finished: 'OK, j''ai fini mon dossier de preuves et souhaite être évalué(e)'
 start_correction_numbered: 'Vous devez à votre tour <span class="slrn-bold">évaluer expectedCorrections dossiers afin d''obtenir votre évaluation finale</span>'
 start_date: 'Date de début'
+see_corrections: 'Voir les corrections'
 
 # T
 text: 'Rédiger un texte'
