@@ -118,6 +118,13 @@
             {# NO ADMIN #}
             {# Header with link and associated badge #}
             {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
+            {% if nbCorrections is not defined and state == 'preview' %}
+                {% if  app.request.get('nbCorrections') %}
+                    {% set nbCorrections = app.request.get('nbCorrections') %}
+                {% else %}
+                    {% set nbCorrections = 0 %}
+                {% endif %}
+            {% endif %}
             <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
 
             <hr />

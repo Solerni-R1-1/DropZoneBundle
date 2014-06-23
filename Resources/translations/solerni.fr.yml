@@ -7,6 +7,8 @@ attribute_rating: 'Vous allez attribuer la note de'
 
 # B
 buttonStart: 'Ok, commencer à déposer mon dossier de preuves'
+back_my_badges: 'Retour à la liste des badges'
+back_result: 'Retour au résultat de mon évaluation'
 
 # C
 checkboxStart: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autres retours de preuve »'
@@ -18,6 +20,8 @@ continue_correction_numbered: 'Vous devez encore <span class="slrn-bold">évalue
 correction_intro: 'La note que vous allez attribuer à ce dossier dépend de votre évaluation pour chacun des critères ci-après. Selon vous, l''ensemble des documents que vous avez examinés répondent-ils aux critères suivants ?'
 correction_done_text: 'La correction du dossier n°currentFile a bien été enregistrée.'
 correction_reminder: 'Critères d''évaluation'
+correction_list: 'Liste des corrections de mon dossier de preuves'
+correction_th: 'correction'
     
 # D
 date_limite: 'Date limite pour déposer vos preuves :'
@@ -26,11 +30,13 @@ document_list_to_correct: 'Documents à évaluer'
 delete_document: 'Supprimer le document'
 drop_confirmed: 'Votre dossier de preuves a été soumis à évaluation le dropdate'
 drop_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startDropDate</span>, date d''ouverture du dépôt de preuves pour le badge en cours'
+drop_details: 'Détails de votre dossier de preuves'
+default_success_message: '<span class="slrn-sub-title">Bravo !</span>Vous avez réussi votre évaluation en obtenant une note de evalGrade/20.'
+default_failed_message: '<span class="slrn-sub-title">Désolé !</span>Vous avez obtenu une note de evalGrade/20, insuffisante pour obtenir votre badge de compétence.'
 
 # E
 evaluation_by_peers: 'Début de l''évaluation'
-endOK: 'Evaluation terminée'
-endNOK: 'Evaluation terminée'
+evalDone: 'Evaluation terminée'
 endNotOver: 'Evaluation en cours'
 end_date: 'Date de fin'
 drop_finished: 'La phase de dépôt des preuves s''est achevée le <span class="slrn-bold">endDropDate</span>. Vous ne pouvez plus participer à cette évaluation.'
@@ -62,10 +68,17 @@ limit_date_eval: 'Date limite pour corriger les dossiers :'
 
 # N
 no_files: 'Aucun fichier ajouté'
-no_copy_to_correct: 'Désolé, aucune copie n''est disponible pour le moment.<br />A très bientôt'
+no_copy_to_correct: 'Désolé, aucune copie n''est disponible pour le moment.<br>A très bientôt'
+note: 'Note'
 
 #O
 ok_done: 'OK, j''ai terminé'
+
+#P
+post_success_message: '<span class="slrn-sub-title">Et après ?</span>Votre espace de travail est désormais clôturé mais vous pouvez retrouver l''intégralité de <a href="badgeUrl">vos badges</a> obtenus dans votre tableau de bord.'
+post_success_message_more: '<span class="slrn-sub-title">Vous souhaitez obtenir de nouveaux badges ?</span>Il vous reste encore totalBadgesToGo badgeplural de compétenceplural à décrocher pour attester de la totale compréhension de votre cursus &laquo; moocName &raquo;.</p>'
+post_failed_message: '<span class="slrn-sub-title">Et maintenant ?</span>Votre espace de travail est désormais clôturé mais vous pouvez tenter une nouvelle évaluation ou tenter d''obternir un autre badge.<p>Si certains concepts vous ont échappé, n''hésitez pas à échanger et à demander de l''aide auprès de vos pairs sur les forums de discussions.</p>'
+parcours_title: 'Parcours d''obtention du badge'
 
 # R
 resource: 'Importer un fichier depuis ma bibliothèque'
@@ -80,6 +93,10 @@ save and finished: 'OK, j''ai fini mon dossier de preuves et souhaite être éva
 start_correction_numbered: 'Vous devez à votre tour <span class="slrn-bold">évaluer expectedCorrections dossiers afin d''obtenir votre évaluation finale</span>'
 start_date: 'Date de début'
 see_corrections: 'Voir les corrections'
+started: 'Commencée'
+
+#O
+over: 'Terminée'
 
 # T
 text: 'Rédiger un texte'
@@ -92,6 +109,7 @@ url: 'Insérer un lien internet'
 welcome: 'Création de mon espace d''évaluation'
 welcome_constit1: 'Dépôt de mon dossier de preuves'
 wait_for_results: '<p><span class="slrn-bold">C''est presque terminé !</span><br>Encore un peu de patience, votre dossier est toujours en cours d''évaluation.<br>Vous découvrirez très bientôt si vous avez réussi votre évaluation et obtenu votre badge de compétence.</p><p class="slrn-bold">A très bientôt</p>'
+win_badge: 'Le Mooc &laquo; moocName &raquo; est heureux de vous décerner le badge de compétences :'
 
 # Y
 yourFiles: 'Votre dossier de preuves : '

@@ -494,3 +494,19 @@ h3 {
 .slrn-correct-buttons {
     margin-top: 3em;
 }
+
+.table thead > tr > th {
+    border: 0;
+}
+
+table th {
+    text-transform: uppercase;
+    color: #606060;
+    background-color: #EEEEEF;
+}
+
+.table tbody > tr > td {
+    border-top: 0;
+    background-color: transparent;
+}
+

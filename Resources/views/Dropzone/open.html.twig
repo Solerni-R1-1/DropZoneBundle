@@ -100,10 +100,6 @@
                             <p>{{ 'no_copy_to_correct'|trans({}, 'solerni')|raw }}</p>
                         </div>
                     {% endif %}
-
-                     {#<div class="slrn-dropzone-bloc">
-                        <a href="{{ path('icap_dropzone_correct', {'resourceId': dropzone.id}) }}" class="btn-dropzone btn btn-primary{% if buttonDisabled == true %} disabled{% endif %}">{{ buttonText }}</a>
-                     </div>#}
                  </div>
             {% else %}
                 {# We already corrected something. Go to next  #}
