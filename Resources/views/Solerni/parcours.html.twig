@@ -1,21 +1,21 @@
         {# Define steps #}
         {% set stepNames = [
-            'Création de mon espace d\'évaluation',
-            'Dépôt de mon dossier de preuves',
-            'Début de l\'évaluation'
+            'welcome'|trans({}, 'solerni'),
+            'welcome_constit1'|trans({}, 'solerni'),
+            'evaluation_by_peers'|trans({}, 'solerni')
             ]
         %}
 
         {% set stepNames2 = [] %}
         {% for step in 1..dropzone.expectedTotalCorrection %}
-            {% set correctionName = ['Correction du dossier <span class="no-wrap">n°' ~ step ~ '</span>'] %}
+            {% set correctionName = [ 'correcting_copy'|trans({}, 'solerni') ~ '<span class="no-wrap"> n°' ~ step ~ '</span>'] %}
             {% set stepNames2 = stepNames2|merge( correctionName ) %}
         {% endfor %}
         {% set stepNames = stepNames|merge( stepNames2 ) %}
 
         {% set stepNames2 = [
-            'Evaluation en cours',
-            'Evaluation terminée'
+            'endNotOver'|trans({}, 'solerni'),
+            'evalDone'|trans({}, 'solerni')
             ]
         %}
         {% set stepNames = stepNames|merge( stepNames2 ) %}
@@ -48,7 +48,7 @@
 
         <div class='col-xs-12 col-md-12 slrn-widget slrn-widget--dropzone'>
 	        <div class='row slrn-widget__title bg-color-primary slrn-widget_row'>
-	            Parcours d'obtention du badge
+	           {{ 'parcours_title'|trans({}, 'solerni') }}
             </div>
             {% for name in stepNames %}
                 <div class='row bg-color-grey-1 slrn-widget--dropzone__item'>

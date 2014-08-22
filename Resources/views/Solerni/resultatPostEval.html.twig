@@ -4,10 +4,10 @@
     
         {% if drop.calculatedGrade >= dropzone.minimumScoreToPass %}
         
-	        <h2>{{ 'endOK'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+	        <h2>{{ 'evalDone'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
 	        <hr />
-            <p><span class="slrn-sub-title">Bravo !</span><br />
-                Vous avez réussi votre évaluation en obtenant une note de {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}/20.
+            <p>
+                {{ 'default_success_message'|trans({'evalGrade': drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }, 'solerni')|raw }}                   
 	        </p>
             {% set totalBadgesToGo = nbTotalBadges - nbAcquiredBadges %}
             {% if totalBadgesToGo > 1 %}
@@ -22,7 +22,7 @@
                     {% set badge     = workspaceBadge.badge.badge %}
                     {% set userBadge = workspaceBadge.badge %}
                     {% set buttonLink = path( 'claro_workspace_tool_view_my_badge', {'workspaceId': workspace.id, 'slug': badge.slug } ) %}
-                    <p>Le Mooc &laquo; Le digital, vivons-le ensemble &raquo;, est heureux de vous décerner le badge de compétences :</p>
+                    <p>{{ 'win_badge'|trans({'moocName': workspace.getName() }, 'solerni')|raw }}</p>
                     <div class="slrn-my_badges-list__item">
                         <img src="{{ asset(badge.webPath) }}" alt="{{ badge.name }}" class="slrn-my_badges-list__item__image" />
                         <section class="slrn-my_badges-list__body">
@@ -47,22 +47,23 @@
                 {% endif %}
             {% endfor %}
 			<div class='redlink'>
-				<span class="slrn-sub-title">Et après ?</span>
-				<p>Votre espace de travail est désormais clôturé mais vous pouvez retrouver l'intégralité de <a href='{{ path('claro_profile_view_badges') }}'>vos badges</a> obtenus dans votre tableau de bord</p>
-				<span class="slrn-sub-title">Vous souhaitez obtenir de nouveaux badges ?</span>
-				<p>Il vous reste encore {{ totalBadgesToGo }} badge{{ plural }} de compétence{{ plural }} à décrocher pour attester de la totale compréhension de votre cursus &laquo; Le digital, vivons-le ensemble &raquo;.</p>
+                <p>
+                    {{ 'post_success_message'|trans({'badgeUrl': path('claro_profile_view_badges') }, 'solerni')|raw }}
+                </p>
+                <p>
+                    {{ 'post_success_message_more'|trans({'totalBadgesToGo': totalBadgesToGo, 'plural': plural, 'moocName': workspace.getName() }, 'solerni')|raw }}
+                </p>
 		    </div>
         {% else %}
         
-	        <h2>{{ 'endNOK'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+	        <h2>{{ 'evalDone'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
 	        <hr/>
-            <p class="slrn-sub-title">Désolé !</p>
-	        <p>
-	            Vous avez obtenu une note de {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}/20, insuffisante pour obtenir votre badge de compétence
-		    </p>
-            <p class="slrn-sub-title">Et maintenant ?</p>
-            <p>Votre espace de travail est désormais clôturé mais vous pouvez tenter  une nouvelle évaluation ou tenter d'obternir un autre badge.</p>
-            <p>Si certains concepts vous ont échappé, n'hésitez pas à échanger et à demander de l'aide auprès de vos pairs sur les forums de discussions.</p>
+            <p>
+                {{ 'default_failed_message'|trans({'evalGrade': drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }, 'solerni')|raw }}                   
+	        </p>
+            <p>
+                {{ 'post_failed_message'|trans({'evalGrade': drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }, 'solerni')|raw }}  
+            </p>
 	     {% endif %}
         <div class="slrn-correct-buttons">
             <a href="{{ app.session.get('solerni_apprendre_url') }}" class="btn btn-default btn-gris slrn-dropzone-cancel">{{ 'return_mooc'|trans({}, 'solerni') }}</a>

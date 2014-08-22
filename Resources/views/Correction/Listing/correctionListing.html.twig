@@ -4,19 +4,19 @@
     {%  set viewState_var = 'preview' %}
 {% endif %}
 <div class="table-responsive">
-    <table class="table table-striped table-hover">
+    <table class="table">
         <thead>
         <th>Etat</th>
-        <th>
+        <th>{{ 'correction_th'|trans({}, 'solerni') }}
             {% if byUserMod == 0 %}
                 Correcteur
             {% endif %}
         </th>
-        <th>Commencée</th>
-        <th>Dernière Ouverture</th>
-        <th>Terminée</th>
-        <th>Note</th>
-        <th>Outils</th>
+        <th>{{ 'started'|trans({}, 'solerni') }}</th>
+        {#<th>Dernière Ouverture</th>#}
+        <th>{{ 'over'|trans({}, 'solerni') }}</th>
+        <th>{{ 'note'|trans({}, 'solerni') }}</th>
+        {#<th>Outils</th>#}
         </thead>
         <tbody>
         {% set validCorrections = 0 %}
@@ -47,8 +47,8 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('icap_dropzone_drops_detail_correction', {'resourceId': dropzone.id, 'correctionId': correction.id, 'state': viewState_var}) }}"
-                       class="" data-toggle="tooltip"
+                    <a href="{{ path('icap_dropzone_drops_detail_correction', {'resourceId': dropzone.id, 'correctionId': correction.id, 'state': viewState_var, 'nbCorrections': loop.index0 }) }}"
+                       class="pink_link" data-toggle="tooltip"
                        data-original-title="{{ 'See correction'|trans({},'icap_dropzone') }}">
                         {% if correction.editable and byUserMod == 0 %}
                             <span class="text-muted glyphicon icon-group" data-toggle="tooltip"
@@ -65,9 +65,9 @@
                 <td>
                     {{ correction.startDate|date('formatDatetime'|trans({}, 'icap_dropzone')) }}
                 </td>
-                <td>
+                {#<td>
                     {{ correction.lastOpenDate|date('formatDatetime'|trans({}, 'icap_dropzone')) }}
-                </td>
+                </td>#}
                 <td>
                     {% if correction.endDate != null %}
                         {{ correction.endDate|date('formatDatetime'|trans({}, 'icap_dropzone')) }}
@@ -76,17 +76,16 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if correction.totalGrade != null %}{{ correction.totalGrade|number_format(2) }}{% else %}--{% endif %}
-                    /20
+                    {% if correction.totalGrade != null %}{{ correction.totalGrade|round(1, 'common')|replace({'.': ','}) }}{% else %}--{% endif %}/20
                 </td>
-                <td>
+                {#<td>
                     <div class="btn-group correction-tools">
                         {#
                         <a href="{{ path('icap_dropzone_drops_detail_correction', {'resourceId': dropzone.id, 'correctionId': correction.id, 'state': viewState_var}) }}" class="btn btn-default btn-xs" >
                             {{ 'See correction'|trans({},'icap_dropzone')}}
                         </a>
                         #}
-
+                        {#
                         {% if byUserMod == 0 %}
 
                             {% if dropzone.peerReview %}
@@ -133,7 +132,7 @@
                             {% endif %}
                         {% endif %}
                     </div>
-                </td>
+                </td>#}
             </tr>
         {% endfor %}
         </tbody>

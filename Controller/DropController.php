@@ -545,9 +545,10 @@ class DropController extends DropzoneBaseController
      * )
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
      * @ParamConverter("drop", class="IcapDropzoneBundle:Drop", options={"id" = "dropId"})
+     * @ParamConverter("user", class="ClarolineCoreBundle:User", options={"authenticatedUser" = true})
      * @Template()
      */
-    public function dropDetailAction(Dropzone $dropzone, Drop $drop)
+    public function dropDetailAction(Dropzone $dropzone, Drop $drop, User $user)
     {
         // check  if the User is allowed to open the dropZone.
         $this->isAllowToOpen($dropzone);
@@ -569,7 +570,7 @@ class DropController extends DropzoneBaseController
             } else {
                 throw new NotFoundHttpException();
             }
-        }else
+        } else
         {
             $drop = $dropSecure[0];
         }
@@ -579,12 +580,24 @@ class DropController extends DropzoneBaseController
         var_dump($corrections);
         die;
         */
+        
+        /* Get dropzone progress for the left widget */
+        $dropzoneManager = $this->get('icap.manager.dropzone_manager');
+        $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone,$user);
+        
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->container->get('orange.badge.controller');
+        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        
         return array(
-            'workspace' => $dropzone->getResourceNode()->getWorkspace(),
+            'workspace' => $workspace,
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
             'drop' => $drop,
             'isAllowedToEdit' => $isAllowedToEdit,
+            'dropzoneProgress' => $dropzoneProgress,
+            'badges' => $badgeList['badgePager']
         );
     }
 

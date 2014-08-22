@@ -828,6 +828,15 @@ class CorrectionController extends DropzoneBaseController
         }
 
         $view = 'IcapDropzoneBundle:Correction:correctCriteria.html.twig';
+        
+        /* Get dropzone progress for the left widget */
+        $dropzoneManager = $this->get('icap.manager.dropzone_manager');
+        $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone,$user);
+        
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->container->get('orange.badge.controller');
+        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
 
         if($state =='show' || $state =='edit')
         {
@@ -842,7 +851,9 @@ class CorrectionController extends DropzoneBaseController
                         'form' => $form->createView(),
                         'admin' => true,
                         'edit' => $edit,
-                        'state' => $state
+                        'state' => $state,
+                        'dropzoneProgress' => $dropzoneProgress,
+                        'badges' => $badgeList['badgePager']
                     )
                     );
         }else if( $state == 'preview')
@@ -858,7 +869,9 @@ class CorrectionController extends DropzoneBaseController
                         'form' => $form->createView(),
                         'admin' => false,
                         'edit' => false,
-                        'state' => $state
+                        'state' => $state,
+                        'dropzoneProgress' => $dropzoneProgress,
+                        'badges' => $badgeList['badgePager']
                     )
                 );           
         }
