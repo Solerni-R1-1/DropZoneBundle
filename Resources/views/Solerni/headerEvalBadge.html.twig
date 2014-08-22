@@ -22,7 +22,7 @@
             {% endif %}
            <div class="slrn-dropzone-bloc">
                <div class='drop__annoncement__badge'>
-                   <img src="{{ asset(badge.webPath) }}" alt="{{ badge.name }}" class="drop__annoncement__badge__img" />
+                   <img src="{{ image(badge.webPath).cropResize(75, 75) }}" alt="{{ badge.name }}" class="drop__annoncement__badge__img" />
                    <span class='drop__annoncement__title bold'>Badge &laquo; {{ badge.name }} &raquo;</span>
                </div>
            </div>
