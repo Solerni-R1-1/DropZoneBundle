@@ -457,6 +457,7 @@ h3 {
 }
 
 .slrn-drop-list__item {
+	width: 660px;
     margin-bottom: 1.2em;
     line-height: 1.5;
 }

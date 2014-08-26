@@ -516,9 +516,15 @@ class DropController extends DropzoneBaseController
      *      requirements={"resourceId" = "\d+", "dropId" = "\d+"}
      * )
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
+     * @ParamConverter("user", options={
+     *      "authenticatedUser" = true,
+     *      "messageEnabled" = true,
+     *      "messageTranslationKey" = "Correct an evaluation requires authentication. Please login.",
+     *      "messageTranslationDomain" = "icap_dropzone"
+     * })
      * @Template()
      */
-    public function dropsDetailAction($dropzone, $dropId)
+    public function dropsDetailAction($dropzone, $dropId, $user)
     {
         $this->isAllowToOpen($dropzone);
         $this->isAllowToEdit($dropzone);
@@ -528,12 +534,21 @@ class DropController extends DropzoneBaseController
             ->getRepository('IcapDropzoneBundle:Drop')
             ->getDropAndCorrectionsAndDocumentsAndUser($dropzone, $dropId);
 
+        $dropzoneManager = $this->get('icap.manager.dropzone_manager');
+        $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone, $user);
+
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->container->get('orange.badge.controller');
+        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+
         return array(
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
+            'dropzoneProgress' => $dropzoneProgress,
             'drop' => $drop,
             'isAllowedToEdit' => true,
+            'badges' => $badgeList['badgePager']
         );
     }
 
