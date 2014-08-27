@@ -85,50 +85,52 @@
 
         <h4>{{ 'Planning'|trans({}, 'icap_dropzone') }}</h4>
 
-        <p>{{ 'Planification instruction'|trans({}, 'icap_dropzone') }}</p>
+        {#<p>{{ 'Planification instruction'|trans({}, 'icap_dropzone') }}</p>#}
 
         <p class="peer-review-options">{{ 'Planification peer review instruction'|trans({}, 'icap_dropzone') }}</p>
 
         {{ form_errors(form.manualPlanning) }}
-        <div class="radio">
-            <label>
-                {{ form_widget(form.manualPlanning.0) }}
-                <strong>{{ 'manualPlanning'|trans({}, 'icap_dropzone') }}</strong>
+        <div class="hide">
+            <div class="radio">
+                <label>
+                    {{ form_widget(form.manualPlanning.0) }}
+                    <strong>{{ 'manualPlanning'|trans({}, 'icap_dropzone') }}</strong>
+                </label>
+            </div>
+            <div id="planning_manual" class="form-group">
+                <div class="col-md-offset-2">{{ 'Choose current phase'|trans({}, 'icap_dropzone') }}</div>
+                {{ form_row(form.manualState, {'label_attr': {'style': 'display: none;'}}) }}
+            </div>
+
+            <label class="radio">
+                {{ form_widget(form.manualPlanning.1) }}
+                <strong>{{ 'scheduleByDatePlanning'|trans({}, 'icap_dropzone') }}</strong>
             </label>
         </div>
-        <div id="planning_manual" class="form-group">
-            <div class="col-md-offset-2">{{ 'Choose current phase'|trans({}, 'icap_dropzone') }}</div>
-            {{ form_row(form.manualState, {'label_attr': {'style': 'display: none;'}}) }}
-        </div>
-
-        <label class="radio">
-            {{ form_widget(form.manualPlanning.1) }}
-            <strong>{{ 'scheduleByDatePlanning'|trans({}, 'icap_dropzone') }}</strong>
-        </label>
 
         <div id="planning_dates">
             <div class="form-group">
-                <div class="row col-lg-offset-2">
+                <div class="row col-lg-offset-1">
                     {{ form_row(form.startAllowDrop, {'label_attr': {'class': 'control-label', 'style': 'font-weight: normal;'}}) }}
                 </div>
             </div>
             <div class="form-group">
-                <div class="row col-lg-offset-2">
+                <div class="row col-lg-offset-1">
                     {{ form_row(form.endAllowDrop, {'label_attr': {'class': 'control-label', 'style': 'font-weight: normal;'}}) }}
                 </div>
             </div>
             <div class="form-group">
-                <div class="row col-lg-offset-2">
+                <div class="row col-lg-offset-1">
                     {{ form_row(form.autoCloseOpenedDropsWhenTimeIsUp,{'label_attr': {'class': 'control-label', 'style': 'font-weight: normal;'}}) }}
                 </div>
             </div>
             <div class="form-group">
-                <div class="row col-lg-offset-2 peer-review-options">
+                <div class="row col-lg-offset-1 peer-review-options">
                     {{ form_row(form.startReview, {'label_attr': {'class': 'control-label', 'style': 'font-weight: normal;'}}) }}
                 </div>
             </div>
             <div class="form-group">
-                <div class="row col-lg-offset-2 peer-review-options">
+                <div class="row col-lg-offset-1 peer-review-options">
                     {{ form_row(form.endReview, {'label_attr': {'class': 'control-label', 'style': 'font-weight: normal;'}}) }}
                 </div>
             </div>

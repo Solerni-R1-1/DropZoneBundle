@@ -49,8 +49,8 @@ class DropzoneCommonType extends AbstractType
             ->add('manualPlanning', 'choice', array(
                 'required' => true,
                 'choices' => array(
-                    true => 'manualPlanning',
-                    false => 'sheduleByDate'
+                    false => 'manualPlanning',
+                    true => 'sheduleByDate'
                 ),
                 'expanded' => true,
                 'multiple' => false
