@@ -383,21 +383,28 @@ class DropzoneController extends DropzoneBaseController
         $workspace = $dropzone->getResourceNode()->getWorkspace();
         $associatedBadge = $this->container->get('orange.badge.controller');
         $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        
+        /* Find Mooc URL */
+        $moocService = $this->container->get('orange.mooc.service');
+        $lesson = $moocService->getLessonFromWorkspace( $workspace, $user );
+        $moocbackUrl = $moocService->getRouteToTheLastChapter( $lesson, $user );
+        
             
         $PeerReviewEndCase = $dropzoneManager->isPeerReviewEndedOrManualStateFinished($dropzone,$nbCorrections);
         return array(
-            'workspace' => $workspace,
-            '_resource' => $dropzone,
-            'dropzone' => $dropzone,
-            'drop' => $drop,
-            'nbCorrections' => $nbCorrections,
-            'hasCopyToCorrect' => $hasCopyToCorrect,
-            'hasUnfinishedCorrection' => $hasUnfinishedCorrection,
-            'dropzoneProgress' => $dropzoneProgress,
-            'PeerReviewEndCase' =>$PeerReviewEndCase,
-            'badges' => $badgeList['badgePager'],
-            'nbTotalBadges'     => $badgeList['nbTotalBadges'],
-            'nbAcquiredBadges'  => $badgeList['nbAcquiredBadges']
+            'workspace'                 => $workspace,
+            '_resource'                 => $dropzone,
+            'dropzone'                  => $dropzone,
+            'drop'                      => $drop,
+            'nbCorrections'             => $nbCorrections,
+            'hasCopyToCorrect'          => $hasCopyToCorrect,
+            'hasUnfinishedCorrection'   => $hasUnfinishedCorrection,
+            'dropzoneProgress'          => $dropzoneProgress,
+            'PeerReviewEndCase'         =>$PeerReviewEndCase,
+            'badges'                    => $badgeList['badgePager'],
+            'nbTotalBadges'             => $badgeList['nbTotalBadges'],
+            'nbAcquiredBadges'          => $badgeList['nbAcquiredBadges'],
+            'user'                      => $user
         );
     }
 

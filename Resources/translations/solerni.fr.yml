@@ -31,8 +31,8 @@ delete_document: 'Supprimer le document'
 drop_confirmed: 'Votre dossier de preuves a été soumis à évaluation le dropdate'
 drop_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startDropDate</span>, date d''ouverture du dépôt de preuves pour le badge en cours'
 drop_details: 'Détails de votre dossier de preuves'
-default_success_message: '<span class="slrn-sub-title">Bravo !</span>Vous avez réussi votre évaluation en obtenant une note de evalGrade/20.'
-default_failed_message: '<span class="slrn-sub-title">Désolé !</span>Vous avez obtenu une note de evalGrade/20, insuffisante pour obtenir votre badge de compétence.'
+default_success_message: '<span class="slrn-sub-title">Bravo !</span>Vous avez réussi votre évaluation en obtenant une note de evalGrade<span class="slrn-sep">/</span>20.'
+default_failed_message: '<span class="slrn-sub-title">Désolé !</span>Vous avez obtenu une note de %evalGrade%<span class="slrn-sep">/</span>20, insuffisante pour obtenir votre badge de compétence.'
 
 # E
 evaluation_by_peers: 'Début de l''évaluation'
@@ -75,10 +75,9 @@ note: 'Note'
 ok_done: 'OK, j''ai terminé'
 
 #P
-post_success_message: '<span class="slrn-sub-title">Et après ?</span>Votre espace de travail est désormais clôturé mais vous pouvez retrouver l''intégralité de <a href="badgeUrl">vos badges</a> obtenus dans votre tableau de bord.'
-post_success_message_more: '<span class="slrn-sub-title">Vous souhaitez obtenir de nouveaux badges ?</span>Il vous reste encore totalBadgesToGo badgeplural de compétenceplural à décrocher pour attester de la totale compréhension de votre cursus &laquo; moocName &raquo;.</p>'
-post_failed_message: '<span class="slrn-sub-title">Et maintenant ?</span>Votre espace de travail est désormais clôturé mais vous pouvez tenter une nouvelle évaluation ou tenter d''obternir un autre badge.<p>Si certains concepts vous ont échappé, n''hésitez pas à échanger et à demander de l''aide auprès de vos pairs sur les forums de discussions.</p>'
 parcours_title: 'Parcours d''obtention du badge'
+post_eval_badge_count_success: Il vous reste encore %totalBadgesToGo% badge%plural% à décrocher pour attester de la totale compréhension de votre cursus &laquo; %moocName% &raquo;.
+post_eval_badge_count_failed: Il vous reste encore %totalBadgesToGo% badge%plural% à décrocher pour améliorer votre parcours dans le cursus &laquo; %moocName% &raquo;.
 
 # R
 resource: 'Importer un fichier depuis ma bibliothèque'
@@ -109,7 +108,7 @@ url: 'Insérer un lien internet'
 welcome: 'Création de mon espace d''évaluation'
 welcome_constit1: 'Dépôt de mon dossier de preuves'
 wait_for_results: '<p><span class="slrn-bold">C''est presque terminé !</span><br>Encore un peu de patience, votre dossier est toujours en cours d''évaluation.<br>Vous découvrirez très bientôt si vous avez réussi votre évaluation et obtenu votre badge de compétence.</p><p class="slrn-bold">A très bientôt</p>'
-win_badge: 'Le Mooc &laquo; moocName &raquo; est heureux de vous décerner le badge de compétences :'
+win_badge: 'Le Mooc &laquo; %moocName% &raquo; est heureux de vous décerner le badge de compétences :'
 
 # Y
 yourFiles: 'Votre dossier de preuves : '

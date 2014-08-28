@@ -8,6 +8,10 @@
     font-weight: bold;
 }
 
+.slrn-bigger {
+    font-size: larger;
+}
+
 /* reset value */
 .container{
 	width: auto;
@@ -485,11 +489,11 @@ h3 {
 }
 
 .slrn-sub-title {
-    font-weight: bold;
-    font-size: 1.3em;
-    color: #000;
-    display: block;
-    margin-top: 1em;
+    font-weight:    bold;
+    font-size:      1.2em;
+    color:          #000;
+    display:        block;
+    margin-top:     1em;
 }
 
 .slrn-correct-buttons {
@@ -511,3 +515,28 @@ table th {
     background-color: transparent;
 }
 
+.slrn-container-dropzone .slrn-my_badges-list__item {
+    padding: 25px;
+}
+
+.slrn-container-dropzone .slrn-my_badges-list__body {
+    margin-left: 150px;
+}
+
+.slrn-container-dropzone .slrn-my_badges-list__item {
+    margin: 25px 0 40px 0;
+}
+
+.slrn-container-dropzone .slrn-my_badges-list__item__title {
+    font-size: 1.7em;
+}
+
+.slrn-container-dropzone .slrn-my_badges-list__item__image {
+    width:  112px;
+    height: 112px;
+}
+
+.slrn-sep {
+    display: inline-block;
+    padding: 0 2px;
+}
