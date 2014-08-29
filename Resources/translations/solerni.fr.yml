@@ -6,7 +6,7 @@ add_comment: 'Vous pouvez ajouter un commentaire'
 attribute_rating: 'Vous allez attribuer la note de'
 
 # B
-buttonStart: 'Ok, commencer à déposer mon dossier de preuves'
+buttonStart: 'Ok, commencer à constituer mon dossier de preuves'
 back_my_badges: 'Retour à la liste des badges'
 back_result: 'Retour au résultat de mon évaluation'
 
@@ -107,7 +107,7 @@ url: 'Insérer un lien internet'
 
 # W
 welcome: 'Création de mon espace d''évaluation'
-welcome_constit1: 'Dépôt de mon dossier de preuves'
+welcome_constit1: 'Constitution de mon dossier de preuves'
 wait_for_results: '<p><span class="slrn-bold">C''est presque terminé !</span><br>Encore un peu de patience, votre dossier est toujours en cours d''évaluation.<br>Vous découvrirez très bientôt si vous avez réussi votre évaluation et obtenu votre badge de compétence.</p><p class="slrn-bold">A très bientôt</p>'
 win_badge: 'Le Mooc &laquo; %moocName% &raquo; est heureux de vous décerner le badge de compétences :'
 

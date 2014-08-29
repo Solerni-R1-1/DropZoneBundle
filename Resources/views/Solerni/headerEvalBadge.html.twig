@@ -1,35 +1,35 @@
 <!--{{ macros.flashBox() }}-->
-{% if badges.getNbResults > 0 %}
-    <div class="slrn-container-dropzone__header">
-        {# Retour à la liste des badges #}     
-        {% if viewCorrections is defined and viewCorrections == true %}
-            {# back to dropzone result #}
-            <a title="{{ 'evalDone'|trans({}, 'solerni') }}" href="{{ path( 'icap_dropzone_open', { 'resourceId': dropzone.getId() } ) }}" class="black_link">
-                <i class="icon-chevron-left no_underline"></i> {{ 'back_result'|trans({}, 'solerni') }}
-            </a>
-        {% else %}
-            {# back to my badges workspace list #}
-            <a title="{{ 'page_my_badges'|trans({}, 'platform') }}" href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="black_link">
-                <i class="icon-chevron-left no_underline"></i> {{ 'back_my_badges'|trans({}, 'solerni') }}
-            </a>
-        {% endif %}
-    {% if expectedCorrections is not defined or expectedCorrections > 0 %}
-        {% for badge in badges %}
-            {% if 'owned' == badge.type %}
-                {% set badge     = badge.badge.badge %}
-            {% else %}
-                {% set badge = badge.badge %}
-            {% endif %}
-           <div class="slrn-dropzone-bloc">
-               <div class='drop__annoncement__badge'>
-                   <img src="{{ image(badge.webPath).cropResize(75, 75) }}" alt="{{ badge.name }}" class="drop__annoncement__badge__img" width="75" height="75" />
-                   <span class='drop__annoncement__title bold'>Badge &laquo; {{ badge.name }} &raquo;</span>
-               </div>
-           </div>
-        {% endfor %}
+{# Retour à la liste des badges #}
+<div class="slrn-container-dropzone__header">
+    {% if viewCorrections is defined and viewCorrections == true %}
+        {# back to dropzone result #}
+        <a title="{{ 'evalDone'|trans({}, 'solerni') }}" href="{{ path( 'icap_dropzone_open', { 'resourceId': dropzone.getId() } ) }}" class="black_link">
+            <i class="icon-chevron-left no_underline"></i> {{ 'back_result'|trans({}, 'solerni') }}
+        </a>
+    {% else %}
+        {# back to my badges workspace list #}
+        <a title="{{ 'page_my_badges'|trans({}, 'platform') }}" href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="black_link">
+            <i class="icon-chevron-left no_underline"></i> {{ 'back_my_badges'|trans({}, 'solerni') }}
+        </a>
     {% endif %}
-    </div>
-{% endif %}
+    {% if badges.getNbResults > 0 %}
+        {% if expectedCorrections is not defined or expectedCorrections > 0 %}
+            {% for badge in badges %}
+                {% if 'owned' == badge.type %}
+                    {% set badge     = badge.badge.badge %}
+                {% else %}
+                    {% set badge = badge.badge %}
+                {% endif %}
+               <div class="slrn-dropzone-bloc">
+                   <div class='drop__annoncement__badge'>
+                       <img src="{{ image(badge.webPath).cropResize(75, 75) }}" alt="{{ badge.name }}" class="drop__annoncement__badge__img" width="75" height="75" />
+                       <span class='drop__annoncement__title bold'>Badge &laquo; {{ badge.name }} &raquo;</span>
+                   </div>
+               </div>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+</div>
 
 
 

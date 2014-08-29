@@ -387,8 +387,9 @@ class DropzoneController extends DropzoneBaseController
         /* Find Mooc URL */
         $moocService = $this->container->get('orange.mooc.service');
         $lesson = $moocService->getLessonFromWorkspace( $workspace, $user );
-        $moocbackUrl = $moocService->getRouteToTheLastChapter( $lesson, $user );
-        
+        if ( null != $lesson ) {
+            $moocbackUrl = $moocService->getRouteToTheLastChapter( $lesson, $user );
+        }
             
         $PeerReviewEndCase = $dropzoneManager->isPeerReviewEndedOrManualStateFinished($dropzone,$nbCorrections);
         return array(

@@ -264,11 +264,12 @@
             
             if ({{ dropzone.manualPlanning ? 'true' : 'false' }}) {
                 //manualPlanning();
-                datesPlanning(); // Force datesPlanning until we fix manual state
+                $('#icap_dropzone_common_form_manualPlanning_1').click(); // ugly fix to force planning
+                datesPlanning();
             } else {
                 datesPlanning();
             }
-
+            
             $('#icap_dropzone_common_form_diplayCorrectionsToLearners').click(function()
             {
                 manageCorrectionDeny();

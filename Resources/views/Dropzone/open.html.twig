@@ -34,8 +34,15 @@
         {# Header with link and associated badge #}
         {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
         
-        {# Cas : l'évaluation est terminée #}
-        {% if dropzone.endReview < date() and expectedCorrections > 0 %}
+        {# Cas : case préalablement cochée. We shouldn't be there as the controller redirects us #}
+        {% if drop is not null and drop.finished == false %}
+            {<script>
+			 /*<![CDATA[*/
+			   window.location.href = '{{ path('icap_dropzone_drop', {'resourceId': dropzone.id}) }}';
+			/*]]>*/
+			</script>
+            
+        {% elseif dropzone.endReview < date() and expectedCorrections > 0 %}
             <div class="slrn-grey-block slrn-info-block">
                 {% set buttonDisabled = true %}
                 {% set endEvalDate = dropzone.endReview|date("d/m/Y") %}
@@ -144,7 +151,7 @@
                    <p>{{ 'info_start'| trans({}, 'solerni') }}</p>
                </div>
             
-                <label for='letsgo' >
+                <label class="slrn-lets-go" for='letsgo' >
                     <input type='checkbox' value='go' name='letsgo' id='letsgo'/>
                     {{ 'checkboxStart'|trans({ 'expectedCorrections': expectedCorrections }, 'solerni') }}
                 </label>
