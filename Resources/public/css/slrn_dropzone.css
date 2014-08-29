@@ -441,6 +441,7 @@ h4 {
 
 .fakeone {
     padding-left: 6.2em;
+    z-index: -1;
 }
 
 .fakeone--uploading {
