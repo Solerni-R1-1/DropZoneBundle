@@ -69,7 +69,7 @@ limit_date_eval: 'Date limite pour corriger les dossiers :'
 # N
 no_files: 'Aucun fichier ajouté'
 no_copy_to_correct: 'Désolé, aucune copie n''est disponible pour le moment.<br>A très bientôt'
-note: 'Note'
+note: 'Score'
 
 #O
 ok_done: 'OK, j''ai terminé'
@@ -92,10 +92,11 @@ save and finished: 'OK, j''ai fini mon dossier de preuves et souhaite être éva
 start_correction_numbered: 'Vous devez à votre tour <span class="slrn-bold">évaluer expectedCorrections dossiers afin d''obtenir votre évaluation finale</span>'
 start_date: 'Date de début'
 see_corrections: 'Voir les corrections'
-started: 'Commencée'
+started: 'Début'
+status: état
 
 #O
-over: 'Terminée'
+over: 'Fin'
 
 # T
 text: 'Rédiger un texte'

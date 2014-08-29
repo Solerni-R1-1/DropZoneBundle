@@ -3,27 +3,26 @@
 {% else %}
     {%  set viewState_var = 'preview' %}
 {% endif %}
-<div class="table-responsive">
-    <table class="table">
-        <thead>
-        <th>Etat</th>
-        <th>{{ 'correction_th'|trans({}, 'solerni') }}
+<div class="table-responsive slrn-table-results">
+    <table class="table slrn-table">
+        <thead class="slrn-table-header">
+        <th class="slrn-table-cell">{{ 'status'|trans({}, 'solerni') }}</th>
+        <th class="slrn-table-cell">{{ 'correction_th'|trans({}, 'solerni') }}
             {% if byUserMod == 0 %}
                 Correcteur
             {% endif %}
         </th>
-        <th>{{ 'started'|trans({}, 'solerni') }}</th>
+        <th class="slrn-table-cell">{{ 'started'|trans({}, 'solerni') }}</th>
         {#<th>Dernière Ouverture</th>#}
-        <th>{{ 'over'|trans({}, 'solerni') }}</th>
-        <th>{{ 'note'|trans({}, 'solerni') }}</th>
+        <th class="slrn-table-cell">{{ 'over'|trans({}, 'solerni') }}</th>
+        <th class="slrn-table-cell">{{ 'note'|trans({}, 'solerni') }}</th>
         {#<th>Outils</th>#}
         </thead>
         <tbody>
         {% set validCorrections = 0 %}
         {% for correction in drop.corrections %}
-            <tr class="{% if not  correction.valid %}danger{% endif %} ">
-                <td>
-
+            <tr class="slrn-table-row {% if not  correction.valid %}danger{% endif %} ">
+                <td class="slrn-table-cell">
                     {#
                     {% if correction.finished == false %}
                         <span class="text-warning glyphicon icon-time" data-toggle="tooltip"
@@ -46,7 +45,7 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                <td>
+                <td class="slrn-table-cell">
                     <a href="{{ path('icap_dropzone_drops_detail_correction', {'resourceId': dropzone.id, 'correctionId': correction.id, 'state': viewState_var, 'nbCorrections': loop.index0 }) }}"
                        class="pink_link" data-toggle="tooltip"
                        data-original-title="{{ 'See correction'|trans({},'icap_dropzone') }}">
@@ -61,22 +60,22 @@
                             {{ 'Correction number %num%'|trans({'%num%': loop.index}, 'icap_dropzone') }}
                         {% endif %}
                     </a>
-                </td>
-                <td>
-                    {{ correction.startDate|date('formatDatetime'|trans({}, 'icap_dropzone')) }}
+                </td class="slrn-table-cell">
+                <td class="slrn-table-cell">
+                    {{ correction.startDate|date('d/m/Y H\\hm'|trans({}, 'icap_dropzone')) }}
                 </td>
                 {#<td>
                     {{ correction.lastOpenDate|date('formatDatetime'|trans({}, 'icap_dropzone')) }}
                 </td>#}
-                <td>
+                <td class="slrn-table-cell">
                     {% if correction.endDate != null %}
-                        {{ correction.endDate|date('formatDatetime'|trans({}, 'icap_dropzone')) }}
+                        {{ correction.endDate|date('d/m/Y H\\hm'|trans({}, 'icap_dropzone')) }}
                     {% else %}
                         --
                     {% endif %}
                 </td>
-                <td>
-                    {% if correction.totalGrade != null %}{{ correction.totalGrade|round(1, 'common')|replace({'.': ','}) }}{% else %}--{% endif %}/20
+                <td class="slrn-table-cell">
+                    {% if correction.totalGrade != null %}{{ correction.totalGrade|round(1, 'common')|replace({'.': ','}) }}{% else %}--{% endif %}<span class="slrn-sep">/</span>20
                 </td>
                 {#<td>
                     <div class="btn-group correction-tools">

@@ -403,8 +403,7 @@ class DropzoneController extends DropzoneBaseController
             'PeerReviewEndCase'         =>$PeerReviewEndCase,
             'badges'                    => $badgeList['badgePager'],
             'nbTotalBadges'             => $badgeList['nbTotalBadges'],
-            'nbAcquiredBadges'          => $badgeList['nbAcquiredBadges'],
-            'user'                      => $user
+            'nbAcquiredBadges'          => $badgeList['nbAcquiredBadges']
         );
     }
 

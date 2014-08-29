@@ -46,7 +46,7 @@
            {# we never corrected anything yet. First timer #}
            {% if nbCorrections == 0 %}
                 <h2>{{ 'evaluation_by_peers'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-                <hr/>
+                <hr class="slrn-hr slrn-hr--lightgrey">
                 <div>
                     <p class="date__end">{{ 'limit_date_eval'|trans({}, 'solerni') }} {{ dropzone.getEndReview()|date("d/m/Y") }}</p>
                     <div class="slrn-grey-block slrn-grey-block--with-title">
@@ -97,7 +97,7 @@
                 {# We already corrected something. Go to next  #}
                 {% set buttonText = 'continue_corrections'|trans({ 'nextFile': nbCorrections + 1 }, 'solerni') %}
                 <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-                <hr />
+                <hr class="slrn-hr slrn-hr--lightgrey">
                 <p class="drop__instruction">{{ 'correction_done_text'|trans({ 'currentFile': nbCorrections }, 'solerni') }}</p>
                 
                 {% if hasCopyToCorrect == false %}
@@ -121,7 +121,7 @@
         {# Cas : on arrive pour la première fois #}
         {% else %}
 	        <h2>{{ 'welcome'| trans({}, 'solerni') }}<span class='FAQ'><a href="{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}" class='FAQ'>FAQ</a></span></h2>
-	        <hr/>
+	        <hr class="slrn-hr slrn-hr--lightgrey">
 	        {% if dropzone.instruction is not null %}
                 <div class='drop__instruction'>
                     {{ dropzone.instruction|raw }}

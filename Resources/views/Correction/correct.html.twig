@@ -127,7 +127,7 @@
             {% endif %}
             <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
 
-            <hr />
+            <hr class="slrn-hr slrn-hr--lightgrey">
             <div class="row slrn-dropzone-bloc">
                 <div class="col-md-8">
                     <div class='date__end'>{{ 'date_limite_corrections'|trans({}, 'solerni') }} {{ dropzone.endReview|date("d/m/Y") }}</div>

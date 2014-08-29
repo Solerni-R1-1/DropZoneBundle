@@ -10,7 +10,7 @@
         {% if drop.calculatedGrade >= dropzone.minimumScoreToPass %}
             {# Eval succeeded #}
 	        <h2>{{ 'evalDone'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-	        <hr />
+	        <hr class="slrn-hr slrn-hr--lightgrey">
             <span class="slrn-bigger">
                 {{ 'default_success_message'|trans({'evalGrade': drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }, 'solerni')|raw }}                   
 	        </span>
@@ -62,7 +62,7 @@
         {% else %}
             {# Eval is failed #}
 	        <h2>{{ 'evalDone'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-	        <hr/>
+	        <hr class="slrn-hr slrn-hr--lightgrey">
             <p class="slrn-bigger">
                 {{ 'default_failed_message'|trans({'%evalGrade%': drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }, 'solerni')|raw }}
                 <a class="pink_link" href="{{ path('icap_dropzone_drop_detail_by_user',{'resourceId': dropzone.id,'dropId':drop.id}) }}">
@@ -81,12 +81,12 @@
             </div>
 	     {% endif %}
         <div class="slrn-correct-buttons">
-            <a href="{{ mooc_service.getBackMoocUrl( workspace, user ) }}" class="btn btn-default btn-gris slrn-dropzone-cancel">{{ 'return_mooc'|trans({}, 'solerni') }}</a>
+            <a href="{{ mooc_service.getBackMoocUrl( workspace, app.user ) }}" class="btn btn-default btn-gris slrn-dropzone-cancel">{{ 'return_mooc'|trans({}, 'solerni') }}</a>
             
         </div>
     {% else %}
         <h2>{{ 'endNotOver'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-        <hr/>
+        <hr class="slrn-hr slrn-hr--lightgrey">
         {% if dropzone.endReview < date() %}
             <div class="slrn-grey-block slrn-info-block">
                 {% set endEvalDate = dropzone.endReview|date("d/m/Y") %}

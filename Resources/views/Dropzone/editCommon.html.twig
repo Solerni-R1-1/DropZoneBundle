@@ -261,9 +261,10 @@
 
             $('#icap_dropzone_common_form_manualPlanning_0').on('click', manualPlanning);
             $('#icap_dropzone_common_form_manualPlanning_1').on('click', datesPlanning);
-
+            
             if ({{ dropzone.manualPlanning ? 'true' : 'false' }}) {
-                manualPlanning();
+                //manualPlanning();
+                datesPlanning(); // Force datesPlanning until we fix manual state
             } else {
                 datesPlanning();
             }

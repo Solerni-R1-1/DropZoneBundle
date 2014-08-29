@@ -10,8 +10,8 @@
     <div class="container">
         {% if dropzone.hasCriteria() %}
             <div class="slrn-criteres">
-                <form id="correct-form" method="POST" action="{% if edit == false %}#{% elseif admin == true %}{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id, 'page': pager.currentPage}) }}{% else %}{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': pager.currentPage}) }}{% endif %}" class="form-horizontal">
-                    <hr/>
+                <form class="slrn-criteres_form" id="correct-form" method="POST" action="{% if edit == false %}#{% elseif admin == true %}{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id, 'page': pager.currentPage}) }}{% else %}{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': pager.currentPage}) }}{% endif %}" class="form-horizontal">
+                    <hr class="slrn-hr slrn-hr--lightgrey">
                     <div class="slrn-criteres__list">
                         {% for criterion in pager.currentPageResults %}
                             {% set criterionNumber = (((pager.currentPage-1) * pager.maxPerPage) + loop.index) %}
@@ -52,7 +52,7 @@
                                     <span class="criterion-grade" data-criterion="icap_dropzone_correct_criteria_page_form[{{ criterion.id }}]">{{ criterionGrade }}</span>/{{ dropzone.totalCriteriaColumn-1 }}
                                 </div>
                             </div>
-                            <hr />
+                            <hr class="slrn-hr slrn-hr--lightgrey">
                         {% endfor %}
                         {{ form_rest(form) }}
                     </div>
