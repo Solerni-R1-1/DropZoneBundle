@@ -100,7 +100,6 @@ h4 {
 	padding:            1em;
 	font-size:          1.7em;
     position:           relative;
-    margin-bottom:      1em;
     overflow:           hidden;
     line-height:        3;
 }
@@ -187,7 +186,7 @@ h4 {
 .slrn-grey-block {
     background-color: #EEEEEF;
     padding: 1em;
-    margin: 0 0 2em 0;
+    margin: 0 0 1em 0;
 }
 
 .slrn-grey-block--with-title {
@@ -202,12 +201,12 @@ h4 {
 }
 
 .slrn-info-block {
-    padding-left: 4.2em;
-    position: relative;
-    min-height: 5em;
-    font-size: 1.4em;
-    color: #4C667D;
-    line-height: 1.2;
+    padding-left:   4.2em;
+    position:       relative;
+    min-height:     5em;
+    font-size:      1.3em;
+    color:          #4C667D;
+    line-height:    1.3;
 }
 
 .slrn-info-block p:first-of-type {
@@ -215,16 +214,17 @@ h4 {
 }
 
 .slrn-info-block:before {
-    content: "";
-    background: transparent url(../../clarolinecore/images/sprites_solerni.png) no-repeat 0 -657px scroll;
-    width: 31px;
-    height: 66px;
-    position: absolute;
-    left: 1em;
+    content:        "";
+    background:     transparent url(../../clarolinecore/images/sprites_solerni.png) no-repeat 0 -657px scroll;
+    width:          31px;
+    height:         66px;
+    position:       absolute;
+    left:           1em;
 }
 
 .slrn-dropzone-bloc {
-    padding: 1em 0;
+    padding:    1em 0;
+    overflow:   hidden;
 }
 
 .slrn-document-list {
@@ -243,7 +243,7 @@ h4 {
     height:     38px;
     background: transparent url(../../clarolinecore/images/sprites_solerni.png) no-repeat 0 -725px scroll;
     position:   relative;
-    top:        2.5em;
+    top:        2.3em;
 }
 
 .slrn-dropzone-bloc .tooltip-inner { background-color: #999 !important; color: #FFF; }
@@ -276,8 +276,7 @@ h4 {
 
 .slrn-radio-cell--radios .radio {
     padding-top: 0;
-    margin-right: 1em;
-    margin-left: 0;
+    margin: 0 1em 0 0;
 }
 
 .slrn-radio-cell--radios .radio:last-child {
@@ -306,8 +305,8 @@ h4 {
 }
 
 .slrn-dropzone-cancel {
-    margin-right: 1em;
-    color: #FFF;
+    margin-right:   2em;
+    color:          #FFF;
 }
 
 .slrn-dropzone-cancel:hover {
@@ -568,4 +567,13 @@ table th {
 .slrn-btn-garbage {
     position:   relative;
     top:        -8px;
+}
+
+.slrn-table .glyphicon.icon-warning-sign {
+    color:      #999;
+    font-size:  1.5em;
+}
+
+.slrn-center {
+    text-align: center;
 }

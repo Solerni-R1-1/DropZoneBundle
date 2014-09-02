@@ -34,6 +34,8 @@
    </div>
     <div class="col-xs-9 col-md-9 slrn-dropzone-correc">
     <div class="container container-dropzone slrn-container-dropzone">
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
         {% if admin %}
             <h2 class="{% if correction.reporter %}text-danger{% endif %}">
                 {{ 'Correction by %firstName% %lastName%'|trans({'%firstName%': correction.user.firstName, '%lastName%': correction.user.lastName}, 'icap_dropzone') }}
@@ -46,17 +48,11 @@
             </div>
             <br/>
 
-            {% if dropzone.instruction != null %}
+            {% if dropzone.instruction is defined and dropzone.instruction is not empty %}
                 {%  include 'IcapDropzoneBundle:Dropzone:recallInstruction.html.twig' %}
                 <br/>
             {% endif %}
 
-{#
-            {% if dropzone.correctionInstruction|default and dropzone.correctionInstruction != ''  and dropzone.correctionInstruction != '<p></p>' %}
-                {%  include 'IcapDropzoneBundle:Correction:correctionInstructions.html.twig' %}
-                <br/>
-            {% endif %}
-#}
             {% if correction.reporter %}
                 <div class="col-md-12">
                     <span class="text-danger"><span class="glyphicon icon-warning-sign"></span>{{ 'This correction has reported abuse'|trans({}, 'icap_dropzone') }}</span>
@@ -128,8 +124,8 @@
             <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
 
             <hr class="slrn-hr slrn-hr--lightgrey">
-            <div class="row slrn-dropzone-bloc">
-                <div class="col-md-8">
+            <div class="slrn-dropzone-bloc">
+                <div class="col-md-8 col-xs-8">
                     <div class='date__end'>{{ 'date_limite_corrections'|trans({}, 'solerni') }} {{ dropzone.endReview|date("d/m/Y") }}</div>
                     {# display instructions collapse #}
                     {% include 'IcapDropzoneBundle:Solerni:instructionCollapse.html.twig' %}
@@ -141,7 +137,7 @@
                     {%  else %}
                          <h2>{{ 'Correction'|trans({}, 'icap_dropzone') }}</h2> #}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-xs-4">
                     {% include 'IcapDropzoneBundle:Solerni:forumComponent.html.twig' %}
                 </div>
             </div>
@@ -255,7 +251,7 @@
             {% block dropzone_correct_content %}
             {% endblock %}
         {% endif %}
-    </div>
+            </div></div></div>
     </div></section>
 {% endblock %}
 

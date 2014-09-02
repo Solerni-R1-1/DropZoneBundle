@@ -1,7 +1,12 @@
 <!--{{ macros.flashBox() }}-->
 {# Retour à la liste des badges #}
 <div class="slrn-container-dropzone__header">
-    {% if viewCorrections is defined and viewCorrections == true %}
+    {% if state is defined and state == 'preview' %}
+        {# back to correction list#}
+        <a title="{{ 'evalDone'|trans({}, 'solerni') }}" href="{{ path('icap_dropzone_drop_detail_by_user',{'resourceId': dropzone.id,'dropId':correction.drop.id}) }}" class="black_link">
+            <i class="icon-chevron-left no_underline"></i> {{ 'back_corrections'|trans({}, 'solerni') }}
+        </a>
+    {% elseif viewCorrections is defined and viewCorrections == true %}
         {# back to dropzone result #}
         <a title="{{ 'evalDone'|trans({}, 'solerni') }}" href="{{ path( 'icap_dropzone_open', { 'resourceId': dropzone.getId() } ) }}" class="black_link">
             <i class="icon-chevron-left no_underline"></i> {{ 'back_result'|trans({}, 'solerni') }}
@@ -13,21 +18,19 @@
         </a>
     {% endif %}
     {% if badges.getNbResults > 0 %}
-        {% if expectedCorrections is not defined or expectedCorrections > 0 %}
-            {% for badge in badges %}
-                {% if 'owned' == badge.type %}
-                    {% set badge     = badge.badge.badge %}
-                {% else %}
-                    {% set badge = badge.badge %}
-                {% endif %}
-               <div class="slrn-dropzone-bloc">
-                   <div class='drop__annoncement__badge'>
-                       <img src="{{ image(badge.webPath).cropResize(75, 75) }}" alt="{{ badge.name }}" class="drop__annoncement__badge__img" width="75" height="75" />
-                       <span class='drop__annoncement__title bold'>Badge &laquo; {{ badge.name }} &raquo;</span>
-                   </div>
-               </div>
-            {% endfor %}
-        {% endif %}
+       {% for badge in badges %}
+            {% if 'owned' == badge.type %}
+                {% set badge     = badge.badge.badge %}
+            {% else %}
+                {% set badge = badge.badge %}
+            {% endif %}
+            <div class="slrn-dropzone-bloc">
+                <div class='drop__annoncement__badge'>
+                    <img src="{{ image(badge.webPath).cropResize(75, 75) }}" alt="{{ badge.name }}" class="drop__annoncement__badge__img" width="75" height="75" />
+                    <span class='drop__annoncement__title bold'>Badge &laquo; {{ badge.name }} &raquo;</span>
+                </div>
+            </div>
+        {% endfor %}
     {% endif %}
 </div>
 

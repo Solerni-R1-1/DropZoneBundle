@@ -9,6 +9,7 @@ attribute_rating: 'Vous allez attribuer la note de'
 buttonStart: 'Ok, commencer à constituer mon dossier de preuves'
 back_my_badges: 'Retour à la liste des badges'
 back_result: 'Retour au résultat de mon évaluation'
+back_corrections: 'Retour à la liste des corrections'
 
 # C
 checkboxStart: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autres retours de preuve »'
@@ -85,6 +86,7 @@ review_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startE
 report_copy: 'Signaler la copie'
 return_mooc: 'Retour au Mooc'
 review_is_over: 'Désolé, la date limite pour corriger les dossiers est achevée depuis le <span class="slrn-bold">endEvalDate</span>. Vous ne pouvez plus participer à cette évaluation.'
+Reported: Correction signalée
 
 # S
 start_corrections: 'OK, corriger le 1er dossier'

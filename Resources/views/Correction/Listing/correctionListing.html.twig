@@ -6,7 +6,7 @@
 <div class="table-responsive slrn-table-results">
     <table class="table slrn-table">
         <thead class="slrn-table-header">
-        <th class="slrn-table-cell">{{ 'status'|trans({}, 'solerni') }}</th>
+        <th class="slrn-table-cell slrn-center">{{ 'status'|trans({}, 'solerni') }}</th>
         <th class="slrn-table-cell">{{ 'correction_th'|trans({}, 'solerni') }}
             {% if byUserMod == 0 %}
                 Correcteur
@@ -15,14 +15,14 @@
         <th class="slrn-table-cell">{{ 'started'|trans({}, 'solerni') }}</th>
         {#<th>Dernière Ouverture</th>#}
         <th class="slrn-table-cell">{{ 'over'|trans({}, 'solerni') }}</th>
-        <th class="slrn-table-cell">{{ 'note'|trans({}, 'solerni') }}</th>
+        <th class="slrn-table-cell slrn-center">{{ 'note'|trans({}, 'solerni') }}</th>
         {#<th>Outils</th>#}
         </thead>
         <tbody>
         {% set validCorrections = 0 %}
         {% for correction in drop.corrections %}
             <tr class="slrn-table-row {% if not  correction.valid %}danger{% endif %} ">
-                <td class="slrn-table-cell">
+                <td class="slrn-table-cell slrn-center">
                     {#
                     {% if correction.finished == false %}
                         <span class="text-warning glyphicon icon-time" data-toggle="tooltip"
@@ -30,14 +30,13 @@
                     {% endif %}
                     #}
                     {% if not correction.valid %}
-
                         <span class=" glyphicon icon-minus-sign" data-toggle="tooltip"
                               data-original-title="{{ 'Invalidated'|trans({}, 'icap_dropzone') }}"></span>
                     {% else %}
                         {% set validCorrections = validCorrections+1 %}
                         {% if correction.reporter %}
                             <span class="text-danger glyphicon icon-warning-sign" data-toggle="tooltip"
-                                  data-original-title="{{ 'Reported'|trans({}, 'icap_dropzone') }}"></span>
+                                  data-original-title="{{ 'Reported'|trans({}, 'solerni') }}"></span>
                         {% endif %}
                         {% if correction.correctionDenied %}
                             <span class="text-warning glyphicon icon-exclamation-sign" data-toggle="tooltip"
@@ -74,7 +73,7 @@
                         --
                     {% endif %}
                 </td>
-                <td class="slrn-table-cell">
+                <td class="slrn-table-cell slrn-center">
                     {% if correction.totalGrade != null %}{{ correction.totalGrade|round(1, 'common')|replace({'.': ','}) }}{% else %}--{% endif %}<span class="slrn-sep">/</span>20
                 </td>
                 {#<td>

@@ -81,11 +81,15 @@
             {# drop details #}
             <div class="slrn-grey-block slrn-grey-block--with-title">
                 <h3 class="slrn-grey-block-title">{{ 'drop_details'|trans({}, 'solerni') }}</h3>
-                {% for document in drop.documents %}
-                    <div class="slrn-drop-list__item slrn-drop-list__item--no-garbage row col-md-12">
-                        {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}
-                     </div>
-                {% endfor %}
+                {% if drop.documents|length > 0 %}
+                    {% for document in drop.documents %}
+                        <div class="slrn-drop-list__item slrn-drop-list__item--no-garbage row col-md-12">
+                            {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}
+                         </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="slrn-bold">{{ 'No document associated'|trans({}, 'icap_dropzone') }}</p>
+                {% endif %}
             </div>
 
             <h3>

@@ -84,12 +84,16 @@
                             <p>{{ 'no_files' | trans({}, 'solerni') }}
                         {% else %}
                             {% set buttonDisabled = '' %}
-                            {% for document in drop.documents %}
-                                <div class="slrn-drop-list__item row col-md-12">
-                                    {% set showGarbage = true %}
-                                    {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}
-                                </div>
-                            {% endfor %}
+                            {% if drop.documents|length > 0 %}
+                                {% for document in drop.documents %}
+                                    <div class="slrn-drop-list__item row col-md-12">
+                                        {% set showGarbage = true %}
+                                        {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="slrn-bold">{{ 'No document associated'|trans({}, 'icap_dropzone') }}</p>
+                            {% endif %}
                         {% endif %}
                     </div>
                 {% endif %}
