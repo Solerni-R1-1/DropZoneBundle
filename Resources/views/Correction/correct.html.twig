@@ -37,123 +37,42 @@
         <div class="row">
             <div class="col-md-12 col-xs-12">
         {% if admin %}
-            <h2 class="{% if correction.reporter %}text-danger{% endif %}">
-                {{ 'Correction by %firstName% %lastName%'|trans({'%firstName%': correction.user.firstName, '%lastName%': correction.user.lastName}, 'icap_dropzone') }}
-            </h2>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <a class="btn btn-default btn-sm" href="{{ path('icap_dropzone_drops_detail', {'resourceId': dropzone.id, 'dropId': correction.drop.id}) }}"><span class="glyphicon icon-angle-left"></span> {{ 'Return to corrections'|trans({}, 'icap_dropzone') }}</a>
-                </div>
-            </div>
-            <br/>
-
-            {% if dropzone.instruction is defined and dropzone.instruction is not empty %}
-                {%  include 'IcapDropzoneBundle:Dropzone:recallInstruction.html.twig' %}
-                <br/>
-            {% endif %}
-
-            {% if correction.reporter %}
-                <div class="col-md-12">
-                    <span class="text-danger"><span class="glyphicon icon-warning-sign"></span>{{ 'This correction has reported abuse'|trans({}, 'icap_dropzone') }}</span>
-                    <a href="#reportModal" data-toggle="modal" class="btn btn-danger btn-sm pull-right">{{ 'Remove report'|trans({}, 'icap_dropzone') }}</a>
-
-                    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title">{{ 'Warning'|trans({}, 'icap_dropzone') }}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    {{ 'You are about to remove a report. What do you do'|trans({}, 'icap_dropzone') }}
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</button>
-                                    <a href="{{ path('icap_dropzone_remove_report', {'resourceId': dropzone.id, 'dropId': correction.drop.id, 'correctionId': correction.id, 'invalidate': 0}) }}" class="btn btn-danger pull-right">{{ 'Keep this correction scored zero'|trans({}, 'icap_dropzone') }}</a>
-                                    <a href="{{ path('icap_dropzone_remove_report', {'resourceId': dropzone.id, 'dropId': correction.drop.id, 'correctionId': correction.id, 'invalidate': 1}) }}" class="btn btn-danger pull-right">{{ 'Invalidate this correction'|trans({}, 'icap_dropzone') }}</a>
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-                </div>
-            {% endif %}
-
-            <div class="row">
-                <div class="text-muted col-md-4">Documents:</div>
-                <div class="col-md-8">
-                    <ul class="list-unstyled">
-                        {% for document in correction.drop.documents %}
-                            <li>{% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-{#
-            {% set documentListText = 'Documents'|trans({}, 'icap_dropzone') %}
-            {{ dropzoneMacros.displayDocumentsList(correction.drop, dropzone, 6, "condensed", documentListText) }}
-#}
-            <div class="row">
-                <div class="text-muted col-md-4">{{ 'Learner'|trans({}, 'icap_dropzone') }}</div>
-                <div class="col-md-8">{{ correction.drop.user.firstName }} {{ correction.drop.user.lastName }}</div>
-            </div>
-
-            <br/>
-
-            <div class="row">
-                <div class="text-muted col-md-4">{{ 'Corrector'|trans({}, 'icap_dropzone') }}</div>
-                <div class="col-md-8">{{ correction.user.firstName }} {{ correction.user.lastName }}</div>
-            </div>
-
-            <div class="row">
-                <div class="text-muted col-md-4">{{ 'Grade attribuated'|trans({}, 'icap_dropzone') }}</div>
-                <div class="col-md-8">{% if correction.totalGrade != null %}{{ correction.totalGrade|number_format(2) }}{% else %}--{% endif %}/20</div>
-            </div>
-        {% else %}
-            {# NO ADMIN #}
+            {# This is the view correction case #}
             {# Header with link and associated badge #}
             {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
-            {% if nbCorrections is not defined and state == 'preview' %}
+            {% if nbCorrections is not defined and state is defined and ( state == 'preview' or state == 'show' )  %}
                 {% if  app.request.get('nbCorrections') %}
                     {% set nbCorrections = app.request.get('nbCorrections') %}
                 {% else %}
                     {% set nbCorrections = 0 %}
                 {% endif %}
             {% endif %}
-            <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-
+            
+            {% if state is defined %}
+                <h2>{{ 'correction_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+            {% else %}
+                <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+            {% endif %}
             <hr class="slrn-hr slrn-hr--lightgrey">
-            <div class="slrn-dropzone-bloc">
-                <div class="col-md-8 col-xs-8">
-                    <div class='date__end'>{{ 'date_limite_corrections'|trans({}, 'solerni') }} {{ dropzone.endReview|date("d/m/Y") }}</div>
+            {% if state is not defined %}
+                <div class="slrn-dropzone-bloc">
+                    <div class="col-md-8 col-xs-8">
+            {% else %}
+                <div class="slrn-dropzone-bloc slrn-dropzone-bloc--fullwidth">
+                    <div class="col-md-12 col-xs-12">
+                {% endif %}
+                    {% if state is not defined %}
+                        <div class='date__end'>{{ 'date_limite_corrections'|trans({}, 'solerni') }} {{ dropzone.endReview|date("d/m/Y") }}</div>
+                    {% endif %}
                     {# display instructions collapse #}
                     {% include 'IcapDropzoneBundle:Solerni:instructionCollapse.html.twig' %}
-            {#
-            <div class="row">
-                <div class="col-md-12">
-                    {% if state is defined and state =='preview' %}
-                        <h2>{{ 'Correction of your copy'|trans({}, 'icap_dropzone') }}</h2>
-                    {%  else %}
-                         <h2>{{ 'Correction'|trans({}, 'icap_dropzone') }}</h2> #}
                 </div>
-                <div class="col-md-4 col-xs-4">
-                    {% include 'IcapDropzoneBundle:Solerni:forumComponent.html.twig' %}
-                </div>
+                {% if state is not defined %}
+                    <div class="col-md-4 col-xs-4">
+                        {% include 'IcapDropzoneBundle:Solerni:forumComponent.html.twig' %}
+                    </div>
+                {% endif %}
             </div>
-            {# DROP STATUS BAR #}
-{#
-            {% include 'IcapDropzoneBundle:Drop:dropStatus.html.twig' %}
-            
-            {% if dropzone.instruction != null %}
-                {%  include 'IcapDropzoneBundle:Dropzone:recallInstruction.html.twig' %}
-            {% endif %}
-
-            {% if dropzone.correctionInstruction|default and dropzone.correctionInstruction != ''  and dropzone.correctionInstruction != '<p></p>' %}
-                {%  include 'IcapDropzoneBundle:Correction:correctionInstructions.html.twig' %}
-                <br/>
-            {% endif %}
-#}
             {% if correction is not null %}
                     {#<h3>
                         <div class="row">
@@ -174,14 +93,130 @@
                 <div class="row slrn-dropzone-bloc">
                     <div class="col-md-12">
                         <div class="slrn-grey-block slrn-grey-block--with-title">
-                            {%  if correction.dropzone.isPeerReview() and correction.dropzone.hasCriteria() %}
+                            {%  if correction.dropzone.isPeerReview() and correction.dropzone.hasCriteria() and state is not defined %}
                                 {% if correction.reporter == false %}
-                                    <a data-toggle="tooltip" data-placement="top" title="{{ 'report_copy'|trans({}, 'solerni') }}" href="{{ path('icap_dropzone_report_drop', {'resourceId': dropzone.id, 'dropId': correction.drop.id, 'correctionId': correction.id}) }}" class="pull-right launch-modal slrn-report-button"></a>
+                                    <a  data-toggle="tooltip" 
+                                        data-placement="top" 
+                                        title="{{ 'report_copy'|trans({}, 'solerni') }}" 
+                                        href="{{ path('icap_dropzone_report_drop', {
+                                            'resourceId': dropzone.id,
+                                            'dropId': correction.drop.id,
+                                            'correctionId': correction.id}) }}" 
+                                        class="pull-right launch-modal slrn-report-button">
+                                    </a>
                                 {% else %}
                                     <span class="label label-danger pull-right">{{ 'Already reported'|trans({}, 'icap_dropzone') }}</span>
                                 {% endif %}
                             {%  endif %}
-                            <h3 class="slrn-grey-block-title">{{ 'document_list_to_correct'|trans({}, 'solerni') }}</h3>
+                            {% if state is not defined %}
+                                <h3 class="slrn-grey-block-title">{{ 'document_list_to_correct'|trans({}, 'solerni') }}</h3>
+                            {% else %}
+                                <h3 class="slrn-grey-block-title">{{ 'drop_details'|trans({}, 'solerni') }}</h3>  
+                            {% endif %}
+                            {% if correction.drop.documents|length > 0 %}
+                                {% for document in correction.drop.documents %}
+                                    <div class="slrn-drop-list__item slrn-drop-list__item--no-garbage row col-md-12">
+                                        {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' with {'document': document} %}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="slrn-bold">{{ 'No document associated'|trans({}, 'icap_dropzone') }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+{#                <p>
+                    {%  if state is defined and  state == 'preview' %}
+                        {{ 'Here is the list of the corrected documents'|trans({}, 'icap_dropzone') }}
+                    {% else %}
+                        {{ 'Here is the list of documents which you must correct'|trans({}, 'icap_dropzone') }}
+                    {% endif %}
+                </p>
+                {% if correction.drop.documents|length > 0 %}
+                    {% set documentListText = 'Documents'|trans({}, 'icap_dropzone') %}
+                    {{ dropzoneMacros.displayDocumentsList(correction.drop, dropzone, 6, "condensed", documentListText) }}
+                {% else %}
+                    <p class="text-danger">{{ 'No document associated'|trans({}, 'icap_dropzone') }}</p>
+                {% endif %}#}
+            {% endif %}
+        {% else %}
+            {# NO ADMIN #}
+            {# Header with link and associated badge #}
+            {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
+            {% if nbCorrections is not defined and state is defined and state == 'preview' %}
+                {% if  app.request.get('nbCorrections') %}
+                    {% set nbCorrections = app.request.get('nbCorrections') %}
+                {% else %}
+                    {% set nbCorrections = 0 %}
+                {% endif %}
+            {% endif %}
+            
+            {% if state is defined %}
+                <h2>{{ 'correction_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+            {% else %}
+                <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+            {% endif %}
+            <hr class="slrn-hr slrn-hr--lightgrey">
+            {% if state is not defined %}
+                <div class="slrn-dropzone-bloc">
+                    <div class="col-md-8 col-xs-8">
+            {% else %}
+                <div class="slrn-dropzone-bloc slrn-dropzone-bloc--fullwidth">
+                    <div class="col-md-12 col-xs-12">
+                {% endif %}
+                    {% if state is not defined or state != 'preview' %}
+                        <div class='date__end'>{{ 'date_limite_corrections'|trans({}, 'solerni') }} {{ dropzone.endReview|date("d/m/Y") }}</div>
+                    {% endif %}
+                    {# display instructions collapse #}
+                    {% include 'IcapDropzoneBundle:Solerni:instructionCollapse.html.twig' %}
+                </div>
+                {% if state is not defined or state != 'preview' %}
+                    <div class="col-md-4 col-xs-4">
+                        {% include 'IcapDropzoneBundle:Solerni:forumComponent.html.twig' %}
+                    </div>
+                {% endif %}
+            </div>
+            {% if correction is not null %}
+                    {#<h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ 'Relevant documents'|trans({}, 'icap_dropzone') }}
+                            </div>
+                            <div class="col-md-6">
+                                {%  if correction.dropzone.isPeerReview() and correction.dropzone.hasCriteria() and ((state is defined and state != 'preview') or (state is not defined )) %}
+                                    {% if correction.reporter == false %}
+                                        <a href="{{ path('icap_dropzone_report_drop', {'correctionId': correction.id}) }}" class="btn btn-danger pull-right launch-modal">{{ 'Report'|trans({}, 'icap_dropzone') }}</a>
+                                    {% else %}
+                                        <span class="label label-danger pull-right">{{ 'Already reported'|trans({}, 'icap_dropzone') }}</span>
+                                    {% endif %}
+                                {%  endif %}
+                            </div>
+                        </div>
+                    </h3>#}
+                <div class="row slrn-dropzone-bloc">
+                    <div class="col-md-12">
+                        <div class="slrn-grey-block slrn-grey-block--with-title">
+                            {%  if correction.dropzone.isPeerReview() and correction.dropzone.hasCriteria() and state is not defined %}
+                                {% if correction.reporter == false %}
+                                    <a  data-toggle="tooltip" 
+                                        data-placement="top" 
+                                        title="{{ 'report_copy'|trans({}, 'solerni') }}" 
+                                        href="{{ path('icap_dropzone_report_drop', {
+                                            'resourceId': dropzone.id,
+                                            'dropId': correction.drop.id,
+                                            'correctionId': correction.id}) }}" 
+                                        class="pull-right launch-modal slrn-report-button">
+                                    </a>
+                                {% else %}
+                                    <span class="label label-danger pull-right">{{ 'Already reported'|trans({}, 'icap_dropzone') }}</span>
+                                {% endif %}
+                            {%  endif %}
+                                    
+                            {% if state is not defined %}
+                                <h3 class="slrn-grey-block-title">{{ 'document_list_to_correct'|trans({}, 'solerni') }}</h3>
+                            {% else %}
+                                <h3 class="slrn-grey-block-title">{{ 'drop_details'|trans({}, 'solerni') }}</h3>
+                            {% endif %}
                             {% if correction.drop.documents|length > 0 %}
                                 {% for document in correction.drop.documents %}
                                     <div class="slrn-drop-list__item slrn-drop-list__item--no-garbage row col-md-12">    
@@ -209,22 +244,6 @@
                 {% endif %}#}
             {% endif %}
         {% endif %}
-{#        {% if  state is defined and state == 'preview' and dropzone.getAllowCorrectionDeny %}
-
-           <div class="row">
-                <div class='col-md-12'>
-                    {% if correction.correctionDenied %}
-                    <span class="label label-danger btn-sm pull-right ">
-                        {{ 'Correction denied'|trans({},'icap_dropzone')}}
-                    </span>
-                    {% else %}
-                    <a href="{{ path('icap_dropzone_drops_deny_correction', {'resourceId': dropzone.id,  'correctionId': correction.id}) }}" class="btn btn-danger btn-sm pull-right launch-modal">
-                        {{ 'Deny correction'|trans({},'icap_dropzone')}}
-                    </a>
-                    {% endif %}
-                </div>
-            </div>
-        {% endif %}#}
         {% if correction.reporter %}
            <h3>{{ 'Reason of reporting'|trans({}, 'icap_dropzone') }}</h3>
             <div class="well">

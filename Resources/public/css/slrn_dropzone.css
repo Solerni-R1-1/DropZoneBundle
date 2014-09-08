@@ -206,7 +206,7 @@ h4 {
     min-height:     5em;
     font-size:      1.3em;
     color:          #4C667D;
-    line-height:    1.3;
+    line-height:    1.4;
 }
 
 .slrn-info-block p:first-of-type {
@@ -576,4 +576,36 @@ table th {
 
 .slrn-center {
     text-align: center;
+}
+
+.slrn-title-top-margin {
+    margin-top: 25px;
+}
+
+.slrn-dropzone-bloc--fullwidth {
+    margin-right: -30px;
+}
+
+.slrn-deny-correction {
+    overflow:   hidden;
+    position:   relative;
+    min-height: 50px;
+}
+
+.slrn-comment-view {
+    margin-top: 1em;
+}
+
+.slrn-deny-correction-btn-container {
+    position:   absolute;
+    right:      0;
+    bottom:     1em;
+    padding:    0;
+    margin:     0;
+    text-align: right;
+}
+
+.slrn-back-corrections-btn {
+    display:        block;
+    margin-top:     1.5em;
 }
