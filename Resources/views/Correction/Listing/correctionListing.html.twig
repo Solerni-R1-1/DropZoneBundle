@@ -30,16 +30,16 @@
                     {% endif %}
                     #}
                     {% if not correction.valid %}
-                        <span class=" glyphicon icon-minus-sign" data-toggle="tooltip"
+                        <span class="slrn-glyphicon glyphicon icon-minus-sign" data-toggle="tooltip"
                               data-original-title="{{ 'Invalidated'|trans({}, 'icap_dropzone') }}"></span>
                     {% else %}
                         {% set validCorrections = validCorrections+1 %}
                         {% if correction.reporter %}
-                            <span class="text-danger glyphicon icon-warning-sign" data-toggle="tooltip"
+                            <span class="slrn-glyphicon text-danger glyphicon icon-warning-sign" data-toggle="tooltip"
                                   data-original-title="{{ 'Reported'|trans({}, 'solerni') }}"></span>
                         {% endif %}
                         {% if correction.correctionDenied %}
-                            <span class="text-warning glyphicon icon-exclamation-sign" data-toggle="tooltip"
+                            <span class="slrn-glyphicon text-warning glyphicon icon-info-sign" data-toggle="tooltip"
                                   data-original-title="{{ 'Correction denied'|trans({}, 'icap_dropzone') }}"></span>
                         {% endif %}
                     {% endif %}
