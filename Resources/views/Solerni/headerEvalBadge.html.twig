@@ -17,17 +17,13 @@
             <i class="icon-chevron-left no_underline"></i> {{ 'back_my_badges'|trans({}, 'solerni') }}
         </a>
     {% endif %}
-    {% if badges.getNbResults > 0 %}
+    {% if badges is not empty %}
        {% for badge in badges %}
-            {% if 'owned' == badge.type %}
-                {% set badge     = badge.badge.badge %}
-            {% else %}
-                {% set badge = badge.badge %}
-            {% endif %}
+            {% set badgeEntity = badge.badge %}
             <div class="slrn-dropzone-bloc">
                 <div class='drop__annoncement__badge'>
-                    <img src="{{ image(badge.webPath).cropResize(75, 75) }}" alt="{{ badge.name }}" class="drop__annoncement__badge__img" width="75" height="75" />
-                    <span class='drop__annoncement__title bold'>Badge &laquo; {{ badge.name }} &raquo;</span>
+                    <img src="{{ image(badgeEntity.webPath).cropResize(75, 75) }}" alt="{{ badgeEntity.name }}" class="drop__annoncement__badge__img" width="75" height="75" />
+                    <span class='drop__annoncement__title bold'>Badge &laquo; {{ badgeEntity.name }} &raquo;</span>
                 </div>
             </div>
         {% endfor %}

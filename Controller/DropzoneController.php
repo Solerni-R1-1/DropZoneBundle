@@ -19,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Claroline\CoreBundle\Entity\Badge\Badge;
 
 class DropzoneController extends DropzoneBaseController
 {
@@ -382,7 +383,27 @@ class DropzoneController extends DropzoneBaseController
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
         $associatedBadge = $this->container->get('orange.badge.controller');
-        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
+        
+
+        $nbTotalBadges = count($badgeList);
+        $nbAcquiredBadges = 0;
+        $nbFailedBadges = 0;
+         
+        foreach ($badgeList as $badge) {
+        	if ($badge['status'] == Badge::BADGE_STATUS_OWNED) {
+        		$nbAcquiredBadges++;
+        	} else if ($badge['status'] == Badge::BADGE_STATUS_FAILED) {
+        		$nbFailedBadges++;
+        	}
+        }
+        
+        foreach ($badgeList as $i => $badge) {
+        	if ($badge['resource']['resource']['dropzone']->getId() != $dropzone->getId()) {
+        		unset($badgeList[$i]);
+			}
+        }
+        
         
         /* Find Mooc URL */
         $moocService = $this->container->get('orange.mooc.service');
@@ -401,10 +422,11 @@ class DropzoneController extends DropzoneBaseController
             'hasCopyToCorrect'          => $hasCopyToCorrect,
             'hasUnfinishedCorrection'   => $hasUnfinishedCorrection,
             'dropzoneProgress'          => $dropzoneProgress,
-            'PeerReviewEndCase'         =>$PeerReviewEndCase,
-            'badges'                    => $badgeList['badgePager'],
-            'nbTotalBadges'             => $badgeList['nbTotalBadges'],
-            'nbAcquiredBadges'          => $badgeList['nbAcquiredBadges']
+            'PeerReviewEndCase'         => $PeerReviewEndCase,
+            'badges'                    => $badgeList,
+        	'nbTotalBadges'				=> $nbTotalBadges,
+        	'nbAcquiredBadges' 			=> $nbAcquiredBadges,
+        	'nbFailedBadges' 			=> $nbFailedBadges
         );
     }
 
