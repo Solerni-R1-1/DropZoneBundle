@@ -25,6 +25,7 @@ use Icap\DropzoneBundle\Form\CorrectionCommentType;
 use Icap\DropzoneBundle\Form\CorrectionCriteriaPageType;
 use Icap\DropzoneBundle\Form\CorrectionStandardType;
 use Icap\DropzoneBundle\Form\CorrectionDenyType;
+use JMS\DiExtraBundle\Annotation as DI;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineDbalSingleTableAdapter;
@@ -36,9 +37,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Claroline\CoreBundle\Manager\BadgeManager;
 
 class CorrectionController extends DropzoneBaseController
 {
+	/** @var BadgeManager */
+	private $badgeManager;
+	
+	/**
+	 * Constructor.
+	 *
+	 * @DI\InjectParams({
+	 *     "badgeManager" = @DI\Inject("claroline.manager.badge")
+	 * })
+	 */
+	public function __construct(BadgeManager $badgeManager) {
+		$this->badgeManager = $badgeManager;
+	}
+	
+	
     private function checkRightToCorrect($dropzone, $user)
     {
         $em = $this->getDoctrine()->getManager();
@@ -435,7 +452,7 @@ class CorrectionController extends DropzoneBaseController
         
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
-        $associatedBadge = $this->container->get('orange.badge.controller');
+        $associatedBadge = $this->badgeManager;
         $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
         
         foreach ($badgeList as $i => $badge) {
@@ -554,7 +571,7 @@ class CorrectionController extends DropzoneBaseController
         
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
-        $associatedBadge = $this->container->get('orange.badge.controller');
+        $associatedBadge = $this->badgeManager;
         $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
         
         foreach ($badgeList as $i => $badge) {
@@ -848,7 +865,7 @@ class CorrectionController extends DropzoneBaseController
 
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
-        $associatedBadge = $this->container->get('orange.badge.controller');
+        $associatedBadge = $this->badgeManager;
         $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
         
         foreach ($badgeList as $i => $badge) {
@@ -943,7 +960,7 @@ class CorrectionController extends DropzoneBaseController
             
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
-        $associatedBadge = $this->container->get('orange.badge.controller');
+        $associatedBadge = $this->badgeManager;
         $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
         
         if ($edit) {

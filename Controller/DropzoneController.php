@@ -20,9 +20,26 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Claroline\CoreBundle\Entity\Badge\Badge;
+use Claroline\CoreBundle\Manager\BadgeManager;
+use JMS\DiExtraBundle\Annotation as DI;
 
 class DropzoneController extends DropzoneBaseController
 {
+	
+	/** @var BadgeManager */
+	private $badgeManager;
+	
+	/**
+	 * Constructor.
+	 *
+	 * @DI\InjectParams({
+	 *     "badgeManager" = @DI\Inject("claroline.manager.badge")
+	 * })
+	 */
+	public function __construct(BadgeManager $badgeManager) {
+		$this->badgeManager = $badgeManager;
+	}
+	
     /**
      * @Route(
      *      "/{resourceId}/edit",
@@ -382,7 +399,7 @@ class DropzoneController extends DropzoneBaseController
         
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
-        $associatedBadge = $this->container->get('orange.badge.controller');
+        $associatedBadge = $this->badgeManager;
         $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
         
 
