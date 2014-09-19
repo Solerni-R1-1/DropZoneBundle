@@ -907,7 +907,7 @@ class CorrectionController extends DropzoneBaseController
                         'edit' => false,
                         'state' => $state,
                         'dropzoneProgress' => $dropzoneProgress,
-                        'badges' => $badgeList['badgePager']
+                        'badges' => $badgeList
                     )
                 );           
         }
@@ -961,7 +961,13 @@ class CorrectionController extends DropzoneBaseController
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
         $associatedBadge = $this->badgeManager;
-        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
+        
+        foreach ($badgeList as $i => $badge) {
+        	if ($badge['resource']['resource']['dropzone']->getId() != $dropzone->getId()) {
+        		unset($badgeList[$i]);
+        	}
+        }
         
         if ($edit) {
             if ($this->getRequest()->isMethod('POST')) {
@@ -1008,7 +1014,7 @@ class CorrectionController extends DropzoneBaseController
                     'edit' => $edit,
                     'state' => $state,
                     'totalGrade' => $totalGrade,
-                    'badges' => $badgeList['badgePager']
+                    'badges' => $badgeList
                     )
                 );
 
@@ -1036,7 +1042,7 @@ class CorrectionController extends DropzoneBaseController
                     'edit' => $edit,
                     'state' => $state,
                     'totalGrade' => $totalGrade,
-                    'badges' => $badgeList['badgePager']
+                    'badges' => $badgeList
                     )
                 );
         }else if( $state == 'preview')
@@ -1056,7 +1062,7 @@ class CorrectionController extends DropzoneBaseController
                     'edit' => false,
                     'state' => $state,
                     'totalGrade' => $totalGrade,
-                    'badges' => $badgeList['badgePager']
+                    'badges' => $badgeList
                     )
                 );           
         }
