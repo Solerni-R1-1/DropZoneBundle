@@ -1,7 +1,7 @@
 <div class="row">
 <div class="col-md-12">
     {% if drop.countFinishedCorrections >= dropzone.expectedTotalCorrection %}
-        {% set totalBadgesToGo = nbTotalBadges - nbAcquiredBadges %}
+        {% set totalBadgesToGo = nbTotalBadges - (nbAcquiredBadges + nbFailedBadges) %}
         {% if totalBadgesToGo > 1 %}
             {% set plural = 's' %}
         {% else %}
@@ -14,24 +14,23 @@
             <span class="slrn-bigger">
                 {{ 'default_success_message'|trans({'evalGrade': drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }, 'solerni')|raw }}                   
 	        </span>
-            {% for workspaceBadge in badges %}
-                {% set badgeType = workspaceBadge.type %}
-                {% if 'owned' == badgeType %}
-                    {% set badge     = workspaceBadge.badge.badge %}
-                    {% set userBadge = workspaceBadge.badge %}
-                    {% set buttonLink = path( 'claro_workspace_tool_view_my_badge', {'workspaceId': workspace.id, 'slug': badge.slug } ) %}
+            {% for badge in badges %}
+                {% set status = badge.status %}
+                {% if 2 == status %}
+                    {% set badgeEntity 	= badge.badge %}
+                    {% set buttonLink 	= path( 'claro_workspace_tool_view_my_badge', {'workspaceId': workspace.id, 'slug': badgeEntity.slug } ) %}
                     <span class="slrn-bigger">{{ 'win_badge'|trans({ '%moocName%': workspace.getMooc().getTitle() }, 'solerni')|raw }}</span>
                     <div class="slrn-my_badges-list__item">
-                        <img src="{{ image(badge.webPath).cropResize( 112, 112 ) }}" 
-                             alt="{{ badge.name }}" 
+                        <img src="{{ image(badgeEntity.webPath).cropResize( 112, 112 ) }}" 
+                             alt="{{ badgeEntity.name }}" 
                              class="slrn-my_badges-list__item__image"
                              width="112"
                              height="112"
                         />
                         <section class="slrn-my_badges-list__body">
-                            <h6 class="slrn-my_badges-list__item__title">Badge &laquo; {{ badge.name }} &raquo;</h6>
-                            <p class=" slrn-my_badges-list__body__status"><span class="slrn-bold">Obtenu le :</span> {{ userBadge.issuedAt|date('date_format'|trans({}, 'platform')) }}</p>
-                            <article class="slrn-my_badges-list__content">{{ badge.criteria | raw }}</article>
+                            <h6 class="slrn-my_badges-list__item__title">Badge &laquo; {{ badgeEntity.name }} &raquo;</h6>
+                            <p class=" slrn-my_badges-list__body__status"><span class="slrn-bold">Obtenu le :</span> {{ badge.issuedDate|date('date_format'|trans({}, 'platform')) }}</p>
+                            <article class="slrn-my_badges-list__content">{{ badgeEntity.criteria | raw }}</article>
                             <footer class="slrn-my_badges-list__footer">
                                 <div class="">
                                     <span class="slrn-gratuit-icon">prix gratuit</span>
