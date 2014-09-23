@@ -1,71 +1,91 @@
 <div class="row">
 <div class="col-md-12">
     {% if drop.countFinishedCorrections >= dropzone.expectedTotalCorrection %}
-    
+        {% set totalBadgesToGo = nbTotalBadges - (nbAcquiredBadges + nbFailedBadges) %}
+        {% if totalBadgesToGo > 1 %}
+            {% set plural = 's' %}
+        {% else %}
+            {% set plural = '' %}
+        {% endif %}
         {% if drop.calculatedGrade >= dropzone.minimumScoreToPass %}
-        
-	        <h2>{{ 'endOK'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-	        <hr />
-            <p><span class="slrn-sub-title">Bravo !</span><br />
-                Vous avez réussi votre évaluation en obtenant une note de {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}/20.
-	        </p>
-            {% set totalBadgesToGo = nbTotalBadges - nbAcquiredBadges %}
-            {% if totalBadgesToGo > 1 %}
-                {% set plural = 's' %}
-            {% else %}
-                {% set plural = '' %}
-            {% endif %}
-            {% for workspaceBadge in badges %}
-                {% set badgeType = workspaceBadge.type %}
-
-                {% if 'owned' == badgeType %}
-                    {% set badge     = workspaceBadge.badge.badge %}
-                    {% set userBadge = workspaceBadge.badge %}
-                    {% set buttonLink = path( 'claro_workspace_tool_view_my_badge', {'workspaceId': workspace.id, 'slug': badge.slug } ) %}
-                    <p>Le Mooc &laquo; Le digital, vivons-le ensemble &raquo;, est heureux de vous décerner le badge de compétences :</p>
+            {# Eval succeeded #}
+	        <h2>{{ 'evalDone'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+	        <hr class="slrn-hr slrn-hr--lightgrey">
+            <span class="slrn-bigger">
+                {{ 'default_success_message'|trans({'evalGrade': drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }, 'solerni')|raw }}                   
+	        </span>
+            {% for badge in badges %}
+                {% set status = badge.status %}
+                {% if 2 == status %}
+                    {% set badgeEntity 	= badge.badge %}
+                    {% set buttonLink 	= path( 'claro_workspace_tool_view_my_badge', {'workspaceId': workspace.id, 'slug': badgeEntity.slug } ) %}
+                    <span class="slrn-bigger">{{ 'win_badge'|trans({ '%moocName%': workspace.getMooc().getTitle() }, 'solerni')|raw }}</span>
                     <div class="slrn-my_badges-list__item">
-                       <img src="{{ asset(badge.webPath) }}" alt="{{ badge.name }}" class="slrn-my_badges-list__item__image" />
-                       <section class="slrn-my_badges-list__body">
-                           <h6 class="slrn-my_badges-list__item__title">Badge &laquo; {{ badge.name }} &raquo;</h6>
-                           <span class=" slrn-my_badges-list__body__status"><span class="slrn-bold">Obtenu le :</span> {{ userBadge.issuedAt|date('date_format'|trans({}, 'platform')) }}</span>
-                           <article class="slrn-my_badges-list__content">{{ badge.criteria | raw }}</article>
-                           <footer class="slrn-my_badges-list__footer">
-                               <span class="slrn-gratuit-icon">prix gratuit</span>
-                               {% if buttonLink %}
-                                   <a class="btn btn-primary pull-right" href="{{ buttonLink }}">
-                                       {{'my_badge_details'|trans({}, 'platform')}}
-                                   </a>
-                               {% endif %}    
+                        <img src="{{ image(badgeEntity.webPath).cropResize( 112, 112 ) }}" 
+                             alt="{{ badgeEntity.name }}" 
+                             class="slrn-my_badges-list__item__image"
+                             width="112"
+                             height="112"
+                        />
+                        <section class="slrn-my_badges-list__body">
+                            <h6 class="slrn-my_badges-list__item__title">Badge &laquo; {{ badgeEntity.name }} &raquo;</h6>
+                            <p class=" slrn-my_badges-list__body__status"><span class="slrn-bold">Obtenu le :</span> {{ badge.issuedDate|date('date_format'|trans({}, 'platform')) }}</p>
+                            <article class="slrn-my_badges-list__content">{{ badgeEntity.criteria | raw }}</article>
+                            <footer class="slrn-my_badges-list__footer">
+                                <div class="">
+                                    <span class="slrn-gratuit-icon">prix gratuit</span>
+                                </div>
+                                <div class="slrn-button-page">
+                                    <a class="btn btn-primary pull-right" href="{{ buttonLink }}">
+                                        {{'my_badge_details'|trans({}, 'platform')}}
+                                    </a>
+                                    <a class="btn btn-gris pull-left slrn-dropzone-cancel" href="{{ path('icap_dropzone_drop_detail_by_user',{'resourceId': dropzone.id,'dropId':drop.id}) }}">
+                                        {{'see_corrections'|trans({}, 'solerni')}}
+                                    </a>
+                                </div>
                            </footer>
                        </section>
                    </div>
                 {% endif %}
             {% endfor %}
-			<div class='redlink'>
-				<span class="slrn-sub-title">Et après ?</span>
-				<p>Votre espace de travail est désormais clôturé mais vous pouvez retrouver l'intégralité de <a href='{{ path('claro_profile_view_badges') }}'>vos badges</a> obtenus dans votre tableau de bord</p>
-				<span class="slrn-sub-title">Vous souhaitez obtenir de nouveaux badges ?</span>
-				<p>Il vous reste encore {{ totalBadgesToGo }} badge{{ plural }} de compétence{{ plural }} à décrocher pour attester de la totale compréhension de votre cursus &laquo; Le digital, vivons-le ensemble &raquo;.</p>
-		    </div>
+			<div class='slrn-post-eval-message'>
+                {{ dropzone.successMessage|raw }}
+                {% if totalBadgesToGo > 0 %}
+                    {{ 'post_eval_badge_count_success' |trans({   '%totalBadgesToGo%' : totalBadgesToGo, 
+                                                            '%plural%': plural, 
+                                                             '%moocName%': workspace.getMooc().getTitle() }, 
+                    'solerni')|raw }}
+                    <a href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="pink_link">{{ 'get_new_badges'|trans({}, 'solerni') }}</a>
+                {% endif %}
+            </div>
         {% else %}
-        
-	        <h2>{{ 'endNOK'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-	        <hr/>
-            <p class="slrn-sub-title">Désolé !</p>
-	        <p>
-	            Vous avez obtenu une note de {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}/20, insuffisante pour obtenir votre badge de compétence
-		    </p>
-            <p class="slrn-sub-title">Et maintenant ?</p>
-            <p>Votre espace de travail est désormais clôturé mais vous pouvez tenter  une nouvelle évaluation ou tenter d'obternir un autre badge.</p>
-            <p>Si certains concepts vous ont échappé, n'hésitez pas à échanger et à demander de l'aide auprès de vos pairs sur les forums de discussions.</p>
+            {# Eval is failed #}
+	        <h2>{{ 'evalDone'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+	        <hr class="slrn-hr slrn-hr--lightgrey">
+            <p class="slrn-bigger">
+                {{ 'default_failed_message'|trans({'%evalGrade%': drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }, 'solerni')|raw }}
+                <a class="pink_link" href="{{ path('icap_dropzone_drop_detail_by_user',{'resourceId': dropzone.id,'dropId':drop.id}) }}">
+                    {{'see_corrections'|trans({}, 'solerni')}}
+                </a>
+	        </p>
+            <div class="slrn-post-eval-message">
+                {{ dropzone.failMessage|raw }}
+                {% if totalBadgesToGo > 0 %}
+                    {{ 'post_eval_badge_count_failed' |trans({   '%totalBadgesToGo%' : totalBadgesToGo, 
+                                                            '%plural%': plural,
+                                                             '%moocName%': workspace.getMooc().getTitle() }, 
+                    'solerni')|raw }}
+                    <a href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="pink_link">{{ 'get_new_badges'|trans({}, 'solerni') }}</a>
+                {% endif %}
+            </div>
 	     {% endif %}
         <div class="slrn-correct-buttons">
-            <a href="{{ app.session.get('solerni_apprendre_url') }}" class="btn btn-default btn-gris slrn-dropzone-cancel">{{ 'return_mooc'|trans({}, 'solerni') }}</a>
-            <a href="{{ path( 'claro_workspace_open_tool', { 'workspaceId': workspace.getId(), 'toolName': 'my_badges' } ) }}" class="btn btn-primary btn-default ">{{ 'get_new_badges'|trans({}, 'solerni') }}</a>
+            <a href="{{ mooc_service.getBackMoocUrl( workspace, app.user ) }}" class="btn btn-default btn-gris slrn-dropzone-cancel">{{ 'return_mooc'|trans({}, 'solerni') }}</a>
+            
         </div>
     {% else %}
         <h2>{{ 'endNotOver'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
-        <hr/>
+        <hr class="slrn-hr slrn-hr--lightgrey">
         {% if dropzone.endReview < date() %}
             <div class="slrn-grey-block slrn-info-block">
                 {% set endEvalDate = dropzone.endReview|date("d/m/Y") %}

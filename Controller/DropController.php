@@ -8,6 +8,7 @@
 namespace Icap\DropzoneBundle\Controller;
 
 use Claroline\CoreBundle\Event\Log\LogResourceReadEvent;
+use JMS\DiExtraBundle\Annotation as DI;
 use Claroline\CoreBundle\Event\Log\LogResourceUpdateEvent;
 use Icap\DropzoneBundle\Entity\Correction;
 use Icap\DropzoneBundle\Entity\Drop;
@@ -31,9 +32,26 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Claroline\CoreBundle\Manager\BadgeManager;
 
 class DropController extends DropzoneBaseController
 {
+
+
+	/** @var BadgeManager */
+	private $badgeManager;
+	
+	/**
+	 * Constructor.
+	 *
+	 * @DI\InjectParams({
+	 *     "badgeManager" = @DI\Inject("claroline.manager.badge")
+	 * })
+	 */
+	public function __construct(BadgeManager $badgeManager) {
+		$this->badgeManager = $badgeManager;
+	}
+	
     /**
      * @Route(
      *      "/{resourceId}/drop",
@@ -143,8 +161,13 @@ class DropController extends DropzoneBaseController
         
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
-        $associatedBadge = $this->container->get('orange.badge.controller');
-        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        $associatedBadge = $this->badgeManager;
+        $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
+        foreach ($badgeList as $i => $badge) {
+        	if ($badge['resource']['resource']['dropzone']->getId() != $dropzone->getId()) {
+        		unset($badgeList[$i]);
+        	}
+        }
 
         return array(
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
@@ -159,7 +182,7 @@ class DropController extends DropzoneBaseController
             'allowedTypes' => $allowedTypes,
             'resourceTypes' => $resourceTypes,
             'dropzoneProgress' => $dropzoneProgress,
-            'badges' => $badgeList['badgePager']
+            'badges' => $badgeList
         );
     }
 
@@ -516,9 +539,15 @@ class DropController extends DropzoneBaseController
      *      requirements={"resourceId" = "\d+", "dropId" = "\d+"}
      * )
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
+     * @ParamConverter("user", options={
+     *      "authenticatedUser" = true,
+     *      "messageEnabled" = true,
+     *      "messageTranslationKey" = "Correct an evaluation requires authentication. Please login.",
+     *      "messageTranslationDomain" = "icap_dropzone"
+     * })
      * @Template()
      */
-    public function dropsDetailAction($dropzone, $dropId)
+    public function dropsDetailAction($dropzone, $dropId, $user)
     {
         $this->isAllowToOpen($dropzone);
         $this->isAllowToEdit($dropzone);
@@ -528,12 +557,28 @@ class DropController extends DropzoneBaseController
             ->getRepository('IcapDropzoneBundle:Drop')
             ->getDropAndCorrectionsAndDocumentsAndUser($dropzone, $dropId);
 
+        $dropzoneManager = $this->get('icap.manager.dropzone_manager');
+        $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone, $user);
+
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->badgeManager;
+        $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
+        
+        foreach ($badgeList as $i => $badge) {
+        	if ($badge['resource']['resource']['dropzone']->getId() != $dropzone->getId()) {
+        		unset($badgeList[$i]);
+			}
+        }
+
         return array(
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
+            'dropzoneProgress' => $dropzoneProgress,
             'drop' => $drop,
             'isAllowedToEdit' => true,
+            'badges' => $badgeList
         );
     }
 
@@ -545,9 +590,10 @@ class DropController extends DropzoneBaseController
      * )
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
      * @ParamConverter("drop", class="IcapDropzoneBundle:Drop", options={"id" = "dropId"})
+     * @ParamConverter("user", class="ClarolineCoreBundle:User", options={"authenticatedUser" = true})
      * @Template()
      */
-    public function dropDetailAction(Dropzone $dropzone, Drop $drop)
+    public function dropDetailAction(Dropzone $dropzone, Drop $drop, User $user)
     {
         // check  if the User is allowed to open the dropZone.
         $this->isAllowToOpen($dropzone);
@@ -569,7 +615,7 @@ class DropController extends DropzoneBaseController
             } else {
                 throw new NotFoundHttpException();
             }
-        }else
+        } else
         {
             $drop = $dropSecure[0];
         }
@@ -579,12 +625,30 @@ class DropController extends DropzoneBaseController
         var_dump($corrections);
         die;
         */
+        
+        /* Get dropzone progress for the left widget */
+        $dropzoneManager = $this->get('icap.manager.dropzone_manager');
+        $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone,$user);
+        
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->badgeManager;
+        $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
+        
+        foreach ($badgeList as $i => $badge) {
+        	if ($badge['resource']['resource']['dropzone']->getId() != $dropzone->getId()) {
+        		unset($badgeList[$i]);
+			}
+        }
+        
         return array(
-            'workspace' => $dropzone->getResourceNode()->getWorkspace(),
+            'workspace' => $workspace,
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
             'drop' => $drop,
             'isAllowedToEdit' => $isAllowedToEdit,
+            'dropzoneProgress' => $dropzoneProgress,
+            'badges' => $badgeList
         );
     }
 

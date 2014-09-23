@@ -27,7 +27,7 @@
 {% endif %}
 {% if showGarbage is defined and drop is defined %}
     <a title="{{ 'delete_document'|trans({}, 'solerni') }}" href="{{ path('icap_dropzone_delete_document', {'resourceId': dropzone.id, 'dropId': drop.id, 'documentId': document.id}) }}" 
-      class="btn-garbage launch-modal col-md-1">
+      class="btn-garbage launch-modal col-md-1 slrn-btn-garbage">
       <span class="glyphicon icon-trash slrn-icon-trash"></span> {{ 'Delete'|trans({}, 'icap_dropzone') }}
     </a>
 {% endif %}

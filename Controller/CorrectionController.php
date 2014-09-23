@@ -25,6 +25,7 @@ use Icap\DropzoneBundle\Form\CorrectionCommentType;
 use Icap\DropzoneBundle\Form\CorrectionCriteriaPageType;
 use Icap\DropzoneBundle\Form\CorrectionStandardType;
 use Icap\DropzoneBundle\Form\CorrectionDenyType;
+use JMS\DiExtraBundle\Annotation as DI;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineDbalSingleTableAdapter;
@@ -36,9 +37,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Claroline\CoreBundle\Manager\BadgeManager;
 
 class CorrectionController extends DropzoneBaseController
 {
+	/** @var BadgeManager */
+	private $badgeManager;
+	
+	/**
+	 * Constructor.
+	 *
+	 * @DI\InjectParams({
+	 *     "badgeManager" = @DI\Inject("claroline.manager.badge")
+	 * })
+	 */
+	public function __construct(BadgeManager $badgeManager) {
+		$this->badgeManager = $badgeManager;
+	}
+	
+	
     private function checkRightToCorrect($dropzone, $user)
     {
         $em = $this->getDoctrine()->getManager();
@@ -432,10 +449,17 @@ class CorrectionController extends DropzoneBaseController
 
         $view = 'IcapDropzoneBundle:Correction:correctCriteria.html.twig';
         
+        
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
-        $associatedBadge = $this->container->get('orange.badge.controller');
-        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        $associatedBadge = $this->badgeManager;
+        $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
+        
+        foreach ($badgeList as $i => $badge) {
+        	if ($badge['resource']['resource']['dropzone']->getId() != $dropzone->getId()) {
+        		unset($badgeList[$i]);
+			}
+        }
         
         /* Find NbCorrection */
         $nbCorrections = $em
@@ -458,7 +482,7 @@ class CorrectionController extends DropzoneBaseController
                 'admin' => false,
                 'edit' => true,
                 'dropzoneProgress' => $dropzoneProgress,
-                'badges' => $badgeList['badgePager'],
+                'badges' => $badgeList,
                 'nbCorrections' => $nbCorrections
             )
         );
@@ -547,8 +571,14 @@ class CorrectionController extends DropzoneBaseController
         
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
-        $associatedBadge = $this->container->get('orange.badge.controller');
-        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        $associatedBadge = $this->badgeManager;
+        $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
+        
+        foreach ($badgeList as $i => $badge) {
+        	if ($badge['resource']['resource']['dropzone']->getId() != $dropzone->getId()) {
+        		unset($badgeList[$i]);
+			}
+        }
         
         /* Find NbCorrection */
         $em = $this->getDoctrine()->getManager();
@@ -574,7 +604,7 @@ class CorrectionController extends DropzoneBaseController
                 'totalGrade' => $totalGrade,
                 'dropzoneProgress' => $dropzoneProgress,
                 'nbCorrections' => $nbCorrections,
-                'badges' => $badgeList['badgePager']
+                'badges' => $badgeList
             )
         );
     }
@@ -828,6 +858,21 @@ class CorrectionController extends DropzoneBaseController
         }
 
         $view = 'IcapDropzoneBundle:Correction:correctCriteria.html.twig';
+        
+        /* Get dropzone progress for the left widget */
+        $dropzoneManager = $this->get('icap.manager.dropzone_manager');
+        $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone,$user);
+
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->badgeManager;
+        $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
+        
+        foreach ($badgeList as $i => $badge) {
+        	if ($badge['resource']['resource']['dropzone']->getId() != $dropzone->getId()) {
+        		unset($badgeList[$i]);
+        	}
+        }
 
         if($state =='show' || $state =='edit')
         {
@@ -842,7 +887,9 @@ class CorrectionController extends DropzoneBaseController
                         'form' => $form->createView(),
                         'admin' => true,
                         'edit' => $edit,
-                        'state' => $state
+                        'state' => $state,
+                        'dropzoneProgress' => $dropzoneProgress,
+                        'badges' => $badgeList
                     )
                     );
         }else if( $state == 'preview')
@@ -858,7 +905,9 @@ class CorrectionController extends DropzoneBaseController
                         'form' => $form->createView(),
                         'admin' => false,
                         'edit' => false,
-                        'state' => $state
+                        'state' => $state,
+                        'dropzoneProgress' => $dropzoneProgress,
+                        'badges' => $badgeList
                     )
                 );           
         }
@@ -882,8 +931,10 @@ class CorrectionController extends DropzoneBaseController
      */
     public function dropsDetailCorrectionCommentAction(Dropzone $dropzone, $state, $correctionId, $user)
     {
+        
         $this->isAllowToOpen($dropzone);
-        if($state != 'preview')
+        
+        if( $state != 'preview' && $state != 'show' )
         {
             $this->isAllowToEdit($dropzone);
         }
@@ -894,12 +945,29 @@ class CorrectionController extends DropzoneBaseController
             ->getCorrectionAndDropAndUserAndDocuments($dropzone, $correctionId);
         $edit = $state == 'edit';
 
-        if ($edit === true and $correction->getEditable() === false) {
+        if ($edit == true and $correction->getEditable() == false) {
             throw new AccessDeniedException();
         }
 
         $pager = $this->getCriteriaPager($dropzone);
         $form = $this->createForm(new CorrectionCommentType(), $correction, array('edit' => $edit, 'allowCommentInCorrection' => $dropzone->getAllowCommentInCorrection()));
+        
+        $dropzoneManager = $this->get('icap.manager.dropzone_manager');
+        $dropzoneProgress = $dropzoneManager->getDropzoneProgressByUser($dropzone,$user);
+        $view = 'IcapDropzoneBundle:Correction:correctComment.html.twig';
+        $totalGrade = $this->calculateCorrectionTotalGrade($dropzone, $correction);
+        
+            
+        /* Find associated badge */
+        $workspace = $dropzone->getResourceNode()->getWorkspace();
+        $associatedBadge = $this->badgeManager;
+        $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
+        
+        foreach ($badgeList as $i => $badge) {
+        	if ($badge['resource']['resource']['dropzone']->getId() != $dropzone->getId()) {
+        		unset($badgeList[$i]);
+        	}
+        }
         
         if ($edit) {
             if ($this->getRequest()->isMethod('POST')) {
@@ -931,15 +999,14 @@ class CorrectionController extends DropzoneBaseController
                 }
 
             }
-
-            $view = 'IcapDropzoneBundle:Correction:correctComment.html.twig';
-            $totalGrade = $this->calculateCorrectionTotalGrade($dropzone, $correction);
+           
             return $this->render(
                 $view,
                 array(
                     'workspace' => $dropzone->getResourceNode()->getWorkspace(),
                     '_resource' => $dropzone,
                     'dropzone' => $dropzone,
+                	'dropzoneProgress' => $dropzoneProgress,
                     'correction' => $correction,
                     'form' => $form->createView(),
                     'nbPages' => $pager->getNbPages(),
@@ -947,6 +1014,7 @@ class CorrectionController extends DropzoneBaseController
                     'edit' => $edit,
                     'state' => $state,
                     'totalGrade' => $totalGrade,
+                    'badges' => $badgeList
                     )
                 );
 
@@ -958,12 +1026,15 @@ class CorrectionController extends DropzoneBaseController
         if($state =='show')
         {
             $totalGrade = $this->calculateCorrectionTotalGrade($dropzone, $correction);
+
+            
             return $this->render(
                 $view,
                 array(
                     'workspace' => $dropzone->getResourceNode()->getWorkspace(),
                     '_resource' => $dropzone,
                     'dropzone' => $dropzone,
+                	'dropzoneProgress' => $dropzoneProgress,
                     'correction' => $correction,
                     'form' => $form->createView(),
                     'nbPages' => $pager->getNbPages(),
@@ -971,6 +1042,7 @@ class CorrectionController extends DropzoneBaseController
                     'edit' => $edit,
                     'state' => $state,
                     'totalGrade' => $totalGrade,
+                    'badges' => $badgeList
                     )
                 );
         }else if( $state == 'preview')
@@ -982,6 +1054,7 @@ class CorrectionController extends DropzoneBaseController
                     'workspace' => $dropzone->getResourceNode()->getWorkspace(),
                     '_resource' => $dropzone,
                     'dropzone' => $dropzone,
+                    'dropzoneProgress' => $dropzoneProgress,
                     'correction' => $correction,
                     'form' => $form->createView(),
                     'nbPages' => $pager->getNbPages(),
@@ -989,6 +1062,7 @@ class CorrectionController extends DropzoneBaseController
                     'edit' => false,
                     'state' => $state,
                     'totalGrade' => $totalGrade,
+                    'badges' => $badgeList
                     )
                 );           
         }

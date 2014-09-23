@@ -231,7 +231,7 @@ class DropzoneManager
         $percent = round(($currentState * 100) / (count($states) - 1));
         
         /* If the evaluation is closed, update currentState to match expected numeration on the left column*/
-        if( $allow_user_to_not_have_expected_corrections ){
+        if($dropzone->getPeerReview() && $allow_user_to_not_have_expected_corrections ){
             $currentState = 2 + $expectedCorrections + 2;
         }
         

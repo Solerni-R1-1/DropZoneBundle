@@ -33,67 +33,79 @@
 
 {% block dropzone_content %}
 
-    <div class="container container-dropzone">
-        <span class="{% if drop.reported and byUserMod == 0 %}text-danger{% endif %}">
-            <h2>
-                {% if byUserMod == 1 %}
-                    {{ 'Details of your copy'|trans({}, 'icap_dropzone') }}
-                {% else %}
-                    {{ 'Retail copy of %firstName% %lastName%'|trans({'%firstName%': drop.user.firstName, '%lastName%': drop.user.lastName}, 'icap_dropzone') }}
-                {% endif %}
-            </h2>
-        </span>
-        {% if(byUserMod == 0) %}
-            <div class="row">
-                <div class="col-md-12">
-                    <a class="btn btn-default btn-sm" href="{{ path('icap_dropzone_drops', {'resourceId': dropzone.id}) }}"><span class="glyphicon icon-angle-left"></span> {{ 'Return to copies'|trans({}, 'icap_dropzone') }}</a>
-                </div>
-            </div>
+<section class="col-xs-12 col-md-12">
+    <div class="col-xs-3 col-md-3">
+        {# FIRST : MOOC  WIDGET #}
+        {% render controller(
+            'ClarolineCoreBundle:Mooc\\Mooc:getWorkspacePresentationWidget',
+            { 'workspaceId': workspace.getId(), 'renderProgression': false }
+        ) %}
 
-            <br/>
-            {{ macros.flashBox() }}
-
-            {% if drop.reported %}
-                <div class="row text-danger">
+        {# include parcours twig #}
+        {% set currentFile = 1 %}
+        {% include 'IcapDropzoneBundle:Solerni:parcours.html.twig' %}
+        
+    </div>
+    <div class='col-xs-9 col-md-9'>
+        <div class="container-fluid">
+            {# Header with link and associated badge #}
+            {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' with { 'viewCorrections': 'true' } %}
+            <span class="{% if drop.reported and byUserMod == 0 %}text-danger{% endif %}">
+                <h2>
+                    {% if byUserMod == 1 %}
+                        {{ 'correction_list'|trans({}, 'solerni') }}
+                    {% else %}
+                        {{ 'Retail copy of %firstName% %lastName%'|trans({'%firstName%': drop.user.firstName, '%lastName%': drop.user.lastName}, 'icap_dropzone') }}
+                    {% endif %}
+                </h2>
+            </span>
+            <hr class="slrn-hr slrn-hr--lightgrey">
+            {% if(byUserMod == 0) %}
+                <div class="row">
                     <div class="col-md-12">
-                        <span class="glyphicon icon-warning-sign"></span>
-                        {{ 'This copy has been reported'|trans({}, 'icap_dropzone') }}
+                        <a class="btn btn-default btn-sm" href="{{ path('icap_dropzone_drops', {'resourceId': dropzone.id}) }}"><span class="glyphicon icon-angle-left"></span> {{ 'Return to copies'|trans({}, 'icap_dropzone') }}</a>
                     </div>
                 </div>
+
+                <br/>
+                {% if drop.reported %}
+                    <div class="row text-danger">
+                        <div class="col-md-12">
+                            <span class="glyphicon icon-warning-sign"></span>
+                            {{ 'This copy has been reported'|trans({}, 'icap_dropzone') }}
+                        </div>
+                    </div>
+                {% endif %}
+            {%  endif %}
+
+            {# drop details #}
+            <div class="slrn-grey-block slrn-grey-block--with-title">
+                <h3 class="slrn-grey-block-title">{{ 'drop_details'|trans({}, 'solerni') }}</h3>
+                {% if drop.documents|length > 0 %}
+                    {% for document in drop.documents %}
+                        <div class="slrn-drop-list__item slrn-drop-list__item--no-garbage row col-md-12">
+                            {% include 'IcapDropzoneBundle:Document:simpleShowDocument.html.twig' %}
+                         </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="slrn-bold">{{ 'No document associated'|trans({}, 'icap_dropzone') }}</p>
+                {% endif %}
+            </div>
+
+            <h3 class="slrn-title-top-margin">
+                {{ 'Average validated corrections'|trans({}, 'icap_dropzone') }}
+                <span class="slrn-correct-final-note londrina-solid">{% include 'IcapDropzoneBundle:Drop:dropsTotalGrade.html.twig' %}</span>
+            </h3>
+
+            {%  if isAllowedToEdit %}
+                <a class="btn btn-default" href="{{  path("icap_dropzone_drops_detail_add_correction",{'resourceId':dropzone.id,'dropId':drop.id}) }}">
+                    {{  "Add a correction"|trans({},'icap_dropzone') }}
+                </a>
             {% endif %}
-        {%  endif %}
-        
-        {% set documentListText = 'Documents'|trans({}, 'icap_dropzone') %}
-        {{ dropzoneMacros.displayDocumentsList(drop, dropzone, 6, "condensed", documentListText) }}
 
-        <div class="row">
-            <div class="text-muted col-md-4">{{ 'Learner'|trans({}, 'icap_dropzone') }}</div>
-            <div class="col-md-8">{{ drop.user.firstName }} {{ drop.user.lastName }}</div>
+            {% include 'IcapDropzoneBundle:Correction:Listing/correctionListing.html.twig' %}
+
         </div>
-
-        <div class="row">
-            <div class="text-muted col-md-4">{{ 'Number of validated corrections'|trans({}, 'icap_dropzone') }}</div>
-            <div class="col-md-8">{% include 'IcapDropzoneBundle:Drop:dropsNbCorrections.html.twig' %}</div>
-        </div>
-
-        <div class="row">
-            <div class="text-muted col-md-4">{{ 'Average validated corrections'|trans({}, 'icap_dropzone') }}</div>
-            <div class="col-md-8">{% include 'IcapDropzoneBundle:Drop:dropsTotalGrade.html.twig' %}</div>
-        </div>
-
-        <br/>
-
-        <h3>{{ 'List of corrections'|trans({}, 'icap_dropzone') }}</h3>
-        {%  if isAllowedToEdit %}
-            <a class="btn btn-default" href="{{  path("icap_dropzone_drops_detail_add_correction",{'resourceId':dropzone.id,'dropId':drop.id}) }}">
-                {{  "Add a correction"|trans({},'icap_dropzone') }}
-            </a>
-        {% endif %}
-        <hr/>
-
-
-        {% include 'IcapDropzoneBundle:Correction:Listing/correctionListing.html.twig' %}
-
     </div>
 {% endblock %}
 

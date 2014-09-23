@@ -19,9 +19,27 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Claroline\CoreBundle\Entity\Badge\Badge;
+use Claroline\CoreBundle\Manager\BadgeManager;
+use JMS\DiExtraBundle\Annotation as DI;
 
 class DropzoneController extends DropzoneBaseController
 {
+	
+	/** @var BadgeManager */
+	private $badgeManager;
+	
+	/**
+	 * Constructor.
+	 *
+	 * @DI\InjectParams({
+	 *     "badgeManager" = @DI\Inject("claroline.manager.badge")
+	 * })
+	 */
+	public function __construct(BadgeManager $badgeManager) {
+		$this->badgeManager = $badgeManager;
+	}
+	
     /**
      * @Route(
      *      "/{resourceId}/edit",
@@ -381,23 +399,51 @@ class DropzoneController extends DropzoneBaseController
         
         /* Find associated badge */
         $workspace = $dropzone->getResourceNode()->getWorkspace();
-        $associatedBadge = $this->container->get('orange.badge.controller');
-        $badgeList = $associatedBadge->myWorkspaceBadgeAction( $workspace, $user, 1, 'icap_dropzone', $dropzone->getResourceNode()->getId(), false);
+        $associatedBadge = $this->badgeManager;
+        $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
+        
+
+        $nbTotalBadges = count($badgeList);
+        $nbAcquiredBadges = 0;
+        $nbFailedBadges = 0;
+         
+        foreach ($badgeList as $badge) {
+        	if ($badge['status'] == Badge::BADGE_STATUS_OWNED) {
+        		$nbAcquiredBadges++;
+        	} else if ($badge['status'] == Badge::BADGE_STATUS_FAILED) {
+        		$nbFailedBadges++;
+        	}
+        }
+        
+        foreach ($badgeList as $i => $badge) {
+        	if ($badge['resource']['resource']['dropzone']->getId() != $dropzone->getId()) {
+        		unset($badgeList[$i]);
+			}
+        }
+        
+        
+        /* Find Mooc URL */
+        $moocService = $this->container->get('orange.mooc.service');
+        $lesson = $moocService->getLessonFromWorkspace( $workspace, $user );
+        if ( null != $lesson ) {
+            $moocbackUrl = $moocService->getRouteToTheLastChapter( $lesson, $user );
+        }
             
         $PeerReviewEndCase = $dropzoneManager->isPeerReviewEndedOrManualStateFinished($dropzone,$nbCorrections);
         return array(
-            'workspace' => $workspace,
-            '_resource' => $dropzone,
-            'dropzone' => $dropzone,
-            'drop' => $drop,
-            'nbCorrections' => $nbCorrections,
-            'hasCopyToCorrect' => $hasCopyToCorrect,
-            'hasUnfinishedCorrection' => $hasUnfinishedCorrection,
-            'dropzoneProgress' => $dropzoneProgress,
-            'PeerReviewEndCase' =>$PeerReviewEndCase,
-            'badges' => $badgeList['badgePager'],
-            'nbTotalBadges'     => $badgeList['nbTotalBadges'],
-            'nbAcquiredBadges'  => $badgeList['nbAcquiredBadges']
+            'workspace'                 => $workspace,
+            '_resource'                 => $dropzone,
+            'dropzone'                  => $dropzone,
+            'drop'                      => $drop,
+            'nbCorrections'             => $nbCorrections,
+            'hasCopyToCorrect'          => $hasCopyToCorrect,
+            'hasUnfinishedCorrection'   => $hasUnfinishedCorrection,
+            'dropzoneProgress'          => $dropzoneProgress,
+            'PeerReviewEndCase'         => $PeerReviewEndCase,
+            'badges'                    => $badgeList,
+        	'nbTotalBadges'				=> $nbTotalBadges,
+        	'nbAcquiredBadges' 			=> $nbAcquiredBadges,
+        	'nbFailedBadges' 			=> $nbFailedBadges
         );
     }
 

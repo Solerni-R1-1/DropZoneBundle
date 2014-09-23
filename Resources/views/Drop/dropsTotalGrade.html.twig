@@ -1,5 +1,5 @@
 {% if drop.getCalculatedGrade == -1 %}
     --/20
 {% else %}
-    {{ drop.getCalculatedGrade }}/20
+    {{ drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }}<span class="slrn-sep">/</span>20
 {% endif %}

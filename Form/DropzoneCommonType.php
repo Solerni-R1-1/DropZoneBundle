@@ -53,7 +53,8 @@ class DropzoneCommonType extends AbstractType
                     false => 'sheduleByDate'
                 ),
                 'expanded' => true,
-                'multiple' => false
+                'multiple' => false,
+                'empty_data'  => false
             ))
 
             ->add('manualState', 'choice', array(
