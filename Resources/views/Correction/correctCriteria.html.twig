@@ -108,7 +108,7 @@
                                 {% if pager.currentPage == pager.nbPages and dropzone.allowCommentInCorrection %}
                                     <a  href="{{ path('icap_dropzone_drops_detail_correction_comment', {
                                                     'resourceId': dropzone.id, 
-                                                    'state' : edit ? 'edit' : 'show',
+                                                    'state' : edit ? 'edit' : 'preview',
                                                     'correctionId': correction.id,
                                                     'nbCorrections': nbCorrections }) }}" 
                                         class="btn btn-primary">{{ 'Next'|trans({}, 'icap_dropzone') }}
