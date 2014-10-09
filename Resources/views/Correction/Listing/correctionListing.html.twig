@@ -7,16 +7,14 @@
     <table class="table slrn-table">
         <thead class="slrn-table-header">
         <th class="slrn-table-cell slrn-center">{{ 'status'|trans({}, 'solerni') }}</th>
-        <th class="slrn-table-cell">{{ 'correction_th'|trans({}, 'solerni') }}
-            {% if byUserMod == 0 %}
-                Correcteur
-            {% endif %}
-        </th>
+        <th class="slrn-table-cell">{{ 'correction_th'|trans({}, 'solerni') }}</th>
         <th class="slrn-table-cell">{{ 'started'|trans({}, 'solerni') }}</th>
         {#<th>Dernière Ouverture</th>#}
         <th class="slrn-table-cell">{{ 'over'|trans({}, 'solerni') }}</th>
         <th class="slrn-table-cell slrn-center">{{ 'note'|trans({}, 'solerni') }}</th>
-        {#<th>Outils</th>#}
+        {% if byUserMod == 0 %}
+            <th class="slrn-table-cell">Outils</th>
+        {% endif %}
         </thead>
         <tbody>
         {% set validCorrections = 0 %}
@@ -76,16 +74,9 @@
                 <td class="slrn-table-cell slrn-center">
                     {% if correction.totalGrade != null %}{{ correction.totalGrade|round(1, 'common')|replace({'.': ','}) }}{% else %}--{% endif %}<span class="slrn-sep">/</span>20
                 </td>
-                {#<td>
+                {% if byUserMod == 0 %}
+                <td>
                     <div class="btn-group correction-tools">
-                        {#
-                        <a href="{{ path('icap_dropzone_drops_detail_correction', {'resourceId': dropzone.id, 'correctionId': correction.id, 'state': viewState_var}) }}" class="btn btn-default btn-xs" >
-                            {{ 'See correction'|trans({},'icap_dropzone')}}
-                        </a>
-                        #}
-                        {#
-                        {% if byUserMod == 0 %}
-
                             {% if dropzone.peerReview %}
                                 <a href="{{ path('icap_dropzone_recalculate_score',
                                 {'resourceId': dropzone.id, 'correctionId': correction.id}) }}"
@@ -124,13 +115,10 @@
                                    data-container="body"><span class="glyphicon icon-trash"></span>
                                     {{ 'Delete'|trans({}, 'icap_dropzone') }}
                                 </a>
-
-
-
                             {% endif %}
-                        {% endif %}
                     </div>
-                </td>#}
+                </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
