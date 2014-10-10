@@ -23,6 +23,7 @@ correction_done_text: 'La correction du dossier n°currentFile a bien été enre
 correction_reminder: 'Critères d''évaluation'
 correction_list: 'Liste des corrections de mon dossier de preuves'
 correction_th: 'correction'
+correcteur_th: 'correcteur'
 correction_copy: 'Correction'
 comment: Commentaire
     
