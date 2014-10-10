@@ -18,7 +18,7 @@
                 {% set status = badge.status %}
                 {% if 2 == status %}
                     {% set badgeEntity 	= badge.badge %}
-                    {% set buttonLink 	= path( 'claro_workspace_tool_view_my_badge', {'workspaceId': workspace.id, 'slug': badgeEntity.slug } ) %}
+                    {% set buttonLink 	= path( 'claro_profile_view_badge', {'slug': badgeEntity.slug } ) %}
                     <span class="slrn-bigger">{{ 'win_badge'|trans({ '%moocName%': workspace.getMooc().getTitle() }, 'solerni')|raw }}</span>
                     <div class="slrn-my_badges-list__item">
                         <img src="{{ image(badgeEntity.webPath).cropResize( 112, 112 ) }}" 
