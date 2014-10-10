@@ -26,9 +26,8 @@ class CorrectionRepository extends EntityRepository {
             ->setParameter('user', $user)
             ->setParameter('dropzone', $dropzone)
             ->getQuery()
-            ->getResult();
-
-        return $nbCorrection[0][1];
+            ->getSingleScalarResult();
+        return $nbCorrection;
     }
 
     /**
