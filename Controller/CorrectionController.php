@@ -216,9 +216,9 @@ class CorrectionController extends DropzoneBaseController
 
         $event = null;
         if ($edit == true) {
-            $event = new LogCorrectionUpdateEvent($dropzone, $correction->getDrop(), $correction);
+            $event = new LogCorrectionUpdateEvent($dropzone, $drop, $correction);
         } else {
-            $event = new LogCorrectionEndEvent($dropzone, $correction->getDrop(), $correction);
+            $event = new LogCorrectionEndEvent($dropzone, $drop, $correction);
         }
         $this->dispatch($event);
 
