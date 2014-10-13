@@ -40,8 +40,8 @@
             {# This is the view correction case #}
             {# Header with link and associated badge #}
             {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
-            {% if nbCorrections is not defined and state is defined and ( state == 'preview' or state == 'show' )  %}
-                {% if  app.request.get('nbCorrections') %}
+            {% if nbCorrections is not defined and state is defined  %}
+                {% if  app.request.get('nbCorrections') and ( state == 'preview' or state == 'show' ) %}
                     {% set nbCorrections = app.request.get('nbCorrections') %}
                 {% else %}
                     {% set nbCorrections = 0 %}
