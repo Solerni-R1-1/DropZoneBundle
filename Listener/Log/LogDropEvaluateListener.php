@@ -50,17 +50,14 @@ class LogDropEvaluateListener
     public function onLog(LogGenericEvent $event)
     {
         if ($event instanceof PotentialEvaluationEndInterface) {
-//            var_dump('on log !! : '.$event->getAction());
-//            var_dump('instance of potential evaluation end interface');
             $correction = $event->getCorrection();
             $this->sendFinishedLog($correction->getDrop());
             if ($correction->getDrop()->getUser()->getId() != $correction->getUser()->getId()) {
-                $drop = $this->entityManager->getRepository('IcapDropzoneBundle:Drop')->findOneBy(array('user' => $correction->getUser()));
+                $drop = $this->entityManager->getRepository('IcapDropzoneBundle:Drop')->findOneBy(array('user' => $correction->getUser(), 'dropzone' => $correction->getDropzone() ));
                 if ($drop !== null) {
                     $this->sendFinishedLog($drop);
                 }
             }
-//            die();
         }
     }
 

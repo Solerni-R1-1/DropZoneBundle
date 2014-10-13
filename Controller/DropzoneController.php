@@ -401,7 +401,6 @@ class DropzoneController extends DropzoneBaseController
         $workspace = $dropzone->getResourceNode()->getWorkspace();
         $associatedBadge = $this->badgeManager;
         $badgeList = $associatedBadge->getAllBadgesForWorkspace($user, $workspace);
-        
 
         $nbTotalBadges = count($badgeList);
         $nbAcquiredBadges = 0;
