@@ -19,7 +19,7 @@
 {% else %} 
     <span class="slrn-bold col-md-3 row">{{ 'Document %count%'|trans({'%count%': loop.index}, 'icap_dropzone') }}</span>
     <span class="slrn-bold col-md-3">{{ typeName }}</span>
-    <a class="pink_link col-md-5" target="_blank" href="{{ path('icap_dropzone_open_resource', {'resourceId': dropzone.id, 'documentId': document.id}) }}">
+    <a class="pink_link col-md-5 slrn-drop-list__name" target="_blank" href="{{ path('icap_dropzone_open_resource', {'resourceId': dropzone.id, 'documentId': document.id}) }}">
         {% if document.resourceNode.name is defined %}
             {{ document.resourceNode.name }}
         {% endif %}
