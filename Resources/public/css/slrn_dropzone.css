@@ -95,6 +95,37 @@ h4 {
     margin-top: 1em;
 }
 
+.container-dropzone .navbar-default {
+    border:     0;
+    overflow:   hidden;
+    margin:     2em 0;
+}
+
+.container-dropzone .navbar-default .navbar-collapse {
+    padding-left:   0;
+    padding-right:  0;
+}
+
+.container-dropzone .navbar-nav .badge {
+    color:              #333;
+    background-color:   #FFF;
+    margin-left:        .5em;
+}
+
+.container-dropzone .navbar-default .navbar-nav li a {
+    color: #FFF;
+}
+
+.container-dropzone .navbar-default .navbar-nav li.active a {
+    color:          #333;
+    font-weight:    bold;
+    pointer-events: none;
+}
+
+.container-dropzone .navbar-default .navbar-nav li a:hover {
+    background-color: #999;
+}
+
 .drop__annoncement__badge {
 	background-color:   #EEEEEF;
 	padding:            1em;
