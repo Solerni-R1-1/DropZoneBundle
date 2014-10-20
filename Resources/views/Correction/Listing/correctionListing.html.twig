@@ -27,6 +27,9 @@
         {% for correction in drop.corrections %}
             <tr class="slrn-table-row {% if not  correction.valid %}danger{% endif %} ">
                 <td class="slrn-table-cell slrn-center">
+                    {% if correction.valid %}
+                        {% set validCorrections = validCorrections+1 %}
+                    {% endif %}
                     
                     {% if correction.finished == false %}
                         <span class="text-warning glyphicon icon-time" data-toggle="tooltip"
@@ -36,17 +39,18 @@
                     {% if not correction.valid %}
                         <span class="slrn-glyphicon glyphicon icon-minus-sign" data-toggle="tooltip"
                               data-original-title="{{ 'Invalidated'|trans({}, 'icap_dropzone') }}"></span>
-                    {% else %}
-                        {% set validCorrections = validCorrections+1 %}
-                        {% if correction.reporter %}
-                            <span class="slrn-glyphicon text-danger glyphicon icon-warning-sign" data-toggle="tooltip"
-                                  data-original-title="{{ 'Reported'|trans({}, 'solerni') }}"></span>
-                        {% endif %}
-                        {% if correction.correctionDenied %}
-                            <span class="slrn-glyphicon text-warning glyphicon icon-info-sign" data-toggle="tooltip"
-                                  data-original-title="{{ 'Correction denied'|trans({}, 'icap_dropzone') }}"></span>
-                        {% endif %}
                     {% endif %}
+                        
+                    {% if correction.reporter %}
+                        <span class="slrn-glyphicon text-danger glyphicon icon-warning-sign" data-toggle="tooltip"
+                              data-original-title="{{ 'Reported'|trans({}, 'icap_dropzone') }}"></span>
+                    {% endif %}
+                    
+                    {% if correction.correctionDenied %}
+                        <span class="slrn-glyphicon text-warning glyphicon icon-info-sign" data-toggle="tooltip"
+                              data-original-title="{{ 'Correction denied'|trans({}, 'icap_dropzone') }}"></span>
+                    {% endif %}
+
                 </td>
                 <td class="slrn-table-cell">
                     <a href="{{ path('icap_dropzone_drops_detail_correction', {'resourceId': dropzone.id, 'correctionId': correction.id, 'state': viewState_var, 'nbCorrections': loop.index0 }) }}"
@@ -98,7 +102,7 @@
                                 {% else %}
                                     <a href="{{ path('icap_dropzone_revalidateCorrection',
                                     {'resourceId': dropzone.id, 'correctionId': correction.id, 'value': 'yes'}) }}"
-                                       class="btn btn-default btn-xs launch-modal">{{ 'revalidate'|trans({}, 'icap_dropzone') }}</a>
+                                       class="btn btn-default btn-xs">{{ 'revalidate'|trans({}, 'icap_dropzone') }}</a>
                                 {% endif %}
                             {% endif %}
                             {% if correction.editable %}
@@ -130,37 +134,3 @@
         </tbody>
     </table>
 </div>
-
-{#<div style="display:none">
-
-</div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        {% if drop.dropzone.expectedTotalCorrection >= validCorrections %}
-        $('.revalidatdLink').click(function (e) {
-
-        });
-        {% endif %}
-        /**
-         Allow to use tooltip in disable button inside a button group
-         creating a div in absolute pos
-         **/
-        $('input:disabled, button:disabled, a.disabled').after(function (e) {
-            d = $("<div >");
-            i = $(this);
-            var offset = i.offset();
-            var left_pos = offset.left - $(this).parent().offset().left; // due  to table and groupButton
-            d.css({
-                height: i.outerHeight(),
-                width: i.outerWidth(),
-                position: "absolute",
-                left: left_pos
-            });
-            d.attr("title", i.attr("title"));
-            d.attr('data-container', 'body'); // specific to group Buttons.
-            d.tooltip();
-            return d;
-        });
-    });
-
-</script>#}
