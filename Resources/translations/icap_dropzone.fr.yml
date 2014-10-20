@@ -105,7 +105,7 @@ Awaiting: 'En attente'
 Corr.: 'Corr.'
 Delete a copy: 'Supprimer une copie'
 Drop by: 'Rendu par :'
-This copy has been reported: 'Cette copie a été signalé'
+This copy has been reported: 'cette copie a été signalée'
 Copy detail: 'Détail d''une copie'
 Learner: 'Apprenant :'
 Number of validated corrections: 'Nombre de corrections validées :'
@@ -285,3 +285,6 @@ You will reactivate a correction but the expected number of correction is alread
 corrections were already created: "one: Une correction a déjà été créee.|some:%count% corrections ont déjà été créées."
 Modify add or delete criteria will affect this corrections if you recalculate the note on it.: "Modifier, Ajouter ou supprimer des critères affectera les corrections déjà effectuées seulement si vous recalculez les notes données par celles ci."
 Evaluation criterions: "Critères d'évaluation"
+
+comment_from_denier: Commentaire de l'auteur contestant la correction
+Reported: Copie signalée

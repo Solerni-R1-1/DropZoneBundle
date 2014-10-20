@@ -1,9 +1,18 @@
 <!--{{ macros.flashBox() }}-->
 {# Retour à la liste des badges #}
 <div class="slrn-container-dropzone__header">
-    {% if state is defined and state == 'preview' %}
+    {% if ( byUserMod is defined and byUserMod == 0 ) %}
+        <a class="black_link" href="{{ path('icap_dropzone_drops', {'resourceId': dropzone.id}) }}">
+            <i class="icon-chevron-left no_underline"></i> {{ 'Return to copies'|trans({}, 'icap_dropzone') }}
+        </a>
+    {% elseif state is defined and state == 'preview' %}
         {# back to correction list#}
         <a title="{{ 'evalDone'|trans({}, 'solerni') }}" href="{{ path('icap_dropzone_drop_detail_by_user',{'resourceId': dropzone.id,'dropId':correction.drop.id}) }}" class="black_link">
+            <i class="icon-chevron-left no_underline"></i> {{ 'back_corrections'|trans({}, 'solerni') }}
+        </a>
+    {% elseif state is defined and state == 'show' %}
+       {# back to admin correction list #}
+        <a title="{{ 'evalDone'|trans({}, 'solerni') }}" href="{{ path('icap_dropzone_drops_detail',{'resourceId': dropzone.id,'dropId':correction.drop.id}) }}" class="black_link">
             <i class="icon-chevron-left no_underline"></i> {{ 'back_corrections'|trans({}, 'solerni') }}
         </a>
     {% elseif viewCorrections is defined and viewCorrections == true %}

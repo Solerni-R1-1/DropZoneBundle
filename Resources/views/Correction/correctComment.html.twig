@@ -21,17 +21,17 @@
                     {% if edit == true %}
                         <p class="slrn-bold">{{ 'add_comment'|trans({}, 'solerni')|raw }}</p>
                     {% else %}
-                            {% if  state is defined and state == 'show' and dropzone.getAllowCorrectionDeny %}
+                            {% if  state is defined and state == 'show' or state == 'preview' and dropzone.getAllowCorrectionDeny %}
                                 <div class="slrn-deny-correction">
                                     <div class="col-md-8 row">
                                         <h4 class="slrn-input-row__title">{{ 'comment'|trans({}, 'solerni') }}</h4>
                                     </div>
                                      <div class='col-md-4 slrn-deny-correction-btn-container'>
                                          {% if correction.correctionDenied %}
-                                             <span class="label label-danger btn-sm pull-right slrn-deny-correction-btn">
+                                             <span class="pull-right slrn-deny-correction-btn slrn-deny-correction-alert">
                                                  {{ 'Correction denied'|trans({},'icap_dropzone')}}
                                              </span>
-                                         {% else %}
+                                         {% elseif state == 'preview' %}
                                              <a href="{{ path('icap_dropzone_drops_deny_correction', {'resourceId': dropzone.id,  'correctionId': correction.id}) }}" 
                                                 class="btn btn-primary launch-modal slrn-deny-correction-btn">
                                                  {{ 'Deny correction'|trans({},'icap_dropzone') }}
@@ -53,6 +53,19 @@
                     </div>
                 {% endif %}
                 {% endif %}
+                {% if correction.correctionDenied %}
+                    <hr class="slrn-hr">
+                    <div class="slrn-correction-denied-comment">  
+                        <h4 class="slrn-input-row__title">{{'comment_from_denier'|trans({}, 'icap_dropzone')}}</h4>
+                        <div class="slrn-comment-view">
+                            {% if correction.correctionDeniedComment %}
+                                {{ correction.correctionDeniedComment|raw }}
+                            {% else %}
+                                {{ 'no_comment'|trans({}, 'icap_dropzone') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}               
                 {{ form_rest(form) }}
                 {% if edit == true %}
                 <div class="slrn-grey-block slrn-info-block">
@@ -88,37 +101,8 @@
                         <a href="#" class="btn btn-default ">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
                     </div>
                 {% endif %}
-
-                {#{% if edit == true %}
-                    <div class="btn-group pull-right">
-                        {% if admin == true %}
-                            <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default back-button">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
-                        {% else %}
-                            <a href="{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': nbPages}) }}" class="btn btn-default back-button">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
-                        {% endif %}
-                        <button type= "submit" class="btn btn-primary">
-                            {{ 'Save and finished'|trans({}, 'icap_dropzone') }}</button>
-                    </div>
-                {% else %}
-                    <div class="btn-group pull-right">
-                        {%  if state == 'preview' %}
-                            <a href="{{ path('icap_dropzone_drop_detail_by_user', {'resourceId': dropzone.id,'dropId': correction.drop.id}) }}" class="btn btn-default">
-                                {{ 'Back to corrections'|trans({}, 'icap_dropzone') }}
-                            </a>
-                        {% endif %}
-                        <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nbPages}) }}" class="btn btn-default">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
-                        <a href="#" class="btn btn-default disabled">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
-
-                    </div>
-                {% endif %}#}
             </form>
         </div>
-
-        {#<div class="row">
-            <strong>
-                {{ nbPages+1 }} / {{ nbPages+1 }}
-            </strong>
-        </div>#}
     </div>
 {% endblock %}
 

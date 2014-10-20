@@ -1189,7 +1189,7 @@ class CorrectionController extends DropzoneBaseController
                     'icap_dropzone_drops_detail_correction_validation',
                     array(
                         'resourceId' => $dropzone->getId(),
-                        'correctionId' => $correction->getDrop()->getId(),
+                        'correctionId' => $correction->getId(),
                         'value' => 'yes'
                     )
                 )

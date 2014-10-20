@@ -630,7 +630,6 @@ table th {
 .slrn-deny-correction-btn-container {
     position:   absolute;
     right:      0;
-    bottom:     1em;
     padding:    0;
     margin:     0;
     text-align: right;
@@ -641,9 +640,30 @@ table th {
     margin-top:     1.5em;
 }
 
+.slrn-deny-correction-alert {
+    border:             1px solid #FF004F;
+    color:              #FF004F;
+    font-weight:        bold;
+    padding:            .2em .5em;
+    font-variant:       small-caps;
+    font-size:          1.3em;
+}
+
 .slrn-glyphicon {
     color:      #999;
     font-size:  1.5em;
     position:   relative;
     top:        -.1em;
+}
+
+.text-danger {
+    color: #FF004F;
+}
+
+.slrn-correction-denied-comment {
+    color: #FF004F;
+}
+
+.slrn-correction-denied-comment .slrn-input-row__title {
+    color: #FF004F; 
 }
