@@ -108,8 +108,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% render controller('ClarolineCoreBundle:ResourceType:initPicker') %}
-    {{ tinymce_init() }}
     <script>
         $(document).on('ready', function () {
             $('#icap_dropzone_correct_comment_form_goBack').val(0);

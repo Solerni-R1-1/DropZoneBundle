@@ -1,5 +1,9 @@
-{% if dropzone.correctionInstruction is defined and dropzone.correctionInstruction is not empty and dropzoneProgress.currentState >= 2 %}
-    {% set dropText = dropzone.correctionInstruction %}
+{% if dropzoneProgress.currentState >= 2 %}
+    {% if dropzone.correctionInstruction|default %}
+        {% set dropText = dropzone.correctionInstruction %}
+    {% else %}
+        {% set dropText = dropzone.instruction %}
+    {% endif %}
     {% set dropTitle = 'correction_reminder' | trans({}, 'solerni') %}
 {% else %}
     {% set dropText = dropzone.instruction %}
