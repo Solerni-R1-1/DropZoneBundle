@@ -5,9 +5,16 @@ namespace Icap\DropzoneBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Claroline\CoreBundle\Entity\Workspace\AbstractWorkspace;
 
 class DropzoneCommonType extends AbstractType
 {
+	private $workspace;
+	
+	public function __construct(AbstractWorkspace $workspace) {
+		$this->workspace = $workspace;
+	}	
+	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -26,6 +33,17 @@ class DropzoneCommonType extends AbstractType
             ->add('allowUpload', 'checkbox', array('required' => false))
             ->add('allowUrl', 'checkbox', array('required' => false))
             ->add('allowRichText', 'checkbox', array('required' => false))
+
+            ->add('forumCategory', 'entity', array(
+            		'label' => false,
+            		'property' => 'forumNameAndCategoryName',
+            		'empty_value' => 'dropzone_choose_forum_category',
+            		'class' => 'ClarolineForumBundle:Category',
+            		'required' => false,
+            		'query_builder' => function ( \Doctrine\ORM\EntityRepository $er )  {
+            			return $er->getQueryFindCategoriesByWorkspace($this->workspace);
+            		}
+            ))
 
             ->add('peerReview', 'choice', array(
                 'required' => true,

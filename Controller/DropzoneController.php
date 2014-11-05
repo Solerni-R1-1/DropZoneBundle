@@ -59,7 +59,7 @@ class DropzoneController extends DropzoneBaseController
         $this->isAllowToOpen($dropzone);
         $this->isAllowToEdit($dropzone);
 
-        $form = $this->createForm(new DropzoneCommonType(), $dropzone);
+        $form = $this->createForm(new DropzoneCommonType($dropzone->getResourceNode()->getWorkspace()), $dropzone);
 
         if ($this->getRequest()->isMethod('POST')) {
             // see if manual plannification option has changed.

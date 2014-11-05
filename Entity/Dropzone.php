@@ -13,6 +13,7 @@ use Claroline\CoreBundle\Entity\Resource\AbstractResource;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
+use Claroline\ForumBundle\Entity\Category;
 
 /**
  * @ORM\Entity
@@ -225,6 +226,14 @@ class Dropzone extends AbstractResource
      * @ORM\JoinColumn(name="hidden_directory_id", referencedColumnName="id", nullable=true)
      */
     protected $hiddenDirectory;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Claroline\ForumBundle\Entity\Category")
+     * @ORM\JoinColumn(nullable=true)
+     * @var Category
+     */
+    protected $forumCategory;
+    
 
     public function __construct()
     {
@@ -820,6 +829,17 @@ class Dropzone extends AbstractResource
     public function getAutoCloseState()
     {
         return $this->autoCloseState;
+    }
+    
+    public function setForumCategory($forumCategory) {
+    	$this->forumCategory = $forumCategory;
+    }
+    
+    /**
+     * @return \Claroline\ForumBundle\Entity\Category
+     */
+    public function getForumCategory() {
+    	return $this->forumCategory;
     }
 
 }

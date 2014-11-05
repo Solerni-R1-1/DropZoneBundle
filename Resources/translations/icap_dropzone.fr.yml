@@ -288,3 +288,7 @@ Evaluation criterions: "Critères d'évaluation"
 
 comment_from_denier: Commentaire de l'auteur contestant la correction
 Reported: Copie signalée
+
+dropzone_forum_category: "Catégorie du forum"
+dropzone_forum_category_label: "Sélectionnez la catégorie d'un forum à lier à cette évaluation :"
+dropzone_choose_forum_category: "Choisissez une catégorie de forum"
