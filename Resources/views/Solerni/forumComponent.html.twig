@@ -1,5 +1,7 @@
+{% if dropzone.getForumCategory() is defined and dropzone.getForumCategory() is not null %}
 <div class='dropForum'>
     <div class='dropForum__title'>{{ 'forumTitle'|trans({}, 'solerni') }}</div>
     <div class='dropForum__content'>{{ 'forumContent'|trans({}, 'solerni') }}</div>
-    <div class='dropForum__button'><a class="btn btn-primary btn-gris" href="{{ path( 'solerni_static_page', { 'name': 'static_forum' } ) }}">{{ 'forumButton'|trans({}, 'solerni') }}</a></div>
+    <div class='dropForum__button'><a class="btn btn-primary btn-gris" href="{{ path( 'claro_forum_subjects', { 'category': dropzone.getForumCategory().getId() } ) }}">{{ 'forumButton'|trans({}, 'solerni') }}</a></div>
 </div>
+{% endif %}

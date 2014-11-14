@@ -31,6 +31,13 @@
         <div class="form-group">
             {{ form_row(form.instruction, {'input_col_size': 'col-md-12', 'label_col_size': '', 'label_attr': {'style': 'display: none;'}}) }}
         </div>
+        
+        <h4>{{ 'dropzone_forum_category'|trans({}, 'icap_dropzone') }}</h4>
+        <p>{{ 'dropzone_forum_category_label'|trans({}, 'icap_dropzone') }}</p>
+
+        <div class="form-group">
+            {{ form_row(form.forumCategory, {'input_col_size': 'col-lg-offset-2 col-lg-10'}) }}
+        </div>
 
         <h4>{{ 'Document type allowed'|trans({}, 'icap_dropzone') }}</h4>
         <p>{{ 'Select the types of documents that learners can make'|trans({}, 'icap_dropzone') }}</p>
