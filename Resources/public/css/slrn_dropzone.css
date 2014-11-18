@@ -667,3 +667,15 @@ table th {
 .slrn-correction-denied-comment .slrn-input-row__title {
     color: #FF004F; 
 }
+
+.slrn-dropzone-form {
+    margin-top: 3em;
+}
+
+.slrn-dropzone-form h4 {
+    margin: 2em 0 .5em 0;
+}
+
+.slrn-dropzone-form-message-part .slrn-control-label {
+    margin: 1.5em 0 .5em 0;
+}

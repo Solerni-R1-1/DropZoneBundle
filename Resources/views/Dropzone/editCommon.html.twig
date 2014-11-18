@@ -21,22 +21,28 @@
     {#</div>#}
     {#<h3>{{ 'Common information'|trans({}, 'icap_dropzone') }}</h3>#}
 
-    <form class="form-horizontal" role="form" method="POST" action="{{ path('icap_dropzone_edit_common', {'resourceId': dropzone.id}) }}" {{ form_enctype(form) }}>
+    <form class="form-horizontal slrn-dropzone-form" role="form" method="POST" action="{{ path('icap_dropzone_edit_common', {'resourceId': dropzone.id}) }}" {{ form_enctype(form) }}>
 
         {{ form_errors(form) }}
 
         <p>{{ 'common_explication'|trans({}, 'icap_dropzone')|raw }}</p>
 
-        <h4>{{ 'Instruction'|trans({}, 'icap_dropzone') }}</h4>
+        <h4>{{ 'Instructions for droppers'|trans({}, 'icap_dropzone') }}</h4>
         <div class="form-group">
             {{ form_row(form.instruction, {'input_col_size': 'col-md-12', 'label_col_size': '', 'label_attr': {'style': 'display: none;'}}) }}
         </div>
+        
+        <h4> {{ 'Instructions for examiners'|trans({},'icap_dropzone') }}</h4>
+        <div class="form-group">
+             {{ form_row(form.correctionInstruction, {'input_col_size': 'col-md-12', 'label_col_size': '', 'label_attr': {'style': 'display: none;'}}) }}
+        </div>
+
         
         <h4>{{ 'dropzone_forum_category'|trans({}, 'icap_dropzone') }}</h4>
         <p>{{ 'dropzone_forum_category_label'|trans({}, 'icap_dropzone') }}</p>
 
         <div class="form-group">
-            {{ form_row(form.forumCategory, {'input_col_size': 'col-lg-offset-2 col-lg-10'}) }}
+            {{ form_row(form.forumCategory, {'input_col_size': 'col-md-7', 'label_col_size': 'col-md-0', 'label_attr': {'style': 'display: none;'}}) }}
         </div>
 
         <h4>{{ 'Document type allowed'|trans({}, 'icap_dropzone') }}</h4>
@@ -75,15 +81,16 @@
         <div class="form-group">
             {{ form_row(form.displayNotationToLearners, {'input_col_size': 'col-lg-offset-2 col-lg-10', 'label_attr': {'class': 'control-label', 'style': 'font-weight: normal;'}}) }}
             {{ form_row(form.displayNotationMessageToLearners, {'input_col_size': 'col-lg-offset-2 col-lg-10', 'label_attr': {'class': 'control-label', 'style': 'font-weight: normal;'}}) }}
-            <div id='dropzone-message-part' class='col-lg-offset-3 col-lg-7' {% if dropzone.displayNotationMessageToLearners == false %} style="display:none" {% endif %} >
-                {{ form_label(form.successMessage,null,{'label': 'successMessage'|trans({},'icap_dropzone'), 'label_attr': {'class': 'control-label','style':'font-weight:normal;'}}) }}
+            <div id='dropzone-message-part' class='slrn-dropzone-form-message-part col-lg-offset-2 col-lg-7' {% if dropzone.displayNotationMessageToLearners == false %} style="display:none" {% endif %} >
+                {{ form_label(form.successMessage,null,{'label': 'successMessage'|trans({},'icap_dropzone'), 'label_attr': {'class': 'control-label slrn-control-label','style':'font-weight:bold;'}}) }}
                 {{ form_widget(form.successMessage, {'label_attr': {'class': 'control-label', 'style': 'font-weight: normal;'}}) }}
                 {{ form_errors(form.successMessage) }}
-                 {{ form_label(form.failMessage,null,{'label': 'failMessage'|trans({},'icap_dropzone'), 'label_attr': {'class': 'control-label','style':'font-weight:normal;'}}) }}
+                {{ form_label(form.failMessage,null,{'label': 'failMessage'|trans({},'icap_dropzone'), 'label_attr': {'class': 'control-label slrn-control-label','style':'font-weight:bold;'}}) }}
                 {{ form_widget(form.failMessage, {'label_attr': {'class': 'control-label', 'style': 'font-weight: normal;'}}) }}
                 {{ form_errors(form.failMessage) }}
-
-                {{ form_row(form.minimumScoreToPass, {'input_col_size': 'col-lg-4', 'label_col_size': 'col-lg-7', 'attr': {'style': 'width: 60px;'}, 'label_attr': {'class': 'control-label', 'style': 'font-weight: normal;'}}) }}
+                <div class="row slrn-control-label">
+                    {{ form_row(form.minimumScoreToPass, {'input_col_size': 'col-lg-4', 'label_col_size': 'row col-lg-8', 'attr': {'style': 'width: 60px; margin-top: -.45em;'}, 'label_attr': {'class': 'control-label', 'style': 'font-weight: bold;'}}) }}
+                </div>
             </div>
             <div class="col-lg-offset-3 col-lg-9">
             </div>

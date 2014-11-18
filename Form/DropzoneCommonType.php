@@ -27,7 +27,7 @@ class DropzoneCommonType extends AbstractType
             ->add('instruction', 'tinymce', array(
                 'required' => false
             ))
-
+            ->add('correctionInstruction','tinymce',array('required' => false))
 
             ->add('allowWorkspaceResource', 'checkbox', array('required' => false))
             ->add('allowUpload', 'checkbox', array('required' => false))
