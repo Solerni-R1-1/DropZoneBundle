@@ -153,7 +153,7 @@
             
                 <label class="slrn-lets-go" for='letsgo' >
                     <input type='checkbox' value='go' name='letsgo' id='letsgo'/>
-                    {{ 'checkboxStart'|trans({ 'expectedCorrections': expectedCorrections }, 'solerni') }}
+            {% if expectedCorrections > 1 %}{{ 'checkboxStart'|trans({ 'expectedCorrections': expectedCorrections }, 'solerni') }}{% else %}{{ 'checkboxStartSingular'|trans({ 'expectedCorrections': expectedCorrections }, 'solerni') }}{% endif %}
                 </label>
 
                 <div class='slrn-button-page'>
