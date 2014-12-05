@@ -4,13 +4,12 @@ namespace Icap\DropzoneBundle\Event\Log;
 
 use Claroline\CoreBundle\Event\Log\AbstractLogResourceEvent;
 use Claroline\CoreBundle\Event\Log\LogGenericEvent;
-use Icap\NotificationBundle\Entity\NotifiableInterface;
 use Icap\DropzoneBundle\Entity\Document;
 use Icap\DropzoneBundle\Entity\Drop;
 use Icap\DropzoneBundle\Entity\Dropzone;
 use Icap\DropzoneBundle\Entity\Correction;
 
-class LogDropGradeAvailableEvent extends AbstractLogResourceEvent implements NotifiableInterface {
+class LogDropGradeAvailableEvent extends AbstractLogResourceEvent {
 
     const ACTION = 'resource-icap_dropzone-drop_grade_available';
     protected $dropzone;

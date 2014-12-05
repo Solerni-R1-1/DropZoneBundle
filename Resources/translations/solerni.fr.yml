@@ -13,6 +13,7 @@ back_corrections: 'Retour à la liste des corrections'
 
 # C
 checkboxStart: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autres retours de preuve »'
+checkboxStartSingular: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autre retour de preuve »'
 continue_corrections: 'OK, corriger le nextFileème dossier'
 continue: 'Continuer'
 continue_evaluation: 'Continuer l''évaluation'

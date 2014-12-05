@@ -9,8 +9,6 @@
             {{ 'Edit evaluation'|trans({}, 'icap_dropzone') }}
             <div class="btn-group pull-right">
           
-        
-            {% render controller('IcapNotificationBundle:FollowerResource:renderForm', {'resourceId': dropzone.resourceNode.id, 'resourceClass': dropzone.resourceNode.class}) %}
             <a class="btn btn-default " href="{{ path('icap_dropzone_drops', {'resourceId': dropzone.id}) }}"><span class="glyphicon icon-list"></span> {{ 'See copies'|trans({}, 'icap_dropzone') }}</a>
             </div>
         </h2>
