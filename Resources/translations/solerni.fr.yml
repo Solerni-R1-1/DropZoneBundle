@@ -12,8 +12,7 @@ back_result: 'Retour au résultat de mon évaluation'
 back_corrections: 'Retour à la liste des corrections'
 
 # C
-checkboxStart: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autres retours de preuve »'
-checkboxStartSingular: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autre retour de preuve »'
+checkboxStart: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autre%plural% retour%plural% de preuve »'
 continue_corrections: 'OK, corriger le nextFileème dossier'
 continue: 'Continuer'
 continue_evaluation: 'Continuer l''évaluation'
@@ -95,7 +94,7 @@ Reported: Correction signalée
 # S
 start_corrections: 'OK, corriger le 1er dossier'
 save and finished: 'OK, j''ai fini mon dossier de preuves et souhaite être évalué(e)'
-start_correction_numbered: 'Vous devez à votre tour <span class="slrn-bold">évaluer expectedCorrections dossiers afin d''obtenir votre évaluation finale</span>'
+start_correction_numbered: 'Vous devez à votre tour <span class="slrn-bold">évaluer expectedCorrections dossier%plural% afin d''obtenir votre évaluation finale</span>'
 start_date: 'Date de début'
 see_corrections: 'Voir les corrections'
 started: 'Début'

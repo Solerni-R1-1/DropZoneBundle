@@ -68,7 +68,8 @@
                 <div class="drop__instruction">
                     {% if dropzone.expectedTotalCorrection == expectedCorrections %}
                     {% set buttonText = 'start_corrections'|trans({}, 'solerni') %}
-                       <p>{{ 'start_correction_numbered'|trans({'expectedCorrections': expectedCorrections }, 'solerni')| raw  }}
+                    {% if expectedCorrections > 1 %}{% set plural = 's' %}{% else %}{% set plural = '' %}{% endif %}
+                       <p>{{ 'start_correction_numbered'|trans({'expectedCorrections': expectedCorrections, '%plural%': plural }, 'solerni')| raw  }}
                     {% endif %}
                     {# this case if probably never meet while we don't be here unless nbCorrections = 0 #}     
                     {% if dropzone.expectedTotalCorrection > expectedCorrections %}
@@ -153,7 +154,8 @@
             
                 <label class="slrn-lets-go" for='letsgo' >
                     <input type='checkbox' value='go' name='letsgo' id='letsgo'/>
-            {% if expectedCorrections > 1 %}{{ 'checkboxStart'|trans({ 'expectedCorrections': expectedCorrections }, 'solerni') }}{% else %}{{ 'checkboxStartSingular'|trans({ 'expectedCorrections': expectedCorrections }, 'solerni') }}{% endif %}
+                        {% if expectedCorrections > 1 %}{% set plural = 's' %}{% else %}{% set plural = '' %}{% endif %}
+                        {{ 'checkboxStart'|trans({ 'expectedCorrections': expectedCorrections, '%plural%': plural }, 'solerni') }}
                 </label>
 
                 <div class='slrn-button-page'>
