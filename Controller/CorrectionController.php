@@ -388,7 +388,7 @@ class CorrectionController extends DropzoneBaseController
         }
 
         
-        if ($correction === null || $correction->isFinished() ) {
+        if ($correction === null ) {
             $this->getRequest()->getSession()->getFlashBag()->add(
                 'error',
                 $this
@@ -404,6 +404,17 @@ class CorrectionController extends DropzoneBaseController
                     )
                 )
             );
+        }
+        
+        if (  $correction->isFinished() ) {
+            return $this->redirect(
+                $this->generateUrl(
+                    'icap_dropzone_open',
+                    array(
+                        'resourceId' => $dropzone->getId()
+                    )
+                )
+            ); 
         }
 
         $pager = $this->getCriteriaPager($dropzone);
