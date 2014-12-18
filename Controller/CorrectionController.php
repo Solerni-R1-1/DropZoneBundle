@@ -431,7 +431,7 @@ class CorrectionController extends DropzoneBaseController
             array('criteria' => $pager->getCurrentPageResults(), 'totalChoice' => $dropzone->getTotalCriteriaColumn())
         );
 
-        if ($this->getRequest()->isMethod('POST') and $correction !== null) {
+        if ($this->getRequest()->isMethod('POST') and $correction !== null && ! $correction->getFinished() ) {
             $form->handleRequest($this->getRequest());
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -605,7 +605,7 @@ class CorrectionController extends DropzoneBaseController
         $pager = $this->getCriteriaPager($dropzone);
         $form = $this->createForm(new CorrectionCommentType(), $correction, array('allowCommentInCorrection' => $dropzone->getAllowCommentInCorrection()));
 
-        if ($this->getRequest()->isMethod('POST')) {
+        if ($this->getRequest()->isMethod('POST') && ! $correction->getFinished() ) {
             $form->handleRequest($this->getRequest());
             if ($form->isValid()) {
                 $correction = $form->getData();
