@@ -293,3 +293,5 @@ Reported: Copie signalée
 dropzone_forum_category: "Catégorie du forum"
 dropzone_forum_category_label: "Sélectionnez la catégorie d'un forum à lier à cette évaluation :"
 dropzone_choose_forum_category: "Choisissez une catégorie de forum"
+faulty_corrections: Corrections fautives
+faulty_corrections_text: Certaines corrections ne sont ni dénoncées, ni signalées, n'ont pas de critères notés mais sont considérées terminées. Elles sont probablement en erreur et réclament un examen manuel.

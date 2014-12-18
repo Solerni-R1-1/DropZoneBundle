@@ -20,6 +20,11 @@
                         {{ 'Examiners'|trans({}, 'icap_dropzone') }}
                     </a>
                 </li>
+                <li>
+                    <a href='{{ path('icap_dropzone_faulty_corrections', {'resourceId': dropzone.id}) }}'>
+                        {{ 'faulty_corrections'|trans({}, 'icap_dropzone') }}
+                    </a>
+                </li>
                 {% endif %}
             </ul>
         </div>

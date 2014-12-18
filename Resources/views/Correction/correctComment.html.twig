@@ -6,7 +6,14 @@
 
     <div class="container">
         <div class="slrn-criteres">
-            <form id="correct-form" method="POST" action="{% if edit == false %}#{% elseif admin == true %}{{ path('icap_dropzone_drops_detail_correction_comment', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id}) }}{% else %}{{ path('icap_dropzone_correct_comment', {'resourceId': dropzone.id}) }}{% endif %}" class="form-horizontal">
+            <form id="correct-form" method="POST" 
+                  action="{% if edit == false %}#
+                  {% elseif admin == true %}
+                    {{ path('icap_dropzone_drops_detail_correction_comment', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id}) }}
+                  {% else %}
+                    {{ path('icap_dropzone_correct_comment', {'resourceId': dropzone.id, 'correction': correction.id }) }}
+                  {% endif %}"
+                  class="form-horizontal">
 
                 {% if edit %}
                     <div class="slrn-input-row">

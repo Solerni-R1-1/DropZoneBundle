@@ -22,22 +22,26 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Claroline\CoreBundle\Entity\Badge\Badge;
 use Claroline\CoreBundle\Manager\BadgeManager;
 use JMS\DiExtraBundle\Annotation as DI;
+use Icap\DropzoneBundle\Manager\CorrectionManager;
 
 class DropzoneController extends DropzoneBaseController
 {
 	
 	/** @var BadgeManager */
 	private $badgeManager;
+    private $correctionManager;
 	
 	/**
 	 * Constructor.
 	 *
 	 * @DI\InjectParams({
-	 *     "badgeManager" = @DI\Inject("claroline.manager.badge")
+	 *     "badgeManager"       = @DI\Inject("claroline.manager.badge"),
+     *     "correctionManager"  = @DI\Inject("icap.manager.correction_manager")
 	 * })
 	 */
-	public function __construct(BadgeManager $badgeManager) {
+	public function __construct(BadgeManager $badgeManager, CorrectionManager $correctionManager) {
 		$this->badgeManager = $badgeManager;
+        $this->correctionManager = $correctionManager;
 	}
 	
     /**
@@ -386,7 +390,7 @@ class DropzoneController extends DropzoneBaseController
         $hasCopyToCorrect = $em
             ->getRepository('IcapDropzoneBundle:Drop')
             ->hasCopyToCorrect($dropzone, $user);
-        $hasUnfinishedCorrection = $em->getRepository('IcapDropzoneBundle:Correction')->getNotFinished($dropzone, $user) != null;
+        $hasUnfinishedCorrection = $this->correctionManager->getOneUnfinishedCorrection( $dropzone, $user ) != null;
 
 
         // get progression of the evaluation ( current state, all states available and needed infos to the view).

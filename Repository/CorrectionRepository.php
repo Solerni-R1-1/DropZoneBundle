@@ -52,7 +52,7 @@ class CorrectionRepository extends EntityRepository {
         return $nbCorrection;
     }
 
-    public function getNotFinished($dropzone, $user)
+    public function getNotFinished( $dropzone, $user )
     {
         $corrections =  $this->createQueryBuilder('correction')
             ->andWhere('correction.user = :user')
@@ -64,13 +64,7 @@ class CorrectionRepository extends EntityRepository {
             ->getQuery()
             ->getResult();
 
-        if (count($corrections) == 1) {
-            return $corrections[0];
-        } else if (count($corrections) > 1) {
-            throw new \Exception();
-        }
-
-        return null;
+        return $corrections;
     }
 
 
@@ -202,5 +196,27 @@ class CorrectionRepository extends EntityRepository {
 
         $result = $query->getResult();
         return $result;
+    }
+    
+    public function getPossibleFaultyCorrections($dropzone) {
+        $sql = "SELECT DISTINCT c FROM IcapDropzoneBundle:Correction c
+                    WHERE c.totalGrade= 0
+                    AND c.dropzone = :dropzoneId
+                    AND c.valid = 1
+                    AND c.reporter = 0
+                    AND c.correctionDenied = 0
+                    AND c.reportComment is NULL
+                    AND c.correctionDeniedComment is NULL
+                    AND c.id NOT IN (
+                        SELECT c2.id FROM IcapDropzoneBundle:Correction c2
+                        JOIN IcapDropzoneBundle:Grade g 
+                        WHERE g.correction = c2.id
+                    )
+        ";
+        
+        $query = $this->_em->createQuery($sql); 
+        $query->setParameter('dropzoneId', $dropzone->getId());
+        
+        return $query;
     }
 }
