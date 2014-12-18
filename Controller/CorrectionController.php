@@ -388,7 +388,7 @@ class CorrectionController extends DropzoneBaseController
         }
 
         
-        if ($correction === null ) {
+        if ( $correction === null || $correction->getFinished() ) {
             $this->getRequest()->getSession()->getFlashBag()->add(
                 'error',
                 $this
@@ -406,17 +406,6 @@ class CorrectionController extends DropzoneBaseController
             );
         }
         
-        if (  $correction->isFinished() ) {
-            return $this->redirect(
-                $this->generateUrl(
-                    'icap_dropzone_open',
-                    array(
-                        'resourceId' => $dropzone->getId()
-                    )
-                )
-            ); 
-        }
-
         $pager = $this->getCriteriaPager($dropzone);
         try {
             $pager->setCurrentPage($page);
@@ -602,7 +591,7 @@ class CorrectionController extends DropzoneBaseController
             );
         }
         
-        if ( count ( $correction->getGrades() ) == 0 || $correction->isFinished() ) {
+        if ( count ( $correction->getGrades() ) == 0 || $correction->getFinished() ) {
             return $this->redirect(
                 $this->generateUrl(
                     'icap_dropzone_open',
