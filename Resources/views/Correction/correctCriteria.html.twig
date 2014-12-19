@@ -30,7 +30,13 @@
     <div class="container">
         {% if dropzone.hasCriteria() %}
             <div class="slrn-criteres">
-                <form class="slrn-criteres_form" id="correct-form" method="POST" action="{% if edit == false %}#{% elseif admin == true %}{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id, 'page': pager.currentPage}) }}{% else %}{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': pager.currentPage}) }}{% endif %}" class="form-horizontal">
+                <form class="slrn-criteres_form" id="correct-form" method="POST" 
+                      action="{% if edit == false %}#{% elseif admin == true %}
+                        {{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id, 'page': pager.currentPage}) }}
+                    {% else %}
+                        {{ path('icap_dropzone_correct_attributed_paginated', {'resourceId': dropzone.id, 'page': pager.currentPage, 'correction': correction.id}) }}
+                    {% endif %}" 
+                    class="form-horizontal">
                     <hr class="slrn-hr slrn-hr--lightgrey">
                     <div class="slrn-criteres__list">
                         {% for criterion in pager.currentPageResults %}
@@ -218,25 +224,4 @@
             calculateTotalGrade();
         });
     </script>
-    {# Starts of function to hide radios and replace it with styled elements #}
-    {#<script>
-        $(document).on('ready', function () {
-            var radioContainers = jQuery('.slrn-radio-cell--radios');
-            var pseudoRadioContainer = '<span class="slrn-pseudo-buttons"></span>';
-            var pseudoRadioElement = '<div class="radio-inline radio"><span class="radio-inline--pseudo"></span></span>';
-              
-            radioContainers.each( function() {
-                radioButtons = jQuery(this).find( '.radio' );
-                var pseudoRadioContainerObject = jQuery(this).prepend( pseudoRadioContainer );
-                
-                
-                radioButtons.hide().each( function() {
-                    pseudoRadioContainerObject.append( pseudoRadioElement );
-                    
-                });
-              
-            });
-              
-        });
-    </script>#}
 {% endblock %}

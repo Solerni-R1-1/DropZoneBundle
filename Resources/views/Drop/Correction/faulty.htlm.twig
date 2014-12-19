@@ -12,12 +12,12 @@
                 {{ 'Copies being evaluated'|trans({}, 'icap_dropzone') }} <span class="badge">{{ nbDrop - nbDropCorrected }}</span>
             </a>
         </li>
-        <li class="active">
+        <li>
             <a href='{{ path('icap_dropzone_examiners', {'resourceId': dropzone.id}) }}'>
                 {{ 'Examiners'|trans({}, 'icap_dropzone') }}
             </a>
         </li>
-        <li>
+        <li class="active">
             <a href='{{ path('icap_dropzone_faulty_corrections', {'resourceId': dropzone.id}) }}'>
                 {{ 'faulty_corrections'|trans({}, 'icap_dropzone') }}
             </a>
@@ -35,14 +35,14 @@
 {% endblock %}
 
 {% block dropzone_content_drops_by_list_title %}
-    {{ 'List of examiners'|trans({}, 'icap_dropzone') }}
+    {{ 'faulty_corrections'|trans({}, 'icap_dropzone') }}
 {% endblock %}
 {% block dropzone_content_drops_by_list_subtitle %}
-    {{ 'People that have a copy in this dropzone'|trans({}, 'icap_dropzone') }}
+    {{ 'faulty_corrections_text'|trans({}, 'icap_dropzone') }}
 {% endblock %}
 
 {% block dropzone_content_drops_by_Listing %}
-    {% include 'IcapDropzoneBundle:Drop:Listing/examinersListing.html.twig' %}
+    {% include 'IcapDropzoneBundle:Drop:Listing/faultyListing.html.twig' %}
 {% endblock %}
 
 {% block dropzone_content_drops_by_pager %}
@@ -53,7 +53,7 @@
             'twitter_bootstrap_translated',
             {
             'proximity' : 1,
-            'routeName': 'icap_dropzone_examiners_paginated',
+            'routeName': 'icap_dropzone_faulty_corrections_paginated',
             'routeParams': {'resourceId': dropzone.id}
             }
             )

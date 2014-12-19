@@ -38,21 +38,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Claroline\CoreBundle\Manager\BadgeManager;
+use Icap\DropzoneBundle\Manager\CorrectionManager;
 
 class CorrectionController extends DropzoneBaseController
 {
 	/** @var BadgeManager */
 	private $badgeManager;
+    private $correctionManager;
 	
 	/**
 	 * Constructor.
 	 *
 	 * @DI\InjectParams({
-	 *     "badgeManager" = @DI\Inject("claroline.manager.badge")
+	 *     "badgeManager"       = @DI\Inject("claroline.manager.badge"),
+     *     "correctionManager"  = @DI\Inject("icap.manager.correction_manager")
 	 * })
 	 */
-	public function __construct(BadgeManager $badgeManager) {
+	public function __construct(BadgeManager $badgeManager, CorrectionManager $correctionManager ) {
 		$this->badgeManager = $badgeManager;
+        $this->correctionManager = $correctionManager;
 	}
 	
 	
@@ -123,7 +127,7 @@ class CorrectionController extends DropzoneBaseController
     {
         $em = $this->getDoctrine()->getManager();
         // Check that the user as a not finished correction (exclude admin correction). Otherwise generate a new one.
-        $correction = $em->getRepository('IcapDropzoneBundle:Correction')->getNotFinished($dropzone, $user);
+        $correction = $this->correctionManager->getOneUnfinishedCorrection( $dropzone, $user );
         if ($correction == null) {
             $drop = $em->getRepository('IcapDropzoneBundle:Drop')->drawDropForCorrection($dropzone, $user);
 
@@ -326,13 +330,25 @@ class CorrectionController extends DropzoneBaseController
      *      "/{resourceId}/correct",
      *      name="icap_dropzone_correct",
      *      requirements={"resourceId" = "\d+"},
-     *      defaults={"page" = 1}
+     *      defaults={"page" = 1, "correction" = null}
      * )
      * @Route(
-     *      "/{resourceId}/correct/{page}",
+     *      "/{resourceId}/correct/page/{page}",
      *      name="icap_dropzone_correct_paginated",
      *      requirements={"resourceId" = "\d+", "page" = "\d+"},
-     *      defaults={"page" = 1}
+     *      defaults={"page" = 1, "correction" = null}
+     * )
+     * @Route(
+     *      "/{resourceId}/correct/correction/{correction}",
+     *      name="icap_dropzone_correct_attributed",
+     *      requirements={"resourceId" = "\d+", "page" = "\d+"},
+     *      defaults={"page" = 1, "correction" = null}
+     * )
+     * @Route(
+     *      "/{resourceId}/correct/correction/{correction}/page/{page}",
+     *      name="icap_dropzone_correct_attributed_paginated",
+     *      requirements={"resourceId" = "\d+", "page" = "\d+"},
+     *      defaults={"page" = 1, "correction" = null}
      * )
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
      * @ParamConverter("user", options={
@@ -343,7 +359,7 @@ class CorrectionController extends DropzoneBaseController
      * })
      * @Template()
      */
-    public function correctAction($dropzone, $user, $page)
+    public function correctAction($dropzone, $user, $page, $correction)
     {
         $this->isAllowToOpen($dropzone);
         $em = $this->getDoctrine()->getManager();
@@ -352,9 +368,27 @@ class CorrectionController extends DropzoneBaseController
         if ($check !== null) {
             return $check;
         }
+        
+        
+        if ( $correction === null ) {
+            $correction = $this->getCorrection($dropzone, $user);
+            
+            return $this->redirect(
+                $this->generateUrl(
+                    'icap_dropzone_correct_attributed_paginated',
+                    array(
+                        'resourceId'    => $dropzone->getId(),
+                        'page'          => $page,
+                        'correction'    => $correction->getId()
+                    )
+                )
+            );
+        } else {
+            $correction = $em->getRepository('IcapDropzoneBundle:Correction')->findOneById($correction);
+        }
 
-        $correction = $this->getCorrection($dropzone, $user);
-        if ($correction === null) {
+        
+        if ( $correction === null || $correction->getFinished() ) {
             $this->getRequest()->getSession()->getFlashBag()->add(
                 'error',
                 $this
@@ -371,7 +405,7 @@ class CorrectionController extends DropzoneBaseController
                 )
             );
         }
-
+        
         $pager = $this->getCriteriaPager($dropzone);
         try {
             $pager->setCurrentPage($page);
@@ -397,7 +431,7 @@ class CorrectionController extends DropzoneBaseController
             array('criteria' => $pager->getCurrentPageResults(), 'totalChoice' => $dropzone->getTotalCriteriaColumn())
         );
 
-        if ($this->getRequest()->isMethod('POST') and $correction !== null) {
+        if ($this->getRequest()->isMethod('POST') and $correction !== null && ! $correction->getFinished() ) {
             $form->handleRequest($this->getRequest());
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -412,9 +446,10 @@ class CorrectionController extends DropzoneBaseController
 
                     return $this->redirect(
                         $this->generateUrl(
-                            'icap_dropzone_correct_paginated',
+                            'icap_dropzone_correct_attributed_paginated',
                             array(
                                 'resourceId' => $dropzone->getId(),
+                                'correction' => $correction->getId(),
                                 'page' => $pageNumber
                             )
                         )
@@ -423,9 +458,10 @@ class CorrectionController extends DropzoneBaseController
                     if ($pager->getCurrentPage() < $pager->getNbPages()) {
                         return $this->redirect(
                             $this->generateUrl(
-                                'icap_dropzone_correct_paginated',
+                                'icap_dropzone_correct_attributed_paginated',
                                 array(
                                     'resourceId' => $dropzone->getId(),
+                                'correction' => $correction->getId(),
                                     'page' => ($page + 1)
                                 )
                             )
@@ -435,7 +471,8 @@ class CorrectionController extends DropzoneBaseController
                             $this->generateUrl(
                                 'icap_dropzone_correct_comment',
                                 array(
-                                    'resourceId' => $dropzone->getId()
+                                    'resourceId' => $dropzone->getId(),
+                                    'correction' => $correction->getId()
                                 )
                             )
                         );
@@ -468,7 +505,7 @@ class CorrectionController extends DropzoneBaseController
         $hasCopyToCorrect = $em
             ->getRepository('IcapDropzoneBundle:Drop')
             ->hasCopyToCorrect($dropzone, $user);
-        $hasUnfinishedCorrection = $em->getRepository('IcapDropzoneBundle:Correction')->getNotFinished($dropzone, $user) != null;
+        $hasUnfinishedCorrection = $this->correctionManager->getOneUnfinishedCorrection( $dropzone, $user ) != null;
 
         return $this->render(
             $view,
@@ -490,9 +527,16 @@ class CorrectionController extends DropzoneBaseController
 
     /**
      * @Route(
-     *      "/{resourceId}/correct/comment",
+     *      "/{resourceId}/correct/correction/{correction}/comment",
      *      name="icap_dropzone_correct_comment",
-     *      requirements={"resourceId" = "\d+"}
+     *      requirements={"resourceId" = "\d+"},
+     *      defaults={"correction" = null}
+     * )
+     * @Route(
+     *      "/{resourceId}/correct/comment",
+     *      name="icap_dropzone_correct_empty_comment",
+     *      requirements={"resourceId" = "\d+"},
+     *      defaults={"correction" = null}
      * )
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
      * @ParamConverter("user", options={
@@ -503,15 +547,28 @@ class CorrectionController extends DropzoneBaseController
      * })
      * @Template()
      */
-    public function correctCommentAction(Dropzone $dropzone, User $user)
+    public function correctCommentAction(Dropzone $dropzone, User $user, $correction)
     {
         $this->isAllowToOpen($dropzone);
         $check = $this->checkRightToCorrect($dropzone, $user);
         if ($check !== null) {
             return $check;
         }
-
-        $correction = $this->getCorrection($dropzone, $user);
+        
+        if ( $correction === null ) {
+            return $this->redirect(
+                $this->generateUrl(
+                    'icap_dropzone_open',
+                    array(
+                        'resourceId' => $dropzone->getId()
+                    )
+                )
+            );
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $correction = $em->getRepository('IcapDropzoneBundle:Correction')->findOneById($correction);
+        }
+        
         if ($correction === null) {
             $this
                 ->getRequest()
@@ -533,11 +590,22 @@ class CorrectionController extends DropzoneBaseController
                 )
             );
         }
+        
+        if ( count ( $correction->getGrades() ) == 0 || $correction->getFinished() ) {
+            return $this->redirect(
+                $this->generateUrl(
+                    'icap_dropzone_open',
+                    array(
+                        'resourceId' => $dropzone->getId()
+                    )
+                )
+            );
+        }
 
         $pager = $this->getCriteriaPager($dropzone);
         $form = $this->createForm(new CorrectionCommentType(), $correction, array('allowCommentInCorrection' => $dropzone->getAllowCommentInCorrection()));
 
-        if ($this->getRequest()->isMethod('POST')) {
+        if ($this->getRequest()->isMethod('POST') && ! $correction->getFinished() ) {
             $form->handleRequest($this->getRequest());
             if ($form->isValid()) {
                 $correction = $form->getData();
@@ -588,7 +656,7 @@ class CorrectionController extends DropzoneBaseController
         $hasCopyToCorrect = $em
             ->getRepository('IcapDropzoneBundle:Drop')
             ->hasCopyToCorrect($dropzone, $user);
-        $hasUnfinishedCorrection = $em->getRepository('IcapDropzoneBundle:Correction')->getNotFinished($dropzone, $user) != null;
+        $hasUnfinishedCorrection = $this->correctionManager->getOneUnfinishedCorrection( $dropzone, $user ) != null;
 
         return $this->render(
             $view,
@@ -1531,5 +1599,82 @@ class CorrectionController extends DropzoneBaseController
            $response[$user->getId()]=$responseItem;
         }
         return $response;
+    }
+    
+    /**
+     * 
+     * @Route(
+     *      "/{resourceId}/faulty_corrections",
+     *      name="icap_dropzone_faulty_corrections",
+     *      requirements ={"resourceId" ="\d+"},
+     *      defaults={"page" = 1}
+     * )
+     * 
+     * @Route(
+     *      "/{resourceId}/faulty_corrections/page/{page}",
+     *      name="icap_dropzone_faulty_corrections_paginated",
+     *      requirements ={"resourceId" ="\d+"},
+     *      defaults={"page" = 1}
+     * )
+     * 
+     * @ParamConverter("dropzone",class="IcapDropzoneBundle:Dropzone",options={"id" = "resourceId"})
+     * 
+     * @Template()
+     * 
+     * 
+     * **/
+    public function potentialFaultyCorrectionsAction( $dropzone, $page ) {
+        
+        // check rights
+        $this->isAllowToOpen($dropzone);
+        $this->isAllowToEdit($dropzone);
+        
+        $dropRepo = $this->getDoctrine()->getManager()->getRepository('IcapDropzoneBundle:Drop');
+        $correctionRepo = $this->getDoctrine()->getManager()->getRepository('IcapDropzoneBundle:Correction');
+        
+        $faultyQuery = $correctionRepo->getPossibleFaultyCorrections($dropzone);
+       
+        // pagitation management.
+        $adapter = new DoctrineORMAdapter($faultyQuery);
+        $pager = new Pagerfanta($adapter);
+        $pager->setMaxPerPage(DropzoneBaseController::DROP_PER_PAGE);
+
+        try {
+            $pager->setCurrentPage($page);
+        } catch (NotValidCurrentPageException $e) {
+            if($page > 0) {
+                return $this->redirect(
+                    $this->generateUrl(
+                        'icap_dropzone_examiners_paginated',
+                        array(
+                            'resourceId' => $dropzone->getId(),
+                            'page' => $pager->getNbPages()
+                            )
+                    )
+                );
+            }else {
+                throw new NotFoundHttpException();
+            }
+        }
+        
+        // add some count needed by the view.
+        $usersQuery = $correctionRepo->getUsersByDropzoneQuery($dropzone);
+        $users = $usersQuery->getResult();
+        $usersAndCorrectionCount = $this->addCorrectionCount($dropzone,$users);
+        
+        $response = array(
+            'workspace' => $dropzone->getResourceNode()->getWorkspace(),
+            '_resource' => $dropzone,
+            'dropzone' => $dropzone,
+            'usersAndCorrectionCount' => $usersAndCorrectionCount,
+            'nbDropCorrected' =>  $dropRepo->countDropsFullyCorrected($dropzone),
+            'nbDrop' =>$dropRepo->countDrops($dropzone),
+            'pager' => $pager
+            );
+        
+        return $this->render(
+            'IcapDropzoneBundle:Drop:Correction/faulty.htlm.twig',
+            $response
+        );
     }
 }

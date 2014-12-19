@@ -33,6 +33,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Claroline\CoreBundle\Manager\BadgeManager;
+use Icap\DropzoneBundle\Manager\CorrectionManager;
 
 class DropController extends DropzoneBaseController
 {
@@ -40,16 +41,19 @@ class DropController extends DropzoneBaseController
 
 	/** @var BadgeManager */
 	private $badgeManager;
+    private $correctionManager;
 	
 	/**
 	 * Constructor.
 	 *
 	 * @DI\InjectParams({
-	 *     "badgeManager" = @DI\Inject("claroline.manager.badge")
+	 *     "badgeManager" = @DI\Inject("claroline.manager.badge"),
+     *     "correctionManager"  = @DI\Inject("icap.manager.correction_manager")
 	 * })
 	 */
-	public function __construct(BadgeManager $badgeManager) {
+	public function __construct(BadgeManager $badgeManager, CorrectionManager $correctionManager) {
 		$this->badgeManager = $badgeManager;
+        $this->correctionManager = $correctionManager;
 	}
 	
     /**
@@ -678,7 +682,7 @@ class DropController extends DropzoneBaseController
         $this->isAllowToOpen($dropzone);
 
         try {
-            $curent_user_correction = $em->getRepository('IcapDropzoneBundle:Correction')->getNotFinished($dropzone, $user);
+            $curent_user_correction = $this->correctionManager->getOneUnfinishedCorrection( $dropzone, $user );
         } catch(NotFoundHttpException $e){
             throw new AccessDeniedException();
         }
