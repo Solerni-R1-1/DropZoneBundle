@@ -285,3 +285,12 @@ recalculate_helper: 'Usefull if you have deleted some criterias whereas people h
 corrections were already created: "one: A correction was already  created.|some:%count% corrections were already created."
 Modify add or delete criteria will affect this corrections if you recalculate the note on it.: "Update, add or delete criteria will affect this corrections if you recalculate their  given note "
 Evaluation criterions: 'Evaluation criterions'
+
+comment_from_denier: Commentaire de l'auteur contestant la correction#GB
+Reported: Copie signalée#GB
+
+dropzone_forum_category: "Catégorie du forum#GB"
+dropzone_forum_category_label: "Sélectionnez la catégorie d'un forum à lier à cette évaluation :#GB"
+dropzone_choose_forum_category: "Choisissez une catégorie de forum#GB"
+faulty_corrections: Corrections fautives#GB
+faulty_corrections_text: Certaines corrections ne sont ni dénoncées, ni signalées, n'ont pas de critères notés mais sont considérées terminées. Elles sont probablement en erreur et réclament un examen manuel.#GB

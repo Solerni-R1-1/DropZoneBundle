@@ -1,10 +1,118 @@
-welcome: 'Welcome'
-evaluation_by_peers: 'Rate your peers - step 2 of 5'
-start_corrections: 'OK, start corrections'
-continue_corrections: 'OK, continue corrections'
-correcting_copy: 'Correcting files - step 3 of 5'
-document_list_to_correct: 'Documents to evaluate'
-continue: 'Continue'
-ok_done: 'OK, i''m done'
-add_comment: 'Add a comment'
-attribute_rating: 'You''re about to attribut a rating of'
+# A
+addDocument: 'Ajouter un document#GB'
+addDocument__PC: 'Fichier depuis mon ordinateur#GB'
+add_comment: 'Vous pouvez ajouter un commentaire#GB'
+attribute_rating: 'Vous allez attribuer la note de#GB'
+
+# B
+buttonStart: 'Ok, commencer à constituer mon dossier de preuves#GB'
+back_my_badges: 'Retour à la liste des badges#GB'
+back_result: 'Retour au résultat de mon évaluation#GB'
+back_corrections: 'Retour à la liste des corrections#GB'
+
+# C
+checkboxStart: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autre%plural% retour%plural% de preuve »#GB'
+continue_corrections: 'OK, corriger le nextFileème dossier#GB'
+continue: 'Continuer#GB'
+continue_evaluation: 'Continuer l''évaluation#GB'
+correcting_copy: 'Correction du dossier#GB'
+continue_correction_numbered: 'Vous devez encore <span class="slrn-bold">évaluer expectedCorrections accordDossier avant d''obtenir votre évaluation finale</span>#GB'
+correction_intro: 'La note que vous allez attribuer à ce dossier dépend de votre évaluation pour chacun des critères ci-après. Selon vous, l''ensemble des documents que vous avez examinés répondent-ils aux critères suivants ?#GB'
+correction_done_text: 'La correction du dossier n°currentFile a bien été enregistrée.#GB'
+correction_reminder: 'Critères d''évaluation#GB'
+correction_list: 'Liste des corrections de mon dossier de preuves#GB'
+correction_th: 'correction#GB'
+correcteur_th: 'correcteur#GB'
+correction_copy: 'Correction#GB'
+comment: Commentaire#GB
+
+# D
+date_limite: 'Date limite pour déposer vos preuves :#GB'
+date_limite_corrections: 'Date limite pour corriger les dossiers :#GB'
+document_list_to_correct: 'Documents à évaluer#GB'
+delete_document: 'Supprimer le document#GB'
+drop_confirmed: 'Votre dossier de preuves a été soumis à évaluation le dropdate#GB'
+drop_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startDropDate</span>, date d''ouverture du dépôt de preuves pour le badge en cours#GB'
+drop_details: 'Détails de votre dossier de preuves#GB'
+default_success_message: '<span class="slrn-sub-title">Bravo !</span>Vous avez réussi votre évaluation en obtenant une note de evalGrade<span class="slrn-sep">/</span>20.#GB'
+default_failed_message: '<span class="slrn-sub-title">Désolé !</span>Vous avez obtenu une note de %evalGrade%<span class="slrn-sep">/</span>20, insuffisante pour obtenir votre badge de compétence.#GB'
+
+# E
+evaluation_by_peers: 'Début de l''évaluation#GB'
+evalDone: 'Evaluation terminée#GB'
+endNotOver: 'Evaluation en cours#GB'
+end_date: 'Date de fin#GB'
+drop_finished: 'La phase de dépôt des preuves s''est achevée le <span class="slrn-bold">endDropDate</span>. Vous ne pouvez plus participer à cette évaluation.#GB'
+evalFailed: 'Evaluation échouée#GB'
+evalSucceed: 'Evaluation réussie#GB'
+evalOver: 'Evaluation fermée#GB'
+evalNotStarted: 'Evaluation à venir#GB'
+
+# F
+faq : 'FAQ#GB'
+file: 'Importer un fichier depuis mon ordinateur#GB'
+forumTitle: 'Forum#GB'
+forumContent: 'Discuter, échanger, poser des questions sur le sujet, à tous moments avec vos pairs#GB'
+forumButton: 'Discuter#GB'
+finish_correction: 'Attention, vous êtes sur le point de rendre votre correction. Cette action est définitive. Etes-vous sûr d''avoir terminé ?<br />En cas de doute vous pouvez annuler votre notation et recommencer l''évaluation.#GB'
+follow_correction_text: 'Souhaitez-vous continuer à corriger le dossier suivant ? <br>Pour information, vous avez jusqu''au endReviewDate pour corriger vos dossiers#GB'
+
+#G
+get_new_badges: 'Obtenir de nouveaux badges#GB'
+
+# I
+info_start: 'Pour débuter cette évaluation, vous devez en accepter au préalable les conditions en cochant la case ci-dessous#GB'
+instruction_reminder: 'Instructions pour le dépôt de preuve#GB'
+import_file: 'Importer#GB'
+import_progress: 'Importation...#GB'
+
+#L
+limit_date_eval: 'Date limite pour corriger les dossiers :#GB'
+
+# N
+no_files: 'Aucun fichier ajouté#GB'
+no_copy_to_correct: 'Désolé, aucune copie n''est disponible pour le moment.<br>A très bientôt#GB'
+note: 'Score#GB'
+
+#O
+ok_done: 'OK, j''ai terminé#GB'
+
+#P
+parcours_title: 'Parcours d''obtention du badge#GB'
+post_eval_badge_count_success: Il vous reste encore %totalBadgesToGo% badge%plural% à décrocher pour attester de la totale compréhension de votre cursus &laquo; %moocName% &raquo;.#GB
+post_eval_badge_count_failed: Il vous reste encore %totalBadgesToGo% badge%plural% à décrocher pour améliorer votre parcours dans le cursus &laquo; %moocName% &raquo;.#GB
+
+# R
+resource: 'Importer un fichier depuis ma bibliothèque#GB'
+review_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startEvalDate</span>, date d''ouverture des évaluations par les pairs pour le badge en cours#GB'
+report_copy: 'Signaler la copie#GB'
+return_mooc: 'Retour au Mooc#GB'
+review_is_over: 'Désolé, la date limite pour corriger les dossiers est achevée depuis le <span class="slrn-bold">endEvalDate</span>. Vous ne pouvez plus participer à cette évaluation.#GB'
+Reported: Correction signalée#GB
+
+# S
+start_corrections: 'OK, corriger le 1er dossier#GB'
+save and finished: 'OK, j''ai fini mon dossier de preuves et souhaite être évalué(e)#GB'
+start_correction_numbered: 'Vous devez à votre tour <span class="slrn-bold">évaluer expectedCorrections dossier%plural% afin d''obtenir votre évaluation finale</span>#GB'
+start_date: 'Date de début#GB'
+see_corrections: 'Voir les corrections#GB'
+started: 'Début#GB'
+status: état#GB
+
+#O
+over: 'Fin#GB'
+
+# T
+text: 'Rédiger un texte#GB'
+
+# U
+url: 'Insérer un lien internet#GB'
+
+# W
+welcome: 'Création de mon espace d''évaluation#GB'
+welcome_constit1: 'Constitution de mon dossier de preuves#GB'
+wait_for_results: '<p><span class="slrn-bold">C''est presque terminé !</span><br>Encore un peu de patience, votre dossier est toujours en cours d''évaluation.<br>Vous découvrirez très bientôt si vous avez réussi votre évaluation et obtenu votre badge de compétence.</p><p class="slrn-bold">A très bientôt</p>#GB'
+win_badge: 'Le Mooc &laquo; %moocName% &raquo; est heureux de vous décerner le badge de compétences :#GB'
+
+# Y
+yourFiles: 'Votre dossier de preuves : #GB'
