@@ -48,9 +48,9 @@
             {% endif %}
             
             {% if state is defined %}
-                <h2>{{ 'correction_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+                <h2>{{ 'correction_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
             {% else %}
-                <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+                <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
             {% endif %}
             <hr class="slrn-hr slrn-hr--lightgrey">
             {% if state is not defined %}
@@ -122,9 +122,9 @@
             {% endif %}
             
             {% if state is defined %}
-                <h2>{{ 'correction_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+                <h2>{{ 'correction_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
             {% else %}
-                <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+                <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
             {% endif %}
             <hr class="slrn-hr slrn-hr--lightgrey">
             {% if state is not defined %}

@@ -9,6 +9,7 @@ buttonStart: 'Ok, commencer à constituer mon dossier de preuves#GB'
 back_my_badges: 'Retour à la liste des badges#GB'
 back_result: 'Retour au résultat de mon évaluation#GB'
 back_corrections: 'Retour à la liste des corrections#GB'
+Bibliothèque: Bibliothèque#GB
 
 # C
 checkboxStart: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autre%plural% retour%plural% de preuve »#GB'
@@ -25,6 +26,7 @@ correction_th: 'correction#GB'
 correcteur_th: 'correcteur#GB'
 correction_copy: 'Correction#GB'
 comment: Commentaire#GB
+criteria: critère#GB
 
 # D
 date_limite: 'Date limite pour déposer vos preuves :#GB'
@@ -36,7 +38,9 @@ drop_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startDro
 drop_details: 'Détails de votre dossier de preuves#GB'
 default_success_message: '<span class="slrn-sub-title">Bravo !</span>Vous avez réussi votre évaluation en obtenant une note de evalGrade<span class="slrn-sep">/</span>20.#GB'
 default_failed_message: '<span class="slrn-sub-title">Désolé !</span>Vous avez obtenu une note de %evalGrade%<span class="slrn-sep">/</span>20, insuffisante pour obtenir votre badge de compétence.#GB'
-
+Document: Document#GB %count%
+er: er#GB
+eme: ème#GB
 # E
 evaluation_by_peers: 'Début de l''évaluation#GB'
 evalDone: 'Evaluation terminée#GB'
@@ -56,10 +60,11 @@ forumContent: 'Discuter, échanger, poser des questions sur le sujet, à tous mo
 forumButton: 'Discuter#GB'
 finish_correction: 'Attention, vous êtes sur le point de rendre votre correction. Cette action est définitive. Etes-vous sûr d''avoir terminé ?<br />En cas de doute vous pouvez annuler votre notation et recommencer l''évaluation.#GB'
 follow_correction_text: 'Souhaitez-vous continuer à corriger le dossier suivant ? <br>Pour information, vous avez jusqu''au endReviewDate pour corriger vos dossiers#GB'
-
+Fichier: Fichier#GB
+free_price: prix gratuit#GB
 #G
 get_new_badges: 'Obtenir de nouveaux badges#GB'
-
+granted_on: Obtenu le#GB
 # I
 info_start: 'Pour débuter cette évaluation, vous devez en accepter au préalable les conditions en cochant la case ci-dessous#GB'
 instruction_reminder: 'Instructions pour le dépôt de preuve#GB'
@@ -68,12 +73,16 @@ import_progress: 'Importation...#GB'
 
 #L
 limit_date_eval: 'Date limite pour corriger les dossiers :#GB'
+Lien internet: Lien internet#GB
+
+#M
+mark: Note#GB
 
 # N
 no_files: 'Aucun fichier ajouté#GB'
 no_copy_to_correct: 'Désolé, aucune copie n''est disponible pour le moment.<br>A très bientôt#GB'
 note: 'Score#GB'
-
+no_criterias: L'évaluation ne possède aucun critère pour corriger les copies. La correction est impossible.#GB
 #O
 ok_done: 'OK, j''ai terminé#GB'
 
@@ -98,7 +107,9 @@ start_date: 'Date de début#GB'
 see_corrections: 'Voir les corrections#GB'
 started: 'Début#GB'
 status: état#GB
-
+#T
+Texte: Texte#GB
+tools: Outils#GB
 #O
 over: 'Fin#GB'
 

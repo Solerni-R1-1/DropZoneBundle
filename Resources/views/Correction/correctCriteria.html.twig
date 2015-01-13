@@ -43,7 +43,7 @@
                             {% set criterionNumber = (((pager.currentPage-1) * pager.maxPerPage) + loop.index) %}
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h4>{{ criterionNumber }}<exp>{% if criterionNumber == 1 %}er{% else %}ème{% endif %}</exp> critère</h4>
+                                    <h4>{{ criterionNumber }}<exp>{% if criterionNumber == 1 %}{{'er'|trans({}, 'solerni')}}{% else %}{{'eme'|trans({}, 'solerni')}}{% endif %}</exp> {{'criteria'|trans({}, 'solerni')}}</h4>
                                 </div>
                             </div>
                             <div class="row">
@@ -74,7 +74,7 @@
                                     {% endif %}
                                 {% endfor %}
                                 <div class="col-md-2 pull-tight slrn-form-note{% if criterionGrade == 0 %} hide{% endif %}">
-                                    Note : 
+                                    {{'mark'|trans({}, 'solerni')}} : 
                                     <span class="criterion-grade" data-criterion="icap_dropzone_correct_criteria_page_form[{{ criterion.id }}]">{{ criterionGrade }}</span>/{{ dropzone.totalCriteriaColumn-1 }}
                                 </div>
                             </div>
@@ -172,7 +172,7 @@
 
             <div class="row">
         {% else %}
-            <div class="alert alert-warning">L'évaluation ne possède aucun critère pour corriger les copies. La correction est impossible.</div>
+            <div class="alert alert-warning">{{'no_criterias'|trans({}, 'solerni')}}</div>
         {% endif %}
     </div>
 {% endblock %}
