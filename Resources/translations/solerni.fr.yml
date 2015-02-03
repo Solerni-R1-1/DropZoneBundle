@@ -4,14 +4,12 @@ addDocument: 'Ajouter un document'
 addDocument__PC: 'Fichier depuis mon ordinateur'
 add_comment: 'Vous pouvez ajouter un commentaire'
 attribute_rating: 'Vous allez attribuer la note de'
-
 # B
 buttonStart: 'Ok, commencer à constituer mon dossier de preuves'
 back_my_badges: 'Retour à la liste des badges'
 back_result: 'Retour au résultat de mon évaluation'
 back_corrections: 'Retour à la liste des corrections'
 Bibliothèque: Bibliothèque
-
 # C
 checkboxStart: 'Je souhaite « soumettre mes preuves de compétences » et « je m''engage à évaluer expectedCorrections autre%plural% retour%plural% de preuve »'
 continue_corrections: 'OK, corriger le nextFileème dossier'
@@ -70,14 +68,11 @@ info_start: 'Pour débuter cette évaluation, vous devez en accepter au préalab
 instruction_reminder: 'Instructions pour le dépôt de preuve'
 import_file: 'Importer'
 import_progress: 'Importation...'
-
 #L
 limit_date_eval: 'Date limite pour corriger les dossiers :'
 Lien internet: Lien internet
-
 #M
 mark: Note
-
 # N
 no_files: 'Aucun fichier ajouté'
 no_copy_to_correct: 'Désolé, aucune copie n''est disponible pour le moment.<br>A très bientôt'
@@ -85,12 +80,10 @@ note: 'Score'
 no_criterias: L'évaluation ne possède aucun critère pour corriger les copies. La correction est impossible.
 #O
 ok_done: 'OK, j''ai terminé'
-
 #P
 parcours_title: 'Parcours d''obtention du badge'
 post_eval_badge_count_success: Il vous reste encore %totalBadgesToGo% badge%plural% à décrocher pour attester de la totale compréhension de votre cursus &laquo; %moocName% &raquo;.
 post_eval_badge_count_failed: Il vous reste encore %totalBadgesToGo% badge%plural% à décrocher pour améliorer votre parcours dans le cursus &laquo; %moocName% &raquo;.
-
 # R
 resource: 'Importer un fichier depuis ma bibliothèque'
 review_not_started: 'Merci de patienter jusqu''au <span class="slrn-bold">startEvalDate</span>, date d''ouverture des évaluations par les pairs pour le badge en cours'
@@ -98,7 +91,6 @@ report_copy: 'Signaler la copie'
 return_mooc: 'Retour au Mooc'
 review_is_over: 'Désolé, la date limite pour corriger les dossiers est achevée depuis le <span class="slrn-bold">endEvalDate</span>. Vous ne pouvez plus participer à cette évaluation.'
 Reported: Correction signalée
-
 # S
 start_corrections: 'OK, corriger le 1er dossier'
 save and finished: 'OK, j''ai fini mon dossier de preuves et souhaite être évalué(e)'
@@ -107,25 +99,20 @@ start_date: 'Date de début'
 see_corrections: 'Voir les corrections'
 started: 'Début'
 status: état
-
 #T
 Texte: Texte
 tools: Outils
 #O
 over: 'Fin'
-
 # T
 text: 'Rédiger un texte'
-
 # U
 url: 'Insérer un lien internet'
-
 
 # W
 welcome: 'Création de mon espace d''évaluation'
 welcome_constit1: 'Constitution de mon dossier de preuves'
 wait_for_results: '<p><span class="slrn-bold">C''est presque terminé !</span><br>Encore un peu de patience, votre dossier est toujours en cours d''évaluation.<br>Vous découvrirez très bientôt si vous avez réussi votre évaluation et obtenu votre badge de compétence.</p><p class="slrn-bold">A très bientôt</p>'
 win_badge: 'Le Mooc &laquo; %moocName% &raquo; est heureux de vous décerner le badge de compétences :'
-
 # Y
 yourFiles: 'Votre dossier de preuves : '
