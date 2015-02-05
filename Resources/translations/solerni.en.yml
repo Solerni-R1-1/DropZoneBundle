@@ -10,7 +10,7 @@ back_result: 'Return to my evaluation results'
 back_corrections: 'Return to the corrections list'
 Bibliothèque: Library
 # C	
-checkboxStart: I wish to "submit my skills evidence" and "I agree to evaluate expectedCorrections other%plural% evidence returns%plural%"' 
+checkboxStart: I wish to "submit my skills evidence" and "I agree to evaluate expectedCorrections other%plural% evidence return%plural%"' 
 continue_corrections: 'OK, correct the next file'
 continue: 'Continue'
 continue_evaluation: 'Continue the evaluation'
