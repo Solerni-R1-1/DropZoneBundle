@@ -1,10 +1,117 @@
-welcome: 'Welcome'
-evaluation_by_peers: 'Rate your peers - step 2 of 5'
-start_corrections: 'OK, start corrections'
-continue_corrections: 'OK, continue corrections'
-correcting_copy: 'Correcting files - step 3 of 5'
-document_list_to_correct: 'Documents to evaluate'
+#A
+addDocument: 'Add a document'
+addDocument__PC: 'File from my computer'
+add_comment: 'You can add a comment'
+attribute_rating: 'You are going to award the mark of'
+# B	
+buttonStart: 'OK, start to create my evidence file'
+back_my_badges: 'Return to the badge list'
+back_result: 'Return to my evaluation results'
+back_corrections: 'Return to the corrections list'
+Bibliothèque: Library
+# C	
+checkboxStart: I wish to "submit my skills evidence" and "I agree to evaluate expectedCorrections other%plural% evidence return%plural%"' 
+continue_corrections: 'OK, correct the next file'
 continue: 'Continue'
-ok_done: 'OK, i''m done'
-add_comment: 'Add a comment'
-attribute_rating: 'You''re about to attribut a rating of'
+continue_evaluation: 'Continue the evaluation'
+correcting_copy: 'File correction'
+continue_correction_numbered: 'You must <span class="slrn-bold">evaluate expectedCorrections accordDossier before obtaining your final evaluation</span>'
+correction_intro: 'The mark that you are going to give to this file depends on your evaluation for each of the following criteria. In your opinion, do all of the documents that you have examined respond to the following criteria?'
+correction_done_text: 'The correction of the current file has been recorded.'
+correction_reminder: 'Evaluation criteria'
+correction_list: 'Corrections list for my evidence file'
+correction_th: 'correction'
+correcteur_th: 'corrector'
+correction_copy: 'correction'
+comment: Comment
+criteria: Criteria
+# D	
+date_limite: 'Deadline to provide your evidence:'
+date_limite_corrections: 'Deadline to correct the files :'
+document_list_to_correct: 'Documents to be evaluated'
+delete_document: 'Delete this document'
+drop_confirmed: 'Your evidence folder has been submitted for evaluation on dropdate'
+drop_not_started: 'Please wait until <span class="slrn-bold">startDropDate</span>, the date when evidence can be presented for the current badge'
+drop_details: 'Details of your evidence file'
+default_success_message: '<span class="slrn-sub-title">Well done !</span>You have passed your evaluation with a mark of evalGrade<span class="slrn-sep">/</span>20.'
+default_failed_message: '<span class="slrn-sub-title">Sorry!</span>You have obtained a mark of %evalGrade%<span class="slrn-sep">/</span>20, which is not enough to get a skill badge.'
+Document: Document %count%
+# E	
+evaluation_by_peers: 'Start of evaluation'
+evalDone: 'Evaluation completed'
+endNotOver: 'Evaluation in progress'
+end_date: 'End date'
+drop_finished: 'The stage for presenting evidence ends on <span class="slrn-bold">endDropDate</span>. You can no longer participate in this evaluation.'
+evalFailed: 'Evaluation failed'
+evalSucceed: 'Evaluation successful'
+evalOver: 'Evaluation closed'
+evalNotStarted: 'Evaluation coming soon'
+er: st
+eme: th
+# F	
+faq : 'FAQ'
+file: 'Import a file from my computer'
+forumTitle: 'Forum'
+forumContent: 'Discuss, exchange, ask questions on the subject at all times with your peers'
+forumButton: 'Discuss'
+finish_correction: 'Please note, you are about to submit your correction. This action is permanent. Are you sure you have finished?<br />If you aren''t sure, you can cancel your marking and restart the evaluation.'
+follow_correction_text: 'Do you wish to continue to correct the following file? <br>Be aware, you have until endReviewDate to correct your files'
+Fichier: File
+free_price: free
+#G	
+get_new_badges: 'Obtain new badges'
+granted_on: Obtained on
+# I	
+info_start: 'To start this evaluation, you must accept the terms by ticking the box below'
+instruction_reminder: 'Instructions for presenting evidence'
+import_file: 'Import'
+import_progress: 'Importing...'
+#L	
+limit_date_eval: 'Deadline to correct the files :'
+Lien internet: Internet link
+#M	
+mark: Mark
+#N
+no_files: 'No file added'
+no_copy_to_correct: 'Sorry, no copy is available at present.<br>Regards'
+note: 'Score'
+no_criterias: The evaluation does not have any criteria for correcting the copies. Correction is not possible.
+#O	
+ok_done: 'OK, I have finished'
+#P	
+parcours_title: 'Badge pathway'
+post_eval_badge_count_success: You need %totalBadgesToGo% more badge%plural% to achieve total understanding of your &laquo; %moocName% &raquo; course.
+post_eval_badge_count_failed: You need %totalBadgesToGo% more badge%plural% to improve your pathway in the &laquo; %moocName% &raquo; course.
+# R	
+resource: 'Import a file from my library'
+review_not_started: 'Please wait until <span class="slrn-bold">startEvalDate</span>, the date when peer evaluation starts for the current badge'
+report_copy: 'Indicate the copy'
+return_mooc: 'Return to the MOOC'
+review_is_over: 'Sorry, the deadline for correcting files ended on <span class="slrn-bold">endEvalDate</span>. You can no longer participate in this evaluation.'
+Reported: Correction indicated
+# S	
+start_corrections: 'OK, correct the first file'
+save and finished: 'OK, I have finished my evidence file and wish to be evaluated'
+start_correction_numbered: 'You must <span class="slrn-bold">evaluate expectedCorrections dossier%plural% before obtaining your final evaluation</span>'
+start_date: 'Start date'
+see_corrections: 'See corrections'
+started: 'Start'
+status: status
+#T	
+Texte: Text
+tools: Tools
+#O	
+over: 'End'
+# T	
+text: 'Write a text'
+# U	
+url: "insert an Internet link"
+
+# W	
+welcome: 'Creating of my evaluation space'
+welcome_constit1: 'Creating my evidence file'
+wait_for_results: '<p><span class="slrn-bold">Almost done !</span><br>Please wait a little longer, your file is being evaluated. <br>You will discover very soon if you have been successful and obtained a skill badge. </p><p class="slrn-bold">Good luck</p>'
+win_badge: 'The MOOC &laquo; %moocName% &raquo; is happy to award you the skill badge:'
+# Y	
+yourFiles: 'Your evidence file:'
+

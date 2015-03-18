@@ -52,7 +52,7 @@
         {% elseif drop is not null and drop.finished == true and expectedCorrections > 0 %} 
            {# we never corrected anything yet. First timer #}
            {% if nbCorrections == 0 %}
-                <h2>{{ 'evaluation_by_peers'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+                <h2>{{ 'evaluation_by_peers'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
                 <hr class="slrn-hr slrn-hr--lightgrey">
                 <div>
                     <p class="date__end">{{ 'limit_date_eval'|trans({}, 'solerni') }} {{ dropzone.getEndReview()|date("d/m/Y") }}</p>
@@ -68,7 +68,8 @@
                 <div class="drop__instruction">
                     {% if dropzone.expectedTotalCorrection == expectedCorrections %}
                     {% set buttonText = 'start_corrections'|trans({}, 'solerni') %}
-                       <p>{{ 'start_correction_numbered'|trans({'expectedCorrections': expectedCorrections }, 'solerni')| raw  }}
+                    {% if expectedCorrections > 1 %}{% set plural = 's' %}{% else %}{% set plural = '' %}{% endif %}
+                       <p>{{ 'start_correction_numbered'|trans({'expectedCorrections': expectedCorrections, '%plural%': plural }, 'solerni')| raw  }}
                     {% endif %}
                     {# this case if probably never meet while we don't be here unless nbCorrections = 0 #}     
                     {% if dropzone.expectedTotalCorrection > expectedCorrections %}
@@ -103,7 +104,7 @@
             {% else %}
                 {# We already corrected something. Go to next  #}
                 {% set buttonText = 'continue_corrections'|trans({ 'nextFile': nbCorrections + 1 }, 'solerni') %}
-                <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+                <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
                 <hr class="slrn-hr slrn-hr--lightgrey">
                 <p class="drop__instruction">{{ 'correction_done_text'|trans({ 'currentFile': nbCorrections }, 'solerni') }}</p>
                 
@@ -127,7 +128,7 @@
        
         {# Cas : on arrive pour la première fois #}
         {% else %}
-	        <h2>{{ 'welcome'| trans({}, 'solerni') }}<span class='FAQ'><a href="{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}" class='FAQ'>FAQ</a></span></h2>
+	        <h2>{{ 'welcome'| trans({}, 'solerni') }}<span class='FAQ'><a href="{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}" class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
 	        <hr class="slrn-hr slrn-hr--lightgrey">
 	        {% if dropzone.instruction is not null %}
                 <div class='drop__instruction'>
@@ -153,7 +154,8 @@
             
                 <label class="slrn-lets-go" for='letsgo' >
                     <input type='checkbox' value='go' name='letsgo' id='letsgo'/>
-            {% if expectedCorrections > 1 %}{{ 'checkboxStart'|trans({ 'expectedCorrections': expectedCorrections }, 'solerni') }}{% else %}{{ 'checkboxStartSingular'|trans({ 'expectedCorrections': expectedCorrections }, 'solerni') }}{% endif %}
+                        {% if expectedCorrections > 1 %}{% set plural = 's' %}{% else %}{% set plural = '' %}{% endif %}
+                        {{ 'checkboxStart'|trans({ 'expectedCorrections': expectedCorrections, '%plural%': plural }, 'solerni') }}
                 </label>
 
                 <div class='slrn-button-page'>

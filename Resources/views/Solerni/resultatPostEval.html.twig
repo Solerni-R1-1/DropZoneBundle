@@ -9,7 +9,7 @@
         {% endif %}
         {% if drop.calculatedGrade >= dropzone.minimumScoreToPass %}
             {# Eval succeeded #}
-	        <h2>{{ 'evalDone'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+	        <h2>{{ 'evalDone'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
 	        <hr class="slrn-hr slrn-hr--lightgrey">
             <span class="slrn-bigger">
                 {{ 'default_success_message'|trans({'evalGrade': drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }, 'solerni')|raw }}                   
@@ -28,12 +28,12 @@
                              height="112"
                         />
                         <section class="slrn-my_badges-list__body">
-                            <h6 class="slrn-my_badges-list__item__title">Badge &laquo; {{ badgeEntity.name }} &raquo;</h6>
-                            <p class=" slrn-my_badges-list__body__status"><span class="slrn-bold">Obtenu le :</span> {{ badge.issuedDate|date('date_format'|trans({}, 'platform')) }}</p>
+                            <h6 class="slrn-my_badges-list__item__title">{{'badge'|trans({}, 'platform')}} &laquo; {{ badgeEntity.name }} &raquo;</h6>
+                            <p class=" slrn-my_badges-list__body__status"><span class="slrn-bold">{{'granted_on'|trans({}, 'solerni')}} :</span> {{ badge.issuedDate|localizeddate( "short", "none", app.request.locale, null, 'd/MM/Y') }}</p>
                             <article class="slrn-my_badges-list__content">{{ badgeEntity.criteria | raw }}</article>
                             <footer class="slrn-my_badges-list__footer">
                                 <div class="">
-                                    <span class="slrn-gratuit-icon">prix gratuit</span>
+                                    <span class="slrn-gratuit-icon">{{'free_price'|trans({}, 'solerni')}}</span>
                                 </div>
                                 <div class="slrn-button-page">
                                     <a class="btn btn-primary pull-right" href="{{ buttonLink }}">
@@ -60,7 +60,7 @@
             </div>
         {% else %}
             {# Eval is failed #}
-	        <h2>{{ 'evalDone'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>FAQ</a></span></h2>
+	        <h2>{{ 'evalDone'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
 	        <hr class="slrn-hr slrn-hr--lightgrey">
             <p class="slrn-bigger">
                 {{ 'default_failed_message'|trans({'%evalGrade%': drop.getCalculatedGrade|round(1, 'common')|replace({'.': ','}) }, 'solerni')|raw }}
