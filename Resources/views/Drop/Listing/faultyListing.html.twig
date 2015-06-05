@@ -7,7 +7,7 @@
                 <th>{{'User'|trans({}, 'icap_dropzone') }}</th>
             </thead>
             <tbody>
-                
+
                 {% for correction in pager.currentPageResults %}
                 <tr>
                     <td>{{loop.index}}</td>
@@ -18,9 +18,13 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ path('claro_public_profile_view', {'publicUrl': correction.getDrop.getUser().getPublicUrl() }) }}">
+                        {% if correction.getDrop.getUser().getPublicUrl()|default %}
+                            <a href="{{ path('claro_public_profile_view', {'publicUrl': correction.getDrop.getUser().getPublicUrl() }) }}">
+                                {{correction.getDrop.getUser().getUsername()}}
+                            </a>
+                        {% else %}
                             {{correction.getDrop.getUser().getUsername()}}
-                        </a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -32,24 +36,24 @@
                 </td>
 {#                 <td>
                     {{ attribute(usersAndCorrectionCount, user.id).userDropCount }}
-                </td> 
+                </td>
                 <td>
                    {{ attribute(usersAndCorrectionCount, user.id).correction_count }}
-                </td>   
+                </td>
                 <td>
                    {{ attribute(usersAndCorrectionCount, user.id).correction_finishedCount }} / {{ dropzone.expectedTotalCorrection }}
-                </td>   
+                </td>
                 <td>
                    {{ attribute(usersAndCorrectionCount, user.id).correction_reportCount }} / {{ attribute(usersAndCorrectionCount, user.id).correction_count }}
-                </td> 
+                </td>
                 <td >
                    {{ attribute(usersAndCorrectionCount, user.id).correction_deniedCount }} / {{ attribute(usersAndCorrectionCount, user.id).correction_count }}
                 </td>
-               
+
                 <td>
                     <div class="btn-group ">
                         {#
-                        <a href="#" type="button" class="btn btn-default btn-xs">{{ 'See user s correction'|trans({}, 'icap_dropzone') }}</a> 
+                        <a href="#" type="button" class="btn btn-default btn-xs">{{ 'See user s correction'|trans({}, 'icap_dropzone') }}</a>
                         #}
                        {#
                         {%  if AwaitingMode is defined and  AwaitingMode == true %}
