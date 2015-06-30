@@ -74,14 +74,14 @@ h4 {
 	width: 250px;
 }
 .dropdown-gris-menu {
-	background-color: #999999;	
+	background-color: #999999;
 }
 .dropdown-gris-menu > li > a {
 	color:#FFFFFF;
 	border-bottom: 1px solid #FFFFFF;
 }
 .dropdown-gris-menu > li:last-child > a {
-	border:0 none;	
+	border:0 none;
 }
 .dropdown-gris-menu > li > a:hover {
 	background-color: #888686;
@@ -177,7 +177,7 @@ h4 {
     left: 0;
 }
 .collapse__div__title.open:before{
-	background-position: -153px -582px;	
+	background-position: -153px -582px;
 }
 .collapse__div__instruction{
 	background-color:   #EEEEEF;
@@ -188,7 +188,7 @@ h4 {
 }
 
 .dropForum {
-	background-color:   #EEEEEF;	
+	background-color:   #EEEEEF;
 	padding:            1em;
 }
 
@@ -289,7 +289,7 @@ h4 {
     font-weight:    bold;
 }
 
-.slrn-form-note { 
+.slrn-form-note {
     text-align: right;
     color:      #333;
 }
@@ -355,7 +355,7 @@ h4 {
 
 .btn-garbage{
 	background-image: url('../../clarolinecore/images/sprites_solerni.png');
-	background-position: -135px -505px;
+	background-position: -135px -504px;
 	width: 36px;
 	height: 36px;
 	text-decoration: none;
@@ -363,7 +363,7 @@ h4 {
 	display: block;
 }
 .btn-garbage:hover{
-	background-position: -135px -543px;
+	background-position: -135px -542px;
 }
 .fileUpload {
 	position: relative;
@@ -665,7 +665,7 @@ table th {
 }
 
 .slrn-correction-denied-comment .slrn-input-row__title {
-    color: #FF004F; 
+    color: #FF004F;
 }
 
 .slrn-dropzone-form {
