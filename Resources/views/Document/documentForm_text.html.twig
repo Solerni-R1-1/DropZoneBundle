@@ -28,10 +28,10 @@
         var cancelElement = jQuery('.js-hidden-btn-text .cancel-inline');
         var submitElement = jQuery('.js-hidden-btn-text .slrn-input-submit');
         var tinyState = false;
-        
+
         checkAndUpdate = function() {
-            
-            if ( tinyState != tinymce.claroline.checkBeforeUnload() ) {
+
+            if ( tinymce && tinyState !== tinymce.claroline.checkBeforeUnload() ) {
                 tinyState = tinymce.claroline.checkBeforeUnload();
                 if ( tinyState ) {
                     lineButtons.removeClass('hidden');
@@ -40,19 +40,19 @@
                 }
             }
         }
-        
+
         var keepRunning = setInterval( function() { checkAndUpdate() }, 300 );
-        
+
         cancelElement.on('click', function() {
-            tinymce.get('icap_dropzone_document_file_form_text').setContent(''); 
+            tinymce.get('icap_dropzone_document_file_form_text').setContent('');
         });
-        
+
         submitElement.on('click', function() {
             clearInterval( keepRunning );
             lineButtons.removeClass( 'hidden' );
         });
-        
-        
+
+
     });
     </script>
 {% endblock %}
