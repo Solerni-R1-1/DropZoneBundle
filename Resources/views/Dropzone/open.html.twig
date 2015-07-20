@@ -3,13 +3,13 @@
 {% block resourceBreadcrumb %}
     <li class="active"><span class="glyphicon icon-file"></span> {{ dropzone.resourceNode.name }}</li>
 {% endblock %}
-    
+
 {% block dropzone_content %}
     {% if dropzone.peerReview %}
         {% set expectedCorrections = dropzone.expectedTotalCorrection - nbCorrections %}
         {% set buttonDisabled = false %}
     {% endif %}
-     
+
 <section class="col-xs-12 col-md-12">
  <div class="col-xs-3 col-md-3">
         {# FIRST : MOOC  WIDGET #}
@@ -27,13 +27,13 @@
             {% set currentFile = 1 %}
         {% endif %}
         {% include 'IcapDropzoneBundle:Solerni:parcours.html.twig' %}
-        
+
 </div>
 <div class='col-xs-9 col-md-9'>
     <div class="container container-dropzone slrn-container-dropzone">
         {# Header with link and associated badge #}
         {% include 'IcapDropzoneBundle:Solerni:headerEvalBadge.html.twig' %}
-        
+
         {# Cas : case préalablement cochée. We shouldn't be there as the controller redirects us #}
         {% if drop is not null and drop.finished == false %}
             {<script>
@@ -41,7 +41,7 @@
 			   window.location.href = '{{ path('icap_dropzone_drop', {'resourceId': dropzone.id}) }}';
 			/*]]>*/
 			</script>
-            
+
         {% elseif dropzone.endReview < date() and expectedCorrections > 0 %}
             <div class="slrn-grey-block slrn-info-block">
                 {% set buttonDisabled = true %}
@@ -49,7 +49,7 @@
                 <p>{{ 'review_is_over'|trans({ 'endEvalDate': endEvalDate }, 'solerni')|raw }}</p>
             </div>
         {# Cas : depot de preuves terminé #}
-        {% elseif drop is not null and drop.finished == true and expectedCorrections > 0 %} 
+        {% elseif drop is not null and drop.finished == true and expectedCorrections > 0 %}
            {# we never corrected anything yet. First timer #}
            {% if nbCorrections == 0 %}
                 <h2>{{ 'evaluation_by_peers'|trans({}, 'solerni') }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
@@ -71,7 +71,7 @@
                     {% if expectedCorrections > 1 %}{% set plural = 's' %}{% else %}{% set plural = '' %}{% endif %}
                        <p>{{ 'start_correction_numbered'|trans({'expectedCorrections': expectedCorrections, '%plural%': plural }, 'solerni')| raw  }}
                     {% endif %}
-                    {# this case if probably never meet while we don't be here unless nbCorrections = 0 #}     
+                    {# this case if probably never meet while we don't be here unless nbCorrections = 0 #}
                     {% if dropzone.expectedTotalCorrection > expectedCorrections %}
                         {% set buttonText = 'continue_corrections'|trans({}, 'solerni') %}
                         {% if expectedCorrections > 1 %}{% set accordDossier = 'dossiers' %}{% else %}{% set accordDossier = 'dossier' %}{% endif %}
@@ -107,7 +107,7 @@
                 <h2>{{ 'correcting_copy'|trans({}, 'solerni') }} n°{{ nbCorrections + 1 }}<span class='FAQ'><a href='{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}' class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
                 <hr class="slrn-hr slrn-hr--lightgrey">
                 <p class="drop__instruction">{{ 'correction_done_text'|trans({ 'currentFile': nbCorrections }, 'solerni') }}</p>
-                
+
                 {% if hasCopyToCorrect == false %}
                     <div class="slrn-grey-block slrn-info-block">
                         {% set buttonDisabled = true %}
@@ -117,7 +117,7 @@
                     {{ 'follow_correction_text'|trans({ 'endReviewDate': dropzone.getEndReview()|date("d/m/Y") }, 'solerni')|raw }}
                 {% endif %}
             {% endif %}
-            {% if buttonDisabled != true %} 
+            {% if buttonDisabled != true %}
                 <div class="slrn-button-page">
                    <a href="{{ path('icap_dropzone_correct', {'resourceId': dropzone.id}) }}" class="btn-dropzone btn btn-primary">{{ buttonText }}</a>
                 </div>
@@ -125,9 +125,10 @@
         {% elseif drop is not null and drop.finished == true and expectedCorrections <= 0 %}
 
            {% include 'IcapDropzoneBundle:Solerni:resultatPostEval.html.twig' %}
-       
+
         {# Cas : on arrive pour la première fois #}
         {% else %}
+            <a name="letsgo"></a>
 	        <h2>{{ 'welcome'| trans({}, 'solerni') }}<span class='FAQ'><a href="{{ path( 'solerni_static_page', { 'name': 'cms_faq' } ) }}" class='FAQ'>{{'faq'|trans({}, 'platform')}}</a></span></h2>
 	        <hr class="slrn-hr slrn-hr--lightgrey">
 	        {% if dropzone.instruction is not null %}
@@ -135,7 +136,7 @@
                     {{ dropzone.instruction|raw }}
                 </div>
 	        {% endif %}
-            
+
             {% if dropzone.getStartAllowDrop > date() %}
                 <div class="slrn-grey-block slrn-info-block">
                     {% set startDropDate = dropzone.getStartAllowDrop|date("d/m/Y") %}
@@ -147,32 +148,37 @@
                     <p>{{ 'drop_finished'|trans({ 'endDropDate': endDropDate }, 'solerni')|raw }}</p>
                 </div>
             {% else %}
-                	        
+
                 <div class="slrn-grey-block slrn-info-block">
                    <p>{{ 'info_start'| trans({}, 'solerni') }}</p>
                </div>
-            
-                <label class="slrn-lets-go" for='letsgo' >
+
+                <label class="slrn-lets-go" for='letsgo'>
                     <input type='checkbox' value='go' name='letsgo' id='letsgo'/>
                         {% if expectedCorrections > 1 %}{% set plural = 's' %}{% else %}{% set plural = '' %}{% endif %}
                         {{ 'checkboxStart'|trans({ 'expectedCorrections': expectedCorrections, '%plural%': plural }, 'solerni') }}
                 </label>
 
                 <div class='slrn-button-page'>
-                  <a href="{{ path('icap_dropzone_drop', {'resourceId': dropzone.id}) }}" class="btn btn-primary disabled drop__buttonStart">{{ 'buttonStart'|trans({}, 'solerni') }}</a>
+                  <a href="#letsgo" data-href="{{ path('icap_dropzone_drop', {'resourceId': dropzone.id}) }}" class="btn btn-primary disabled drop__buttonStart">{{ 'buttonStart'|trans({}, 'solerni') }}</a>
                 </div>
             <script>
             $(document).on('ready', function() {
+
+                buttonStart         = $('.drop__buttonStart');
+                buttonStartHref     = buttonStart.data('href');
+
                 $('#letsgo').change(function(){
                     if($(this).is(':checked')){
-                      $('.drop__buttonStart').removeClass("disabled");  
+                      buttonStart.removeClass("disabled").attr('href', buttonStartHref);
+
                     } else {
-                      $('.drop__buttonStart').addClass("disabled");  
+                      buttonStart.addClass("disabled").attr('href', '#letsgo');
                     }
                 });
-                
+
                 if ( $('#letsgo').is(':checked') ) {
-                    $('.drop__buttonStart').removeClass("disabled"); 
+                    buttonStart.removeClass("disabled");
                 }
 
                 $(".collapse__div").collapse({

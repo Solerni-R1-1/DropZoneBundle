@@ -30,22 +30,22 @@
                     {% if correction.valid %}
                         {% set validCorrections = validCorrections+1 %}
                     {% endif %}
-                    
+
                     {% if correction.finished == false %}
                         <span class="text-warning glyphicon icon-time" data-toggle="tooltip"
                         data-original-title="{{ 'Not finished'|trans({}, 'icap_dropzone') }}"></span>
                     {% endif %}
-                    
+
                     {% if not correction.valid %}
                         <span class="slrn-glyphicon glyphicon icon-minus-sign" data-toggle="tooltip"
                               data-original-title="{{ 'Invalidated'|trans({}, 'icap_dropzone') }}"></span>
                     {% endif %}
-                        
+
                     {% if correction.reporter %}
                         <span class="slrn-glyphicon text-danger glyphicon icon-warning-sign" data-toggle="tooltip"
                               data-original-title="{{ 'Reported'|trans({}, 'icap_dropzone') }}"></span>
                     {% endif %}
-                    
+
                     {% if correction.correctionDenied %}
                         <span class="slrn-glyphicon text-warning glyphicon icon-info-sign" data-toggle="tooltip"
                               data-original-title="{{ 'Correction denied'|trans({}, 'icap_dropzone') }}"></span>
@@ -57,7 +57,7 @@
                        class="pink_link" data-toggle="tooltip"
                        data-original-title="{{ 'See correction'|trans({},'icap_dropzone') }}">
                         {% if correction.editable and byUserMod == 0 %}
-                            <span class="text-muted glyphicon icon-group" data-toggle="tooltip"
+                            <span class="text-muted glyphicon icon-group" data-toggle="tooltip" data-placement="left"
                                   data-original-title="{{ 'created by a manager'|trans({}, 'icap_dropzone') }}">
                                     </span>
                         {% endif %}

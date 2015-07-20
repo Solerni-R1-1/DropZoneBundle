@@ -275,6 +275,8 @@ h4 {
     background: transparent url(../../clarolinecore/images/sprites_solerni.png) no-repeat 0 -725px scroll;
     position:   relative;
     top:        2.3em;
+
+    z-index:    1;
 }
 
 .slrn-dropzone-bloc .tooltip-inner { background-color: #999 !important; color: #FFF; }
