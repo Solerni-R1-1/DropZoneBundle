@@ -173,7 +173,7 @@ class DropRepository extends EntityRepository {
         return $result;
     }
 
-    public function getDropsFullyCorrectedOrderByUserQuery($dropzone)
+    public function getDropsFullyCorrectedOrderByUserQuery($dropzone, $search = '')
     {
         $lines = $this->getDropIdsFullyCorrectedQuery($dropzone)->getResult();
 
@@ -182,7 +182,7 @@ class DropRepository extends EntityRepository {
             $dropIds[] = $line['did'];
         }
 
-        return $this
+        $query = $this
             ->createQueryBuilder('drop')
             ->select('drop, document, correction, user')
             ->andWhere('drop.id IN (:dropIds)')
@@ -192,11 +192,18 @@ class DropRepository extends EntityRepository {
             ->join('drop.corrections', 'correction')
             ->orderBy('user.lastName, user.firstName')
             ->setParameter('dropIds', $dropIds)
-            ->setParameter('dropzone', $dropzone)
-            ->getQuery();
+            ->setParameter('dropzone', $dropzone);
+
+
+        if ($search) {
+            $query->andWhere('user.mail LIKE :search OR user.firstName LIKE :search OR user.lastName LIKE :search OR user.username LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        return $query->getQuery();
     }
 
-    public function getDropsFullyCorrectedOrderByDropDateQuery($dropzone)
+    public function getDropsFullyCorrectedOrderByDropDateQuery($dropzone, $search = '')
     {
         $lines = $this->getDropIdsFullyCorrectedQuery($dropzone)->getResult();
 
@@ -205,7 +212,7 @@ class DropRepository extends EntityRepository {
             $dropIds[] = $line['did'];
         }
 
-        return $this
+        $query = $this
             ->createQueryBuilder('drop')
             ->select('drop, document, correction, user')
             ->andWhere('drop.id IN (:dropIds)')
@@ -215,11 +222,17 @@ class DropRepository extends EntityRepository {
             ->join('drop.corrections', 'correction')
             ->orderBy('drop.dropDate')
             ->setParameter('dropIds', $dropIds)
-            ->setParameter('dropzone', $dropzone)
-            ->getQuery();
+            ->setParameter('dropzone', $dropzone);
+
+        if ($search) {
+            $query->andWhere('user.mail LIKE :search OR user.firstName LIKE :search OR user.lastName LIKE :search OR user.username LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        return $query->getQuery();
     }
 
-    public function getDropsFullyCorrectedOrderByReportAndDropDateQuery($dropzone)
+    public function getDropsFullyCorrectedOrderByReportAndDropDateQuery($dropzone, $search = '')
     {
         $lines = $this->getDropIdsFullyCorrectedQuery($dropzone)->getResult();
 
@@ -228,7 +241,7 @@ class DropRepository extends EntityRepository {
             $dropIds[] = $line['did'];
         }
 
-        return $this
+        $query = $this
             ->createQueryBuilder('drop')
             ->select('drop, document, correction, user')
             ->andWhere('drop.id IN (:dropIds)')
@@ -238,11 +251,17 @@ class DropRepository extends EntityRepository {
             ->join('drop.corrections', 'correction')
             ->orderBy('drop.reported desc, drop.dropDate')
             ->setParameter('dropIds', $dropIds)
-            ->setParameter('dropzone', $dropzone)
-            ->getQuery();
+            ->setParameter('dropzone', $dropzone);
+
+        if ($search) {
+            $query->andWhere('user.mail LIKE :search OR user.firstName LIKE :search OR user.lastName LIKE :search OR user.username LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        return $query->getQuery();
     }
 
-    public function getDropsFullyCorrectedReportedQuery($dropzone)
+    public function getDropsFullyCorrectedReportedQuery($dropzone, $search = '')
     {
         $lines = $this->getDropIdsFullyCorrectedQuery($dropzone)->getResult();
 
@@ -251,7 +270,7 @@ class DropRepository extends EntityRepository {
             $dropIds[] = $line['did'];
         }
 
-        return $this
+        $query = $this
             ->createQueryBuilder('drop')
             ->select('drop, document, correction, user')
             ->andWhere('drop.id IN (:dropIds)')
@@ -262,13 +281,19 @@ class DropRepository extends EntityRepository {
             ->join('drop.corrections', 'correction')
             ->orderBy('drop.reported desc, correction.correctionDenied, drop.dropDate')
             ->setParameter('dropIds', $dropIds)
-            ->setParameter('dropzone', $dropzone)
-            ->getQuery();
+            ->setParameter('dropzone', $dropzone);
+
+        if ($search) {
+            $query->andWhere('user.mail LIKE :search OR user.firstName LIKE :search OR user.lastName LIKE :search OR user.username LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        return $query->getQuery();
     }
 
 
 
-    public function getDropsAwaitingCorrectionQuery($dropzone)
+    public function getDropsAwaitingCorrectionQuery($dropzone, $search = '')
     {
         $lines = $this->getDropIdsFullyCorrectedQuery($dropzone)->getResult();
 
@@ -292,6 +317,12 @@ class DropRepository extends EntityRepository {
             $qb = $qb
                 ->andWhere('drop.id NOT IN (:dropIds)')
                 ->setParameter('dropIds', $dropIds);
+        }
+
+
+        if ($search) {
+            $qb->andWhere('user.mail LIKE :search OR user.firstName LIKE :search OR user.lastName LIKE :search OR user.username LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
         }
 
         return $qb->getQuery();

@@ -10,6 +10,32 @@
         <h2>
             {{ 'List of copies'|trans({}, 'icap_dropzone') }}
             <a class=" btn btn-default pull-right" href="{{ path('icap_dropzone_edit', {'resourceId': dropzone.id}) }}"><span class="glyphicon icon-edit"></span> {{ 'Edit evaluation'|trans({}, 'icap_dropzone') }}</a>
+
+            <form method="GET" action="">
+                <div class="search-bar row" style="margin-top:15px;">
+                    <div class="col-md-8">
+                        <div class="input-group margin-bottom-md">
+                            <select class="form-control input-md" id="max-select" name="dpp" onchange="$('#search-button').trigger('click');">
+                                <option {% if dpp == 5 %}selected{% endif %}>5</option>
+                                <option {% if dpp == 10 %}selected{% endif %}>10</option>
+                                <option {% if dpp == 20 %}selected{% endif %}>20</option>
+                                <option {% if dpp == 50 %}selected{% endif %}>50</option>
+                            </select>
+                            <span class="input-group-addon">Copies par page</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="search-items-txt" placeholder="{{ 'search'|trans({}, 'platform') }}" value='{{ search }}' name="search">
+                            <span class="input-group-btn">
+                                <button class="filter btn btn-default" type="submit" id="search-button">
+                                    <i class="icon-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </h2>
         {{ macros.flashBox() }}
 

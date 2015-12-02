@@ -1505,7 +1505,7 @@ class CorrectionController extends DropzoneBaseController
                     $this->generateUrl(
                         'icap_dropzone_drop',
                         array(
-                            'resourceId' => $dropzoneId
+                            'resourceId' => $dropzone->getId()
                         )
                     )
                 );
@@ -1553,7 +1553,9 @@ class CorrectionController extends DropzoneBaseController
             'usersAndCorrectionCount' => $usersAndCorrectionCount,
             'nbDropCorrected' =>  $dropRepo->countDropsFullyCorrected($dropzone),
             'nbDrop' =>$dropRepo->countDrops($dropzone),
-            'pager' => $pager
+            'pager' => $pager,
+            'search' => '',
+            'dpp' => '10'
             );
        
         return $this->render(

@@ -30,6 +30,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Claroline\CoreBundle\Manager\BadgeManager;
@@ -216,17 +217,29 @@ class DropController extends DropzoneBaseController
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
      * @Template()
      */
-    public function dropsByUserAction($dropzone, $page)
+    public function dropsByUserAction(Request $request, $dropzone, $page)
     {
         $this->isAllowToOpen($dropzone);
         $this->isAllowToEdit($dropzone);
 
+        if ($request->query->has('search')) {
+            $search = $request->query->get('search');
+        } else {
+            $search = '';
+        }
+
+        if ($request->query->has('dpp')) {
+            $dpp = $request->query->get('dpp');
+        } else {
+            $dpp = DropzoneBaseController::DROP_PER_PAGE;
+        }
+
         $dropRepo = $this->getDoctrine()->getManager()->getRepository('IcapDropzoneBundle:Drop');
-        $dropsQuery = $dropRepo->getDropsFullyCorrectedOrderByUserQuery($dropzone);
+        $dropsQuery = $dropRepo->getDropsFullyCorrectedOrderByUserQuery($dropzone, $search);
 
         $adapter = new DoctrineORMAdapter($dropsQuery);
         $pager = new Pagerfanta($adapter);
-        $pager->setMaxPerPage(DropzoneBaseController::DROP_PER_PAGE);
+        $pager->setMaxPerPage($dpp);
         try {
             $pager->setCurrentPage($page);
         } catch (NotValidCurrentPageException $e) {
@@ -236,7 +249,9 @@ class DropController extends DropzoneBaseController
                         'icap_dropzone_drops_by_user_paginated',
                         array(
                             'resourceId' => $dropzone->getId(),
-                            'page' => $pager->getNbPages()
+                            'page' => $pager->getNbPages(),
+                            'search' => $search,
+                            'dpp' => $dpp
                         )
                     )
                 );
@@ -249,7 +264,9 @@ class DropController extends DropzoneBaseController
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
-            'pager' => $pager
+            'pager' => $pager,
+            'search' => $search,
+            'dpp' => $dpp
         ));
     }
 
@@ -276,17 +293,29 @@ class DropController extends DropzoneBaseController
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
      * @Template()
      **/
-    public function dropsByDefaultAction($dropzone,$page)
+    public function dropsByDefaultAction(Request $request, $dropzone, $page)
     {
         $this->isAllowToOpen($dropzone);
         $this->isAllowToEdit($dropzone);
 
+        if ($request->query->has('search')) {
+            $search = $request->query->get('search');
+        } else {
+            $search = '';
+        }
+
+        if ($request->query->has('dpp')) {
+            $dpp = $request->query->get('dpp');
+        } else {
+            $dpp = DropzoneBaseController::DROP_PER_PAGE;
+        }
+
         $dropRepo = $this->getDoctrine()->getManager()->getRepository('IcapDropzoneBundle:Drop');
-        $dropsQuery = $dropRepo->getDropsFullyCorrectedOrderByReportAndDropDateQuery($dropzone);
+        $dropsQuery = $dropRepo->getDropsFullyCorrectedOrderByReportAndDropDateQuery($dropzone, $search);
 
         $adapter = new DoctrineORMAdapter($dropsQuery);
         $pager = new Pagerfanta($adapter);
-        $pager->setMaxPerPage(DropzoneBaseController::DROP_PER_PAGE);
+        $pager->setMaxPerPage($dpp);
         try {
             $pager->setCurrentPage($page);
         } catch (NotValidCurrentPageException $e) {
@@ -296,7 +325,9 @@ class DropController extends DropzoneBaseController
                         'icap_dropzone_drops_by_user_paginated',
                         array(
                             'resourceId' => $dropzone->getId(),
-                            'page' => $pager->getNbPages()
+                            'page' => $pager->getNbPages(),
+                            'search' => $search,
+                            'dpp' => $dpp
                         )
                     )
                 );
@@ -309,7 +340,9 @@ class DropController extends DropzoneBaseController
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
-            'pager' => $pager
+            'pager' => $pager,
+            'search' => $search,
+            'dpp' => $dpp
         ));
     }
 
@@ -331,17 +364,29 @@ class DropController extends DropzoneBaseController
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
      * @Template()
      */
-    public function dropsByReportAction($dropzone,$page)
+    public function dropsByReportAction(Request $request, $dropzone,$page)
     {
         $this->isAllowToOpen($dropzone);
         $this->isAllowToEdit($dropzone);
 
+        if ($request->query->has('search')) {
+            $search = $request->query->get('search');
+        } else {
+            $search = '';
+        }
+
+        if ($request->query->has('dpp')) {
+            $dpp = $request->query->get('dpp');
+        } else {
+            $dpp = DropzoneBaseController::DROP_PER_PAGE;
+        }
+
         $dropRepo = $this->getDoctrine()->getManager()->getRepository('IcapDropzoneBundle:Drop');
-        $dropsQuery = $dropRepo->getDropsFullyCorrectedReportedQuery($dropzone);
+        $dropsQuery = $dropRepo->getDropsFullyCorrectedReportedQuery($dropzone, $search);
 
         $adapter = new DoctrineORMAdapter($dropsQuery);
         $pager = new Pagerfanta($adapter);
-        $pager->setMaxPerPage(DropzoneBaseController::DROP_PER_PAGE);
+        $pager->setMaxPerPage($dpp);
         try {
             $pager->setCurrentPage($page);
         } catch (NotValidCurrentPageException $e) {
@@ -351,7 +396,9 @@ class DropController extends DropzoneBaseController
                         'icap_dropzone_drops_by_user_paginated',
                         array(
                             'resourceId' => $dropzone->getId(),
-                            'page' => $pager->getNbPages()
+                            'page' => $pager->getNbPages(),
+                            'search' => $search,
+                            'dpp' => $dpp
                         )
                     )
                 );
@@ -364,7 +411,9 @@ class DropController extends DropzoneBaseController
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
-            'pager' => $pager
+            'pager' => $pager,
+            'search' => $search,
+            'dpp' => $dpp
         ));
     }
 
@@ -384,17 +433,30 @@ class DropController extends DropzoneBaseController
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
      * @Template()
      */
-    public function dropsByDateAction($dropzone, $page)
+    public function dropsByDateAction(Request $request, $dropzone, $page)
     {
         $this->isAllowToOpen($dropzone);
         $this->isAllowToEdit($dropzone);
 
+        if ($request->query->has('search')) {
+            $search = $request->query->get('search');
+        } else {
+            $search = '';
+        }
+
+        if ($request->query->has('dpp')) {
+            $dpp = $request->query->get('dpp');
+        } else {
+            $dpp = DropzoneBaseController::DROP_PER_PAGE;
+        }
+
         $dropRepo = $this->getDoctrine()->getManager()->getRepository('IcapDropzoneBundle:Drop');
-        $dropsQuery = $dropRepo->getDropsFullyCorrectedOrderByDropDateQuery($dropzone);
+        $dropsQuery = $dropRepo->getDropsFullyCorrectedOrderByDropDateQuery($dropzone, $search);
 
         $adapter = new DoctrineORMAdapter($dropsQuery);
         $pager = new Pagerfanta($adapter);
-        $pager->setMaxPerPage(DropzoneBaseController::DROP_PER_PAGE);
+
+        $pager->setMaxPerPage($dpp);
         try {
             $pager->setCurrentPage($page);
         } catch (NotValidCurrentPageException $e) {
@@ -404,7 +466,9 @@ class DropController extends DropzoneBaseController
                         'icap_dropzone_drops_by_date_paginated',
                         array(
                             'resourceId' => $dropzone->getId(),
-                            'page' => $pager->getNbPages()
+                            'page' => $pager->getNbPages(),
+                            'search' => $search,
+                            'dpp' => $dpp
                         )
                     )
                 );
@@ -417,7 +481,9 @@ class DropController extends DropzoneBaseController
             'workspace' => $dropzone->getResourceNode()->getWorkspace(),
             '_resource' => $dropzone,
             'dropzone' => $dropzone,
-            'pager' => $pager
+            'pager' => $pager,
+            'search' => $search,
+            'dpp' => $dpp
         ));
     }
 
@@ -437,17 +503,30 @@ class DropController extends DropzoneBaseController
      * @ParamConverter("dropzone", class="IcapDropzoneBundle:Dropzone", options={"id" = "resourceId"})
      * @Template()
      */
-    public function dropsAwaitingAction($dropzone, $page)
+    public function dropsAwaitingAction(Request $request, $dropzone, $page)
     {
         $this->isAllowToOpen($dropzone);
         $this->isAllowToEdit($dropzone);
 
+
+        if ($request->query->has('search')) {
+            $search = $request->query->get('search');
+        } else {
+            $search = '';
+        }
+
+        if ($request->query->has('dpp')) {
+            $dpp = $request->query->get('dpp');
+        } else {
+            $dpp = DropzoneBaseController::DROP_PER_PAGE;
+        }
+
         $dropRepo = $this->getDoctrine()->getManager()->getRepository('IcapDropzoneBundle:Drop');
-        $dropsQuery = $dropRepo->getDropsAwaitingCorrectionQuery($dropzone);
+        $dropsQuery = $dropRepo->getDropsAwaitingCorrectionQuery($dropzone, $search);
 
         $adapter = new DoctrineORMAdapter($dropsQuery);
         $pager = new Pagerfanta($adapter);
-        $pager->setMaxPerPage(DropzoneBaseController::DROP_PER_PAGE);
+        $pager->setMaxPerPage($dpp);
         try {
             $pager->setCurrentPage($page);
         } catch (NotValidCurrentPageException $e) {
@@ -457,7 +536,9 @@ class DropController extends DropzoneBaseController
                         'icap_dropzone_drops_awaiting_paginated',
                         array(
                             'resourceId' => $dropzone->getId(),
-                            'page' => $pager->getNbPages()
+                            'page' => $pager->getNbPages(),
+                            'search' => $search,
+                            'dpp' => $dpp
                         )
                     )
                 );
@@ -471,6 +552,8 @@ class DropController extends DropzoneBaseController
             '_resource' => $dropzone,
             'dropzone'  => $dropzone,
             'pager'     => $pager,
+            'search'    => $search,
+            'dpp'       => $dpp
         ));
     }
 
