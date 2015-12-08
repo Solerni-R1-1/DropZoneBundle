@@ -518,6 +518,7 @@ class CorrectionController extends DropzoneBaseController
                 'form' => $form->createView(),
                 'admin' => false,
                 'edit' => true,
+                'state' => 'edit',
                 'dropzoneProgress' => $dropzoneProgress,
                 'badges' => $badgeList,
                 'nbCorrections' => $nbCorrections

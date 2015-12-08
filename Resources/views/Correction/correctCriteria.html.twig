@@ -107,14 +107,14 @@
                         {% set previousPage = pager.currentPage-1 %}
                         {% set nextPage = pager.currentPage+1 %}
                         {# one of the ugliest conditionnal spaghetti #}
-                    
+
                         {% if pager.currentPage == 1 %}
                             {% if state is defined and state == 'preview' %}
                                 <div class="pull-left">
                                 {% if pager.currentPage == pager.nbPages and dropzone.allowCommentInCorrection %}
                                     <a  href="{{ path('icap_dropzone_drops_detail_correction_comment', {
                                                     'resourceId': dropzone.id, 
-                                                    'state' : edit ? 'edit' : 'preview',
+                                                    'state' : state,
                                                     'correctionId': correction.id,
                                                     'nbCorrections': nbCorrections }) }}" 
                                         class="btn btn-primary">{{ 'Next'|trans({}, 'icap_dropzone') }}
@@ -122,7 +122,7 @@
                                 {% else %}
                                     <a  href="{{ path(   'icap_dropzone_drops_detail_correction_paginated', {
                                                         'resourceId': dropzone.id, 
-                                                        'state' : edit ? 'edit' : 'show', 
+                                                        'state' : state,
                                                         'correctionId': correction.id, 
                                                         'page': nextPage,
                                                         'nbCorrections': nbCorrections }) }}" 
@@ -136,7 +136,7 @@
                         {% else %}
                             <a  href="{{ path(  'icap_dropzone_drops_detail_correction_paginated', { 
                                                 'resourceId': dropzone.id,
-                                                'state' : edit ? 'edit' : 'show', 
+                                                'state' : state,
                                                 'correctionId': correction.id, 'page': previousPage}) }}" 
                                 class="btn btn-default">{{ 'Previous'|trans({}, 'icap_dropzone') }}
                             </a>
@@ -147,14 +147,14 @@
                         {% if pager.currentPage == pager.nbPages and not dropzone.allowCommentInCorrection %}
                         {# nothing #}
                         {% elseif pager.currentPage == pager.nbPages and dropzone.allowCommentInCorrection %}
-                            {% if state is defined and state == 'preview' %}
+                            {#% if state is defined and state == 'preview' %}
                                 <a href="{{ path('icap_dropzone_drop_detail_by_user', {'resourceId': dropzone.id,'dropId': correction.drop.id}) }}" 
                                    class="btn btn-gris slrn-back-corrections-btn">
                                      {{ 'Back to corrections'|trans({}, 'icap_dropzone') }}
                                 </a>
-                            {% else %}
-                                <a href="{{ path('icap_dropzone_drops_detail_correction_comment', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id}) }}" class="btn btn-primary">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
-                            {% endif %}
+                            {% else %#}
+                                <a href="{{ path('icap_dropzone_drops_detail_correction_comment', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id}) }}" class="btn btn-primary">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
+                            {#% endif %#}
                         {% else %}
                             {% if state is defined and state == 'preview' %}
                                 <a href="{{ path('icap_dropzone_drop_detail_by_user', {'resourceId': dropzone.id,'dropId': correction.drop.id}) }}" 
@@ -162,7 +162,7 @@
                                         {{ 'Back to corrections'|trans({}, 'icap_dropzone') }}
                                 </a>
                             {% else %}
-                                <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : edit ? 'edit' : 'show', 'correctionId': correction.id, 'page': nextPage}) }}" class="btn btn-primary">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
+                                <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state, 'correctionId': correction.id, 'page': nextPage}) }}" class="btn btn-primary">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
                             {% endif %}
                         {% endif %}
                         </div>
