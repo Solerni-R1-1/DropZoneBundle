@@ -98,7 +98,7 @@
                                 {% if pager.currentPage == 1 %}
                                     <a href="{{ path('icap_dropzone_open', {'resourceId': dropzone.id}) }}" class="btn btn-default slrn-dropzone-cancel btn-gris">{{ 'Cancel'|trans({}, 'icap_dropzone') }}</a>
                                 {% else %}
-                                    <a href="{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': previousPage}) }}" class="btn btn-default back-button">{{ 'continue'|trans({}, 'solerni') }}</a>
+                                    <a href="{{ path('icap_dropzone_correct_paginated', {'resourceId': dropzone.id, 'page': previousPage}) }}" class="btn btn-default back-button">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
                                 {% endif %}
                             {% endif %}
 
