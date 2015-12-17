@@ -18,7 +18,7 @@
                 {% set status = badge.status %}
                 {% if 2 == status %}
                     {% set badgeEntity 	= badge.badge %}
-                    {% set buttonLink 	= path( 'claro_profile_view_badge', {'slug': badgeEntity.slug } ) %}
+                    {% set buttonLink 	= path( 'claro_profile_view_badges' ) %}
                     <span class="slrn-bigger">{{ 'win_badge'|trans({ '%moocName%': workspace.getMooc().getTitle() }, 'solerni')|raw }}</span>
                     <div class="slrn-my_badges-list__item">
                         <img src="{{ image(badgeEntity.webPath).cropResize( 112, 112 ) }}" 
@@ -32,12 +32,12 @@
                             <p class=" slrn-my_badges-list__body__status"><span class="slrn-bold">{{'granted_on'|trans({}, 'solerni')}} :</span> {{ badge.issuedDate|localizeddate( "short", "none", app.request.locale, null, 'd/MM/Y') }}</p>
                             <article class="slrn-my_badges-list__content">{{ badgeEntity.criteria | raw }}</article>
                             <footer class="slrn-my_badges-list__footer">
-                                <div class="">
+                                {#<div class="">
                                     <span class="slrn-gratuit-icon">{{'free_price'|trans({}, 'solerni')}}</span>
-                                </div>
+                                </div>#}
                                 <div class="slrn-button-page">
                                     <a class="btn btn-primary pull-right" href="{{ buttonLink }}">
-                                        {{'my_badge_details'|trans({}, 'platform')}}
+                                        {{'see_my_badges'|trans({}, 'solerni')}}
                                     </a>
                                     <a class="btn btn-gris pull-left slrn-dropzone-cancel" href="{{ path('icap_dropzone_drop_detail_by_user',{'resourceId': dropzone.id,'dropId':drop.id}) }}">
                                         {{'see_corrections'|trans({}, 'solerni')}}

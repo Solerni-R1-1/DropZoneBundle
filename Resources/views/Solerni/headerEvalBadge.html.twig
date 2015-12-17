@@ -26,7 +26,7 @@
             <i class="icon-chevron-left no_underline"></i> {{ 'back_my_badges'|trans({}, 'solerni') }}
         </a>
     {% endif %}
-    {% if badges is not empty %}
+    {#% if badges is not empty %}
        {% for badge in badges %}
             {% set badgeEntity = badge.badge %}
             <div class="slrn-dropzone-bloc">
@@ -36,7 +36,7 @@
                 </div>
             </div>
         {% endfor %}
-    {% endif %}
+    {% endif %#}
 </div>
 
 
