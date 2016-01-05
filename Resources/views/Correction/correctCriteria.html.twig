@@ -86,6 +86,13 @@
                     {% set previousPage = pager.currentPage-1 %}
                     {% set nextPage = pager.currentPage+1 %}
 
+                    {% if state is defined and state == 'preview' %}
+                        <a href="{{ path('icap_dropzone_drop_detail_by_user', {'resourceId': dropzone.id,'dropId': correction.drop.id}) }}"
+                           class="btn btn-gris">
+                            {{ 'Back to corrections'|trans({}, 'icap_dropzone') }}
+                        </a>
+                    {% endif %}
+
                     {% if edit == true %}
                         <div class="slrn-correct-buttons">
                             {% if admin == true %}
@@ -121,12 +128,6 @@
                         {% else %}
                             <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'state' : state,'correctionId': correction.id, 'page': nextPage}) }}" class="btn btn-primary">{{ 'Next'|trans({}, 'icap_dropzone') }}</a>
                         {% endif %}
-                    {% endif %}
-                    {% if state is defined and state == 'preview' %}
-                        <a href="{{ path('icap_dropzone_drop_detail_by_user', {'resourceId': dropzone.id,'dropId': correction.drop.id}) }}"
-                        class="btn btn-gris slrn-back-corrections-btn">
-                        {{ 'Back to corrections'|trans({}, 'icap_dropzone') }}
-                        </a>
                     {% endif %}
                         {#&#123;&#35; one of the ugliest conditionnal spaghetti &#35;&#125;#}
 
