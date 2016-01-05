@@ -91,13 +91,13 @@
                 {% elseif state is defined %}
                     <div class="slrn-correct-buttons pull-left">
                 	{% if state == 'preview' %}
-                        <a href="{{ path('icap_dropzone_drops_detail_correction', {'resourceId': dropzone.id, 'correctionId': correction.id, 'state': 'preview', 'nbCorrections': nbCorrections }) }}" class="btn btn-default btn-primary slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                        <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'correctionId': correction.id, 'state': 'preview', 'nbCorrections': nbCorrections, 'page': nbPages }) }}" class="btn btn-default btn-primary slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
                         <a href="{{ path('icap_dropzone_drop_detail_by_user', {'resourceId': dropzone.id,'dropId': correction.drop.id}) }}"
                                    class="btn btn-gris slrn-back-corrections-btn">
                                         {{ 'Back to corrections'|trans({}, 'icap_dropzone') }}
                         </a>
                     {% else %}
-                        <a href="{{ path('icap_dropzone_drops_detail_correction', {'resourceId': dropzone.id, 'correctionId': correction.id, 'state': state, 'nbCorrections': nbCorrections }) }}" class="btn btn-default btn-primary slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
+                        <a href="{{ path('icap_dropzone_drops_detail_correction_paginated', {'resourceId': dropzone.id, 'correctionId': correction.id, 'state': state, 'nbCorrections': nbCorrections, 'page': nbPages }) }}" class="btn btn-default btn-primary slrn-dropzone-cancel">{{ 'Previous'|trans({}, 'icap_dropzone') }}</a>
                         <a href="{{ path('icap_dropzone_drops_detail', {'resourceId': dropzone.id,'dropId': correction.drop.id}) }}"
                                    class="btn btn-gris slrn-back-corrections-btn">
                                         {{ 'Back to corrections'|trans({}, 'icap_dropzone') }}
